@@ -14,7 +14,7 @@ export default class MovieRow extends Component {
     componentDidMount() {
         axios
             .get('http://localhost:4000/movies', {
-                params: { genre: this.props.genre },
+                params: this.props.params,
             })
             .then((response) => {
                 this.setState({ movies: response.data });

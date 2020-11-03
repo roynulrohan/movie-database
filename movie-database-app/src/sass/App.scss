@@ -67,3 +67,44 @@ body {
     margin-top: 200px;
     margin-bottom: 200px;
 }
+
+.poster {
+    object-fit: contain;
+}
+
+.login-container {
+    height: 500px;
+    width: 400px;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+.dropdown {
+    width: 200px;
+}
+
+.logout-btn {
+    color: red;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-60 {
+    width: 60%;
+}
+
+.w-70 {
+    width: 70%;
+}

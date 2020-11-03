@@ -3,21 +3,24 @@ import React, { Component } from 'react';
 const { default: MovieRow } = require('./movie-row');
 
 class HomePage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
     render() {
         return (
             <div>
-                <MovieRow key="All" title="All Movies"></MovieRow>
+                <MovieRow key="For you" title="For you"></MovieRow>
                 <MovieRow
-                    key="Animated"
-                    title="Animated"
-                    genre="animation"
+                    key="Tom Cruise"
+                    title="Tom Cruise Movies"
+                    params={{ actor: 'Tom Cruise' }}
                 ></MovieRow>
-                <MovieRow key="Horror" title="Horror" genre="horror"></MovieRow>
-                <MovieRow key="Action" title="Action" genre="action"></MovieRow>
+                <MovieRow
+                    key="Leonardo Dicaprio"
+                    title="Leonardo Dicaprio Movies"
+                    params={{ actor: 'Leonardo Dicaprio' }}
+                ></MovieRow>
+                <MovieRow
+                    title="Test"
+                    params={{ actor: 'Sylvester Stallone' }}
+                ></MovieRow>
             </div>
         );
     }

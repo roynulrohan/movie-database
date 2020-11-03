@@ -1,36 +1,19 @@
 import React, { Component } from 'react';
-import {
-    useLocation,
-    BrowserRouter as Router,
-    Route,
-    Link,
-} from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useLocation, BrowserRouter as Router, Route } from 'react-router-dom';
 
-import './App.scss';
+import './sass/App.scss';
+
 import HomePage from './components/home-page';
 import MoviePage from './components/movie-page';
+import Login from './components/login-page';
+import Nav from './components/navbar';
 
 class App extends Component {
     render() {
         return (
             <div className="App">
                 <Router>
-                    <nav className="navbar navbar-expand-lg navbar-dark bg-dark bg-darken-4">
-                        <a className="navbar-brand" target="_blank"></a>
-                        <Link to="/" className="navbar-brand ml-5">
-                            MERN-Stack App
-                        </Link>
-                        <div className="collapse navbar-collapse">
-                            <ul className="navbar-nav ml-auto mr-5">
-                                <li className="navbar-item">
-                                    <Link to="/login" className="nav-link">
-                                        Login
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
+                    <Nav />
                     <br />
                     <Route path="/" exact component={HomePage} />
                     <Route
@@ -44,6 +27,7 @@ class App extends Component {
                             />
                         )}
                     />
+                    <Route path="/login" component={Login}></Route>
                 </Router>
             </div>
         );

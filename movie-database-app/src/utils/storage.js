@@ -1,3 +1,5 @@
+// local storage
+
 export function getFromStorage(key) {
     if (!key) {
         return null;

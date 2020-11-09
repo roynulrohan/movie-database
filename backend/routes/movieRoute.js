@@ -12,7 +12,15 @@ router.use(function (req, res, next) {
 });
 
 router.route('/').get(function (req, res) {
-    const { title, genre, year, minRating, actor } = req.query;
+    const {
+        title,
+        genre,
+        year,
+        minImdbRating,
+        minMetascore,
+        actor,
+        type,
+    } = req.query;
     let query = {};
 
     if (title) {
@@ -27,8 +35,20 @@ router.route('/').get(function (req, res) {
         query.Year = year;
     }
 
+    if (minImdbRating) {
+        query.imdbRating = { $gt: minImdbRating };
+    }
+
+    if (minMetascore) {
+        query.Metascore = { $gt: minMetascore };
+    }
+
     if (actor) {
         query.Actors = { $regex: actor, $options: 'i' };
+    }
+
+    if (type) {
+        query.Type = type;
     }
 
     console.log(query);

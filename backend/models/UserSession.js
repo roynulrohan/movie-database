@@ -13,7 +13,8 @@ const UserSession = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    expire_at: { type: Date, default: Date.now, expires: 7200 },
+    // expire so database doesn't get filled with userSessions
+    expire_at: { type: Date, default: Date.now, expires: 14400 },
 });
 
 module.exports = mongoose.model('UserSession', UserSession);

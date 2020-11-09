@@ -6,8 +6,8 @@ const UserSession = require('../../models/UserSession');
 
 router.route('/register').post(function (req, res, next) {
     const { body } = req;
-    const { password, name, type } = body;
-    let { email } = body;
+    const { password, name } = body;
+    let { username } = body;
 
     if (!name) {
         return res.send({
@@ -15,26 +15,36 @@ router.route('/register').post(function (req, res, next) {
             message: 'Name cannot be blank.',
         });
     }
-    if (!email) {
+    if (!username) {
         return res.send({
             success: false,
-            message: 'Email cannot be blank.',
+            message: 'Username cannot be blank.',
         });
     }
     if (!password) {
         return res.send({
             success: false,
-            message: 'Error: Password cannot be blank.',
+            message: 'Password cannot be blank.',
         });
     }
-    email = email.toLowerCase();
-    email = email.trim();
-    // Steps:
-    // 1. Verify email doesn't exist
-    // 2. Save
+
+    username = username.trim();
+
+    if (username.length > 14) {
+        return res.send({
+            success: false,
+            message: 'Username cannot be longer than 14 characters.',
+        });
+    } else if (username.length < 6) {
+        return res.send({
+            success: false,
+            message: 'Username must be at least 6 characters.',
+        });
+    }
+
     User.find(
         {
-            Email: email,
+            Username: username,
         },
         (err, previousUsers) => {
             if (err) {
@@ -45,15 +55,14 @@ router.route('/register').post(function (req, res, next) {
             } else if (previousUsers.length > 0) {
                 return res.send({
                     success: false,
-                    message: 'Error: Account with email already exists.',
+                    message: 'Error: Account with username already exists.',
                 });
             }
 
             // Save the new user
             const newUser = new User({
                 Name: name,
-                Email: email,
-                Type: type,
+                Username: username,
             });
 
             newUser.set({ Password: newUser.generateHash(password) });
@@ -91,12 +100,12 @@ router.route('/register').post(function (req, res, next) {
 router.route('/login').post(function (req, res, next) {
     const { body } = req;
     const { password } = body;
-    let { email } = body;
+    let { username } = body;
 
-    if (!email) {
+    if (!username) {
         return res.send({
             success: false,
-            message: 'Email cannot be blank.',
+            message: 'Username cannot be blank.',
         });
     }
     if (!password) {
@@ -106,12 +115,11 @@ router.route('/login').post(function (req, res, next) {
         });
     }
 
-    email = email.toLowerCase();
-    email = email.trim();
+    username = username.trim();
 
     User.find(
         {
-            Email: email,
+            Username: username,
         },
         (err, users) => {
             if (err) {
@@ -123,7 +131,7 @@ router.route('/login').post(function (req, res, next) {
             if (users.length != 1) {
                 return res.send({
                     success: false,
-                    message: "Account with that email doesn't exist.",
+                    message: 'Either username and/or password is incorrect.',
                 });
             }
             const user = users[0];
@@ -131,7 +139,7 @@ router.route('/login').post(function (req, res, next) {
             if (!user.validPassword(password)) {
                 return res.send({
                     success: false,
-                    message: 'Password is incorrect.',
+                    message: 'Either username and/or password is incorrect.',
                 });
             }
 

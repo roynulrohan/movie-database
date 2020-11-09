@@ -1,26 +1,35 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { setInStorage, getFromStorage } from '../utils/storage';
+import React, { useState } from 'react';
+import { setInStorage } from '../utils/storage';
 import { useHistory } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../actions';
 
 function Login() {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [type, setType] = useState('Regular');
     const [error, setError] = useState('');
     const [register, setMode] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const regex = { length: /.{6,}/, digit: /\d/, capital: /[A-Z]/ };
+
+    const [passMin, setPassMin] = useState(false);
+    const [passNum, setPassNum] = useState(false);
+    const [passCapital, setPassCapital] = useState(false);
+
+    const [buttonEnabled, setButtonEnabled] = useState(false);
+
     const user = useSelector((state) => state.userReducer);
     const history = useHistory();
 
     const dispatch = useDispatch();
     const redirect = () => history.push('/');
 
-    function onSignUp() {
+    function signUpRequest() {
         setLoading(true);
         // Post request to backend
         axios({
@@ -31,9 +40,8 @@ function Login() {
             },
             data: JSON.stringify({
                 name: name,
-                email: email,
+                username: username,
                 password: password,
-                type: type,
             }),
         }).then((res) => {
             if (res.data.success) {
@@ -50,7 +58,7 @@ function Login() {
         });
     }
 
-    function onSignIn() {
+    function signInRequest() {
         setLoading(true);
         // Post request to backend
         axios({
@@ -60,7 +68,7 @@ function Login() {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify({
-                email: email,
+                username: username,
                 password: password,
             }),
         }).then((res) => {
@@ -81,19 +89,18 @@ function Login() {
         });
     }
 
-    function signIn() {
+    function signInContainer() {
         return (
-            <div className="container rounded bg-dark p-4 pt-5 text-white h-100 d-flex flex-column justify-content-between">
+            <div className="container rounded p-4 pt-5 text-white h-100 d-flex flex-column justify-content-between">
                 <div>
                     <div class="form-group">
-                        <label>Email Address</label>
+                        <label>Username</label>
                         <input
-                            type="email"
+                            type="text"
                             class="form-control"
-                            aria-describedby="emailHelp"
-                            placeholder="Enter email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
                     <div class="form-group">
@@ -101,7 +108,7 @@ function Login() {
                         <input
                             type="password"
                             class="form-control"
-                            placeholder="Password"
+                            placeholder="Enter Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -117,7 +124,7 @@ function Login() {
                         <small class="form-text text-muted">
                             Don't have an account?
                             <a
-                                class="text-primary"
+                                class="text-warning text-decoration-none pointer"
                                 onClick={() => {
                                     setMode(true);
                                     setError();
@@ -129,8 +136,8 @@ function Login() {
                         </small>
                     </div>{' '}
                     <button
-                        onClick={() => onSignIn()}
-                        class="btn btn-primary w-100"
+                        onClick={() => signInRequest()}
+                        class="btn btn-warning w-100"
                     >
                         Sign In
                     </button>
@@ -139,9 +146,59 @@ function Login() {
         );
     }
 
-    function signUp() {
+    // username requirements
+    function validUsername() {
+        if (username.length >= 6 && username.length <= 14) {
+            return (
+                <div className="d-flex justify-content-between">
+                    <label>Username</label>
+                    <small className="text-success">6-14 characters</small>
+                </div>
+            );
+        } else {
+            return (
+                <div className="d-flex justify-content-between">
+                    <label>Username</label>
+                    <small className="text-danger">6-14 characters</small>
+                </div>
+            );
+        }
+    }
+
+    // function to update password requirements in realtime
+    function validPassword(pass) {
+        if (regex.length.test(pass)) {
+            setPassMin(true);
+        } else {
+            setPassMin(false);
+        }
+
+        if (regex.digit.test(pass)) {
+            setPassNum(true);
+        } else {
+            setPassNum(false);
+        }
+
+        if (regex.capital.test(pass)) {
+            setPassCapital(true);
+        } else {
+            setPassCapital(false);
+        }
+
+        if (
+            regex.length.test(pass) &&
+            regex.digit.test(pass) &&
+            regex.capital.test(pass)
+        ) {
+            setButtonEnabled(true);
+        } else {
+            setButtonEnabled(false);
+        }
+    }
+
+    function signUpContainer() {
         return (
-            <div className="container rounded bg-dark p-4 text-white h-100 d-flex flex-column justify-content-between">
+            <div className="container rounded p-4 text-white h-100 d-flex flex-column justify-content-between">
                 <div class="form-group">
                     <label>Name</label>
                     <input
@@ -149,18 +206,18 @@ function Login() {
                         class="form-control"
                         placeholder="Enter name"
                         value={name}
+                        maxLength="35"
                         onChange={(e) => setName(e.target.value)}
                     />
                 </div>
                 <div class="form-group">
-                    <label>Email Address</label>
+                    {validUsername()}
                     <input
-                        type="email"
+                        type="text"
                         class="form-control"
-                        aria-describedby="emailHelp"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div class="form-group">
@@ -168,39 +225,36 @@ function Login() {
                     <input
                         type="password"
                         class="form-control"
-                        placeholder="Password"
+                        placeholder="Enter Password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            validPassword(e.target.value);
+                        }}
                     />
                 </div>
                 <div class="form-group">
-                    <label>Account Type</label>
-                    <br />
-                    <div class="form-check form-check-inline">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="inlineRadioOptions"
-                            id="inlineRadio1"
-                            value="Regular"
-                            onClick={(e) => setType(e.target.value)}
-                            checked
-                        />
-                        <label class="form-check-label">Regular</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="inlineRadioOptions"
-                            id="inlineRadio2"
-                            value="Contributing"
-                            onClick={(e) => setType(e.target.value)}
-                        />
-                        <label class="form-check-label">Contributing</label>
+                    <div className="d-flex justify-content-between flex-column h-100">
+                        {/* password requirements */}
+                        <small
+                            className={passMin ? 'text-success' : 'text-danger'}
+                        >
+                            - Min. 6 characters
+                        </small>
+                        <small
+                            className={passNum ? 'text-success' : 'text-danger'}
+                        >
+                            - Must contain number (0-9)
+                        </small>
+                        <small
+                            className={
+                                passCapital ? 'text-success' : 'text-danger'
+                            }
+                        >
+                            - Must contain a capital letter (A-Z)
+                        </small>
                     </div>
                 </div>
-
                 {error ? (
                     <small class="form-text text-danger">{error}</small>
                 ) : (
@@ -211,36 +265,41 @@ function Login() {
                     <small class="form-text text-muted">
                         Already have an account?
                         <a
-                            class="text-primary"
+                            class="text-warning text-decoration-none pointer"
                             onClick={() => {
                                 setMode(false);
                                 setError();
                             }}
                         >
                             {' '}
-                            Login here
+                            Login
                         </a>
                     </small>
                 </div>
 
-                <button onClick={() => onSignUp()} class="btn btn-primary">
+                <button
+                    onClick={() => signUpRequest()}
+                    class="btn btn-warning"
+                    disabled={!buttonEnabled}
+                >
                     Sign Up
                 </button>
             </div>
         );
     }
 
+    // get correct container based on state
     function getContainer() {
         if (loading) {
             return (
-                <div className="container rounded bg-dark p-4 text-white h-100 d-flex flex-column justify-content-center align-items-center">
+                <div className="container rounded p-4 text-white h-100 d-flex flex-column justify-content-center align-items-center">
                     <h5>Loading...</h5>
                 </div>
             );
         } else {
             if (user.currentUser) {
                 return (
-                    <div className="container rounded bg-dark p-4 text-white h-100 d-flex flex-column justify-content-center align-items-center">
+                    <div className="container rounded p-4 text-white h-100 d-flex flex-column justify-content-center align-items-center">
                         <h5>You're logged in</h5>
                         <br />
                         <h3>✔️</h3>
@@ -248,15 +307,33 @@ function Login() {
                 );
             } else {
                 if (register) {
-                    return signUp();
+                    return signUpContainer();
                 } else {
-                    return signIn();
+                    return signInContainer();
                 }
             }
         }
     }
 
-    return <div className="login-container">{getContainer()}</div>;
+    return (
+        <CSSTransition
+            in={true}
+            appear={true}
+            timeout={600}
+            classNames="fade"
+            unmountOnExit
+        >
+            <div>
+                {/* background */}
+                <div className="login-background">
+                    <div className="background-default"></div>
+                    <div className="background-cover opacity-60"></div>
+                </div>
+                {/* login container */}
+                <div className="login-container">{getContainer()}</div>
+            </div>
+        </CSSTransition>
+    );
 }
 
 export default Login;

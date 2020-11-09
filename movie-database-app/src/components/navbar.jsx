@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 
 import { Dropdown } from 'react-bootstrap/';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,18 +21,19 @@ export default function Nav() {
 
         if (obj && obj.token) {
             const { token } = obj;
-            // Verify token
+            // Verify user on mount
             axios
                 .get('http://localhost:4000/api/account/verify?token=' + token)
                 .then((res) => {
                     if (res.data.success) {
+                        // write user to redux store
                         dispatch(setUser(res.data.user));
                     }
                 });
         }
     }, []);
-    
 
+    // logout request
     function logout() {
         const obj = getFromStorage('movie_database_roynulrohan');
 
@@ -43,20 +45,27 @@ export default function Nav() {
                 .then((res) => {
                     console.log(res.data);
                     if (res.data.success) {
+                        // remove user from redux store
                         dispatch(setUser());
                     }
                 });
         }
     }
 
+    // dropdown menu if users logged in
     function dropdownMenu() {
         return (
-            <Dropdown className="w-100">
-                <Dropdown.Toggle variant="info" id="dropdown">
-                    {user.currentUser.Email}
+            // used Dropdown from React Bootstrap because for some reason the native one wouldn't work
+            <Dropdown className="w-100" key="dropdown-menu">
+                <Dropdown.Toggle
+                    variant="warning"
+                    id="dropdown"
+                    className="profile-dropdown"
+                >
+                    {user.currentUser.Username}
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu className="w-100">
+                <Dropdown.Menu className="w-100" align="right">
                     <Dropdown.Header>{user.currentUser.Name}</Dropdown.Header>
                     <Dropdown.Item onClick={() => profileOnClick()}>
                         My Profile
@@ -75,18 +84,28 @@ export default function Nav() {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark bg-darken-4 pr-5">
-            <a className="navbar-brand" target="_blank"></a>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-darken-4">
             <Link to="/" className="navbar-brand ml-5">
-                MERN-Stack App
+                Movie Database
             </Link>
+
             <div className="navbar-nav ml-auto mr-5">
                 {user.currentUser ? (
                     dropdownMenu()
                 ) : (
-                    <Link to="/login" className="nav-link">
-                        Login
-                    </Link>
+                    <CSSTransition
+                        in={true}
+                        appear={true}
+                        timeout={600}
+                        classNames="fade"
+                        unmountOnExit
+                    >
+                        <Link to="/login" key="login-button">
+                            <button className="btn btn-dark-yellow">
+                                Login
+                            </button>
+                        </Link>
+                    </CSSTransition>
                 )}
             </div>
         </nav>

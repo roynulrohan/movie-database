@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { CSSTransition } from 'react-transition-group';
 
 class MoviePage extends Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class MoviePage extends Component {
     }
 
     componentDidMount() {
+        // get movie request
         axios
             .get('http://localhost:4000/movies/' + this.props._id)
             .then((response) => {
@@ -19,6 +21,7 @@ class MoviePage extends Component {
             });
     }
 
+    // map genres into elements
     getGenres(string) {
         if (string) {
             return (
@@ -37,101 +40,148 @@ class MoviePage extends Component {
 
     render() {
         return (
-            <div className="container rounded bg-dark p-3 text-white">
-                <div className="d-flex">
+            <CSSTransition
+                in={true}
+                appear={true}
+                timeout={600}
+                classNames="fade"
+                unmountOnExit
+            >
+                <div className="position-relative">
                     <img
-                        className="mr-4 poster"
+                        className="background-custom"
                         src={this.state.movie.Poster}
                     ></img>
-                    <div className="d-flex flex-column justify-content-between mr-4">
-                        <div className="p-2">
-                            <div className="d-flex justify-content-between">
-                                <div className="w-70">
-                                    <h3 className="m-1">
-                                        {this.state.movie.Title} (
-                                        {this.state.movie.Year})
-                                    </h3>
+                    <div className="background-cover opacity-80"></div>
 
-                                    <h5 className="badge badge-warning m-1">
-                                        Rated: {this.state.movie.Rated}
-                                    </h5>
-                                    <h5 className="badge badge-primary m-1">
-                                        {this.state.movie.Runtime}
-                                    </h5>
-                                    <h5 className="badge badge-danger m-1">
-                                        {this.state.movie.Released}
-                                    </h5>
-                                    <h5 className="badge badge-success m-1">
-                                        {this.state.movie.Language}
-                                    </h5>
+                    <div className="p-4">
+                        <div className="container rounded p-3 text-white">
+                            <div className="d-flex">
+                                <img
+                                    className="mr-4 poster"
+                                    src={this.state.movie.Poster}
+                                ></img>
+                                <div className="d-flex flex-column justify-content-between mr-4">
+                                    <div className="p-2">
+                                        <div className="d-flex justify-content-between">
+                                            <div className="w-70">
+                                                <h3 className="m-1">
+                                                    {this.state.movie.Title} (
+                                                    {this.state.movie.Year})
+                                                </h3>
+                                                <h5 className="badge badge-info m-1">
+                                                    {this.state.movie.Type
+                                                        ? this.state.movie.Type.charAt(
+                                                              0
+                                                          ).toUpperCase() +
+                                                          this.state.movie.Type.slice(
+                                                              1
+                                                          )
+                                                        : ''}
+                                                </h5>
+                                                <h5 className="badge badge-warning m-1">
+                                                    Rated:{' '}
+                                                    {this.state.movie.Rated}
+                                                </h5>
+                                                <h5 className="badge badge-primary m-1">
+                                                    {this.state.movie.Runtime}
+                                                </h5>
+                                                <h5 className="badge badge-danger m-1">
+                                                    {this.state.movie.Released}
+                                                </h5>
+                                                <h5 className="badge badge-success m-1">
+                                                    {this.state.movie.Language}
+                                                </h5>
 
-                                    <div>
-                                        {this.getGenres(this.state.movie.Genre)}
+                                                <div>
+                                                    {this.getGenres(
+                                                        this.state.movie.Genre
+                                                    )}
+                                                </div>
+
+                                                <p className="m-1">
+                                                    {this.state.movie.Plot}
+                                                </p>
+                                            </div>
+
+                                            <div className="w-auto mr-1">
+                                                <h3>
+                                                    <span className="badge badge-warning m-1">
+                                                        {
+                                                            this.state.movie
+                                                                .imdbRating
+                                                        }
+                                                        <br />
+                                                        <small>IMDb</small>
+                                                    </span>
+                                                    <span
+                                                        className={'badge m-1'.concat(
+                                                            this.state.movie
+                                                                .Metascore < 50
+                                                                ? ' badge-danger'
+                                                                : ' badge-success'
+                                                        )}
+                                                    >
+                                                        {
+                                                            this.state.movie
+                                                                .Metascore
+                                                        }
+                                                        <br />
+                                                        <small>Metascore</small>
+                                                    </span>
+                                                </h3>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <p className="m-1">
-                                        {this.state.movie.Plot}
-                                    </p>
-                                </div>
-
-                                <div className="w-auto mr-1">
-                                    <h3>
-                                        <span className="badge badge-warning m-1">
-                                            {this.state.movie.imdbRating}
-                                            <br />
-                                            <small>IMDb</small>
-                                        </span>
-                                        <span
-                                            className={'badge m-1'.concat(
-                                                this.state.movie.Metascore < 50
-                                                    ? ' badge-danger'
-                                                    : ' badge-success'
-                                            )}
-                                        >
-                                            {this.state.movie.Metascore}
-                                            <br />
-                                            <small>Metascore</small>
-                                        </span>
-                                    </h3>
+                                    <div className="p-2 m-1">
+                                        <h5>
+                                            <span className="badge bg-secondary">
+                                                Director
+                                            </span>{' '}
+                                            <small>
+                                                : {this.state.movie.Director}
+                                            </small>
+                                        </h5>
+                                        <h5>
+                                            <span className="badge badge-secondary">
+                                                Writer
+                                            </span>{' '}
+                                            <small>
+                                                : {this.state.movie.Writer}
+                                            </small>
+                                        </h5>
+                                        <h5>
+                                            <span className="badge badge-secondary">
+                                                Cast
+                                            </span>{' '}
+                                            <small>
+                                                : {this.state.movie.Actors}
+                                            </small>
+                                        </h5>
+                                        <h5>
+                                            <span className="badge badge-secondary">
+                                                Production
+                                            </span>{' '}
+                                            <small>
+                                                : {this.state.movie.Production}
+                                            </small>
+                                        </h5>
+                                        <h5>
+                                            <span className="badge badge-secondary">
+                                                Awards
+                                            </span>{' '}
+                                            <small>
+                                                : {this.state.movie.Awards}
+                                            </small>
+                                        </h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div className="p-2 m-1">
-                            <h5>
-                                <span className="badge bg-secondary">
-                                    Director
-                                </span>{' '}
-                                <small>: {this.state.movie.Director}</small>
-                            </h5>
-                            <h5>
-                                <span className="badge badge-secondary">
-                                    Writer
-                                </span>{' '}
-                                <small>: {this.state.movie.Writer}</small>
-                            </h5>
-                            <h5>
-                                <span className="badge badge-secondary">
-                                    Cast
-                                </span>{' '}
-                                <small>: {this.state.movie.Actors}</small>
-                            </h5>
-                            <h5>
-                                <span className="badge badge-secondary">
-                                    Production
-                                </span>{' '}
-                                <small>: {this.state.movie.Production}</small>
-                            </h5>
-                            <h5>
-                                <span className="badge badge-secondary">
-                                    Awards
-                                </span>{' '}
-                                <small>: {this.state.movie.Awards}</small>
-                            </h5>
-                        </div>
                     </div>
                 </div>
-            </div>
+            </CSSTransition>
         );
     }
 }

@@ -6,10 +6,12 @@ import { createStore } from 'redux';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './sass/index.scss';
+
 import App from './App';
 
 import root from './reducers/';
 
+// redux store
 const store = createStore(
     root,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

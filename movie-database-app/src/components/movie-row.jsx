@@ -64,7 +64,7 @@ export default class MovieRow extends Component {
     }
 
     render() {
-        if (this.state.movies.length !== 0) {
+        
             return (
                 <div className="movie-list-section">
                     <div className="p-3">
@@ -77,7 +77,7 @@ export default class MovieRow extends Component {
                             {this.props.title}
                         </h2>
 
-                        <div className="d-flex">
+                        <div className="d-flex align-items-center justify-content-between movie-list-container">
                             <button
                                 className="btn mr-2 arrow btn-dark-yellow"
                                 onClick={() => {
@@ -110,9 +110,6 @@ export default class MovieRow extends Component {
                         </div>
                     </div>
                 </div>
-            );
-        } else {
-            return <div></div>;
-        }
+            );    
     }
 }

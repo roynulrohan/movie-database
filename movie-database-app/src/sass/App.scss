@@ -114,12 +114,8 @@ body {
     background-color: black;
 }
 
-.opacity-60 {
-    filter: opacity(60%);
-}
-
-.opacity-80 {
-    filter: opacity(80%);
+.movie-list-container {
+    height: 600px;
 }
 
 .movie-list-section h2 {
@@ -159,6 +155,7 @@ body {
 
     .card {
         min-height: 500px;
+        max-height: 550px;
         width: 250px;
     }
 }
@@ -168,8 +165,7 @@ body {
 }
 
 .arrow {
-    margin-top: 200px;
-    margin-bottom: 200px;
+    height: 200px;
 }
 
 .poster {
@@ -192,12 +188,20 @@ body {
     width: 200px;
 }
 
-.pointer {
-    cursor: pointer;
-}
-
 .logout-btn {
     color: red;
+}
+
+.opacity-60 {
+    filter: opacity(60%);
+}
+
+.opacity-80 {
+    filter: opacity(80%);
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .w-30 {

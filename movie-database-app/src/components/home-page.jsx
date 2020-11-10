@@ -5,7 +5,6 @@ const { default: MovieRow } = require('./movie-row');
 
 // row parameters as objects
 const rows = [
-    { title: 'For you', params: {} },
     { title: 'Tom Cruise', params: { actor: 'Tom Cruise' } },
     { title: 'TV Shows', params: { type: 'series' } },
     { title: '2015', params: { year: '2015' } },
@@ -17,7 +16,7 @@ class HomePage extends Component {
             <CSSTransition
                 in={true}
                 appear={true}
-                timeout={1000}
+                timeout={600}
                 classNames="fade"
                 unmountOnExit
             >

@@ -10,6 +10,18 @@ body {
     background-color: black;
 }
 
+.btn,
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.checked-icon {
+    height: 40px;
+    object-fit: contain;
+}
+
 .fade-appear {
     opacity: 0;
     z-index: 1;
@@ -44,37 +56,6 @@ body {
 
 .profile-dropdown {
     width: 200px;
-}
-
-.btn:focus,
-.btn:active {
-    outline: none !important;
-    box-shadow: none;
-}
-
-.navbar {
-    background-color: $nav-color;
-}
-
-.container {
-    background-color: $container-color;
-}
-
-.card {
-    background-color: $card-color;
-}
-
-.btn-dark {
-    background-color: $card-color;
-}
-
-.btn-dark-yellow {
-    background-color: $card-color;
-    color: $warning;
-}
-
-.btn-dark-yellow:hover {
-    background-color: $warning;
 }
 
 .login-background {
@@ -218,4 +199,29 @@ body {
 
 .w-70 {
     width: 70%;
+}
+
+.navbar {
+    background-color: $nav-color;
+}
+
+.container {
+    background-color: $container-color;
+}
+
+.card {
+    background-color: $card-color;
+}
+
+.btn-dark {
+    background-color: $card-color;
+}
+
+.btn-dark-yellow {
+    background-color: $card-color;
+    color: $warning;
+}
+
+.btn-dark-yellow:hover {
+    background-color: $warning;
 }

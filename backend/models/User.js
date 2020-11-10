@@ -23,6 +23,14 @@ const User = new Schema({
         type: String,
         default: '',
     },
+    WatchList: {
+        type: Array,
+        default: [],
+    },
+    Liked: {
+        type: Array,
+        default: [],
+    },
     DateCreated: {
         type: Date,
         default: Date.now,

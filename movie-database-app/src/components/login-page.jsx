@@ -7,6 +7,8 @@ import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../actions';
 
+import checkedIcon from '../assets/img/checked.png';
+
 function Login() {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
@@ -50,7 +52,7 @@ function Login() {
                 });
                 setLoading(false);
                 dispatch(setUser(res.data.user));
-                setTimeout(redirect, 1500);
+                setTimeout(redirect, 1700);
             } else {
                 setError(res.data.message);
             }
@@ -80,7 +82,7 @@ function Login() {
 
                 setLoading(false);
                 dispatch(setUser(res.data.user));
-                setTimeout(redirect, 1500);
+                setTimeout(redirect, 1700);
             } else {
                 setError(res.data.message);
             }
@@ -299,10 +301,24 @@ function Login() {
         } else {
             if (user.currentUser) {
                 return (
-                    <div className="container rounded p-4 text-white h-100 d-flex flex-column justify-content-center align-items-center">
-                        <h5>You're logged in</h5>
-                        <br />
-                        <h3>✔️</h3>
+                    <div className="container rounded p-4 text-white h-100">
+                        <CSSTransition
+                            in={true}
+                            appear={true}
+                            timeout={600}
+                            classNames="fade"
+                            unmountOnExit
+                        >
+                            <div className="d-flex flex-column justify-content-center align-items-center h-100">
+                                <h5>You're logged in</h5>
+                                <br />
+                                <br />
+                                <img
+                                    src={checkedIcon}
+                                    className="checked-icon"
+                                ></img>
+                            </div>
+                        </CSSTransition>
                     </div>
                 );
             } else {

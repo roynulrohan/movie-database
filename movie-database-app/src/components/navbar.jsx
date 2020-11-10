@@ -89,7 +89,7 @@ export default function Nav() {
                 Movie Database
             </Link>
 
-            <div className="navbar-nav ml-auto mr-5">
+            <div className="navbar-nav ml-auto mr-5 pt-1 pb-1">
                 {user.currentUser ? (
                     dropdownMenu()
                 ) : (

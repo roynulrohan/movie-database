@@ -47,6 +47,7 @@ export default function Nav() {
                     if (res.data.success) {
                         // remove user from redux store
                         dispatch(setUser());
+                        window.location.reload(false);
                     }
                 });
         }

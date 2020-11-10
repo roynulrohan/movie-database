@@ -109,7 +109,11 @@ export default function MovieCard(props) {
                                         : 'btn btn-outline-info'
                                 }
                                 onClick={() => {
-                                    watchListClick();
+                                    if (user.currentUser) {
+                                        watchListClick();
+                                    } else {
+                                        history.push('/login');
+                                    }
                                 }}
                             >
                                 {isWL == true ? 'Watchlisted' : '+ Watchlist'}
@@ -121,7 +125,11 @@ export default function MovieCard(props) {
                                         : 'btn btn-outline-danger'
                                 }
                                 onClick={() => {
-                                    likedClick();
+                                    if (user.currentUser) {
+                                        likedClick();
+                                    } else {
+                                        history.push('/login');
+                                    }
                                 }}
                             >
                                 {isLiked == true ? 'Liked' : 'Like'}

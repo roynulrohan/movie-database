@@ -11,17 +11,30 @@ export default function MovieRow(props) {
     const [width, setwidth] = useState(0);
 
     useEffect(() => {
-        // make movies request with givem params and setstate
-        axios
-            .get('http://localhost:4000/movies', {
-                params: props.params,
-            })
-            .then((response) => {
-                setMovies(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        console.log(props.movies);
+        if (props.movies) {
+            // make movies request with given movie ids and setstate
+            axios
+                .get('http://localhost:4000/movies/' + props.movies)
+                .then((response) => {
+                    setMovies(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        } else {
+            // make movies request with given params and setstate
+            axios
+                .get('http://localhost:4000/movies', {
+                    params: props.params,
+                })
+                .then((response) => {
+                    setMovies(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
         updateWindowDimensions();
 

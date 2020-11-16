@@ -28,6 +28,8 @@ export default function Nav() {
                     if (res.data.success) {
                         // write user to redux store
                         dispatch(setUser(res.data.user));
+                    } else {
+                        dispatch(setUser());
                     }
                 });
         }

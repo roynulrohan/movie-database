@@ -33,6 +33,10 @@ export default function MovieRow(props) {
         };
     }, []);
 
+    useEffect(() => {
+        setwidth(scrollable.current.clientWidth);
+    }, [scrollable]);
+
     function updateWindowDimensions() {
         if (scrollable.current) {
             setwidth(scrollable.current.clientWidth);
@@ -51,26 +55,6 @@ export default function MovieRow(props) {
         if (scrollable.current) {
             scrollable.current.scrollLeft = offset;
         }
-    }
-
-    function getWLState(movieId) {
-        if (user.currentUser) {
-            if (user.currentUser.WatchList.find((item) => item == movieId)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    function getLikedState(movieId) {
-        if (user.currentUser) {
-            if (user.currentUser.Liked.find((item) => item == movieId)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     return (
@@ -98,10 +82,8 @@ export default function MovieRow(props) {
                         {movies.map(function (currentMovie, i) {
                             return (
                                 <MovieCard
-                                    isWL={getWLState(currentMovie._id)}
-                                    isLiked={getLikedState(currentMovie._id)}
                                     movie={currentMovie}
-                                    key={currentMovie._id}
+                                    key={props.title + currentMovie._id}
                                 />
                             );
                         })}

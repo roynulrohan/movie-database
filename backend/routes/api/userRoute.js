@@ -27,7 +27,6 @@ router.route('/updateLists').put(function (req, res) {
         params = { $pull: { Liked: removeLiked } };
     }
 
-    console.log(req.body);
     User.findOneAndUpdate({ _id: id }, params, function (err, result) {
         if (err) {
             console.log(err);
@@ -263,10 +262,7 @@ router.route('/verify').get(function (req, res, next) {
                     message: 'Error: Invalid',
                 });
             } else {
-                console.log(sessions[0].userId);
                 User.findById(sessions[0].userId, (err, user) => {
-                    console.log(user);
-
                     if (err) {
                         console.log(err);
                     } else {

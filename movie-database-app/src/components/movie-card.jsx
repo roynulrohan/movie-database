@@ -4,31 +4,48 @@ import { useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import { setUser } from '../actions';
 
 export default function MovieCard(props) {
     const history = useHistory();
-    const handleOnClick = () => history.push('/movie/' + props.movie._id);
     const user = useSelector((state) => state.userReducer);
-    const [isWL, setisWL] = useState(props.isWL);
-    const [isLiked, setisLiked] = useState(props.isLiked);
+    const [isWL, setisWL] = useState(null);
+    const [isLiked, setisLiked] = useState(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log(isWL);
-    }, []);
+        if (user.currentUser) {
+            if (
+                user.currentUser.Liked.find((item) => item == props.movie._id)
+            ) {
+                setisLiked(true);
+            }
+
+            if (
+                user.currentUser.WatchList.find(
+                    (item) => item == props.movie._id
+                )
+            ) {
+                setisWL(true);
+            }
+        }
+    }, [user]);
+
+    function cardOnClick() {
+        history.push('/movie/' + props.movie._id);
+    }
 
     function watchListClick() {
         let params = {};
 
         if (isWL) {
             setisWL(false);
-
             params = {
                 id: user.currentUser._id,
                 removeWL: props.movie._id,
             };
         } else {
             setisWL(true);
-
             params = {
                 id: user.currentUser._id,
                 addWL: props.movie._id,
@@ -80,7 +97,7 @@ export default function MovieCard(props) {
         });
     }
 
-    return (
+    return props.movie ? (
         <CSSTransition
             in={true}
             appear={true}
@@ -90,7 +107,11 @@ export default function MovieCard(props) {
         >
             <div className="movie-card">
                 <Card text="white">
-                    <div onClick={handleOnClick}>
+                    <div
+                        onClick={() => {
+                            cardOnClick();
+                        }}
+                    >
                         <Card.Header>
                             <Card.Img variant="top" src={props.movie.Poster} />
                         </Card.Header>
@@ -116,7 +137,7 @@ export default function MovieCard(props) {
                                     }
                                 }}
                             >
-                                {isWL == true ? 'Watchlisted' : '+ Watchlist'}
+                                {isWL == true ? '✓ Saved' : '+ For Later'}
                             </button>
                             <button
                                 className={
@@ -139,5 +160,7 @@ export default function MovieCard(props) {
                 </Card>
             </div>
         </CSSTransition>
+    ) : (
+        <div></div>
     );
 }

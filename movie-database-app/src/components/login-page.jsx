@@ -9,7 +9,7 @@ import { setUser } from '../actions';
 
 import checkedIcon from '../assets/img/checked.png';
 
-function Login() {
+export default function Login() {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -351,5 +351,3 @@ function Login() {
         </CSSTransition>
     );
 }
-
-export default Login;

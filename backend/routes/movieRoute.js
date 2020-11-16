@@ -24,7 +24,7 @@ router.route('/').get(function (req, res) {
     let query = {};
 
     if (title) {
-        query.Title = title;
+        query.Title = { $regex: title, $options: 'i' };
     }
 
     if (genre) {
@@ -64,11 +64,40 @@ router.route('/').get(function (req, res) {
     });
 });
 
-router.route('/:id').get(function (req, res) {
+router.route('/movie/').get(function (req, res) {
+    Movie.count().exec(function (err, count) {
+        // Get a random entry
+        let random = Math.floor(Math.random() * count);
+
+        Movie.findOne()
+            .skip(random)
+            .exec(function (err, movie) {
+                res.json(movie);
+            });
+    });
+});
+
+router.route('/movie/:id').get(function (req, res) {
     let id = req.params.id;
 
     Movie.findById(id, function (err, movie) {
         res.json(movie);
+    });
+});
+
+router.route('/:ids').get(function (req, res) {
+    let ids = req.params.ids;
+
+    ids = ids.split(',');
+
+    ids.pop();
+
+    Movie.find({ _id: { $in: ids } }, function (err, movies) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(movies);
+        }
     });
 });
 

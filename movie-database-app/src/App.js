@@ -9,7 +9,7 @@ import Login from './components/login-page';
 import Nav from './components/navbar';
 import UserProfile from './components/user-profile';
 
-class App extends Component {
+export default class App extends Component {
     render() {
         return (
             <Router>
@@ -46,5 +46,3 @@ class App extends Component {
         );
     }
 }
-
-export default App;

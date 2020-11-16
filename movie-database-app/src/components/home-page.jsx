@@ -1,26 +1,28 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import axios from 'axios';
 
 const { default: MovieRow } = require('./movie-row');
 
 // row parameters as objects
 const rows = [
-    { title: 'Tom Cruise', params: { actor: 'Tom Cruise' } },
+    { title: 'For you', params: {} },
+    { title: 'Tom Cruise', params: { title: 'Mission: Impossible' } },
     { title: 'TV Shows', params: { type: 'series' } },
     { title: '2015', params: { year: '2015' } },
 ];
 
-class HomePage extends Component {
-    render() {
-        return (
-            <CSSTransition
-                in={true}
-                appear={true}
-                timeout={600}
-                classNames="fade"
-                unmountOnExit
-            >
-                <div className="pt-3">
+export default function HomePage() {
+    return (
+        <CSSTransition
+            in={true}
+            appear={true}
+            timeout={600}
+            classNames="fade"
+            unmountOnExit
+        >
+            <div>
+                <div className="pt-4">
                     {/* map rows */}
                     {rows.map(({ title, params }) => {
                         return (
@@ -32,9 +34,8 @@ class HomePage extends Component {
                         );
                     })}
                 </div>
-            </CSSTransition>
-        );
-    }
+            </div>
+        </CSSTransition>
+    );
 }
 
-export default HomePage;

@@ -29,7 +29,7 @@ export default function Login() {
     const history = useHistory();
 
     const dispatch = useDispatch();
-    const redirect = () => history.push('/');
+    const redirect = () => history.goBack();
 
     function signUpRequest() {
         setLoading(true);

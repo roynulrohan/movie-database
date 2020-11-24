@@ -119,6 +119,7 @@ export default function MovieCard(props) {
                             <Card.Title className="poster-title">
                                 {props.movie.Title}
                             </Card.Title>
+                            <Card.Text>★ {props.movie.imdbRating}</Card.Text>
                         </Card.Body>
                     </div>
                     <Card.Footer>

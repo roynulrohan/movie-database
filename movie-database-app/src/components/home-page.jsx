@@ -7,9 +7,10 @@ const { default: MovieRow } = require('./movie-row');
 // row parameters as objects
 const rows = [
     { title: 'For you', params: {} },
-    { title: 'Tom Cruise', params: { title: 'Mission: Impossible' } },
+    { title: 'Tom Cruise', params: { actor: 'Tom Cruise' } },
     { title: 'TV Shows', params: { type: 'series' } },
     { title: '2015', params: { year: '2015' } },
+    { title: 'Horror', params: { genre: 'Horror' } },
 ];
 
 export default function HomePage() {
@@ -38,4 +39,3 @@ export default function HomePage() {
         </CSSTransition>
     );
 }
-

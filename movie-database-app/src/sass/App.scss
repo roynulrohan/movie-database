@@ -130,14 +130,15 @@ body {
     }
 
     img {
-        min-height: 340px;
+        min-height: 320px;
+        max-height: 320px;;
         object-fit: contain;
     }
 
     .card {
         min-height: 500px;
         max-height: 550px;
-        width: 250px;
+        width: 270px;
     }
 }
 

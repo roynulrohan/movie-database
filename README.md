@@ -1,6 +1,6 @@
-# Movie Database Project
+# Not-IMDb
 
-MERN Stack project in progress.
+Movie Database project.
 
 ### Asset Credits
 

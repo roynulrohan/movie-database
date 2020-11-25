@@ -33,9 +33,9 @@ export default function Login() {
 
     useEffect(() => {
         if (register) {
-            document.title = 'Sign Up | Movie Database';
+            document.title = 'Sign Up | Not IMDb';
         } else {
-            document.title = 'Sign In | Movie Database';
+            document.title = 'Sign In | Not IMDb';
         }
     }, [register]);
 
@@ -55,7 +55,7 @@ export default function Login() {
             }),
         }).then((res) => {
             if (res.data.success) {
-                setInStorage('movie_database_roynulrohan', {
+                setInStorage('not_imdb_roynulrohan', {
                     token: res.data.token,
                 });
                 setLoading(false);
@@ -84,7 +84,7 @@ export default function Login() {
         }).then((res) => {
             if (res.data.success) {
                 console.log(res.data);
-                setInStorage('movie_database_roynulrohan', {
+                setInStorage('not_imdb_roynulrohan', {
                     token: res.data.token,
                 });
 

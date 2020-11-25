@@ -17,7 +17,7 @@ export default function UserProfile(props) {
     const [wlQuery, setWLQuery] = useState('');
 
     useEffect(() => {
-        const obj = getFromStorage('movie_database_roynulrohan');
+        const obj = getFromStorage('not_imdb_roynulrohan');
 
         if (obj && obj.token) {
             const { token } = obj;
@@ -38,7 +38,7 @@ export default function UserProfile(props) {
                 setUserState(res.data);
 
                 if (res.data.Username) {
-                    document.title = res.data.Username + ' | Movie Database';
+                    document.title = res.data.Username + ' | Not IMDb';
                 }
 
                 if (res.data.Liked) {

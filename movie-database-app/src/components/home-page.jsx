@@ -15,7 +15,7 @@ const rows = [
 
 export default function HomePage() {
     useEffect(() => {
-        document.title = 'Home | Movie Database';
+        document.title = 'Home | Not IMDb';
     }, []);
 
     return (

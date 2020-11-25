@@ -25,7 +25,7 @@ export default function MoviePage(props) {
 
     useEffect(() => {
         if (movie.Title) {
-            document.title = movie.Title + ' | Movie Database';
+            document.title = movie.Title + ' | Not IMDb';
         }
 
         if (user.currentUser) {

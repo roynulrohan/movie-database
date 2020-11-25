@@ -39,8 +39,8 @@ export default class App extends Component {
                                 )}
                             />
                         )}
-                    ></Route>
-                    <Route path="/login" component={Login}></Route>
+                    />
+                    <Route path="/login" component={Login}/>
                 </div>
             </Router>
         );

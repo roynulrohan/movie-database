@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { setInStorage } from '../utils/storage';
 import { useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -30,6 +30,14 @@ export default function Login() {
 
     const dispatch = useDispatch();
     const redirect = () => history.goBack();
+
+    useEffect(() => {
+        if (register) {
+            document.title = 'Sign Up | Movie Database';
+        } else {
+            document.title = 'Sign In | Movie Database';
+        }
+    }, [register]);
 
     function signUpRequest() {
         setLoading(true);

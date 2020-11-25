@@ -24,6 +24,10 @@ export default function MoviePage(props) {
     }, []);
 
     useEffect(() => {
+        if (movie.Title) {
+            document.title = movie.Title + ' | Movie Database';
+        }
+
         if (user.currentUser) {
             if (user.currentUser.Liked.find((item) => item == movie._id)) {
                 setisLiked(true);
@@ -33,7 +37,7 @@ export default function MoviePage(props) {
                 setisWL(true);
             }
         }
-    }, [movie,user]);
+    }, [movie, user]);
 
     function watchListClick() {
         let params = {};

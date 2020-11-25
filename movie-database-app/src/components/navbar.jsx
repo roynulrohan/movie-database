@@ -28,6 +28,8 @@ export default function Nav() {
                     if (res.data.success) {
                         // write user to redux store
                         dispatch(setUser(res.data.user));
+                    } else {
+                        dispatch(setUser());
                     }
                 });
         }
@@ -47,6 +49,7 @@ export default function Nav() {
                     if (res.data.success) {
                         // remove user from redux store
                         dispatch(setUser());
+                        window.location.reload(false);
                     }
                 });
         }
@@ -89,7 +92,7 @@ export default function Nav() {
                 Movie Database
             </Link>
 
-            <div className="navbar-nav ml-auto mr-5">
+            <div className="navbar-nav ml-auto mr-5 pt-1 pb-1">
                 {user.currentUser ? (
                     dropdownMenu()
                 ) : (

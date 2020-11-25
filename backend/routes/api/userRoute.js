@@ -1,8 +1,49 @@
 const express = require('express');
+const { remove } = require('../../models/User');
 const router = express.Router();
 
 const User = require('../../models/User');
 const UserSession = require('../../models/UserSession');
+
+router.route('/updateLists').put(function (req, res) {
+    const { body } = req;
+    const { id, addWL, removeWL, addLiked, removeLiked } = body;
+
+    let params = {};
+
+    if (addWL) {
+        params = { $addToSet: { WatchList: addWL } };
+    }
+
+    if (removeWL) {
+        params = { $pull: { WatchList: removeWL } };
+    }
+
+    if (addLiked) {
+        params = { $addToSet: { Liked: addLiked } };
+    }
+
+    if (removeLiked) {
+        params = { $pull: { Liked: removeLiked } };
+    }
+
+    User.findOneAndUpdate({ _id: id }, params, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+router.route('/user/:id').get(function (req, res) {
+    let id = req.params.id;
+
+    User.findById(id, function (err, user) {
+        res.json(user);
+    });
+});
 
 router.route('/register').post(function (req, res, next) {
     const { body } = req;
@@ -221,10 +262,7 @@ router.route('/verify').get(function (req, res, next) {
                     message: 'Error: Invalid',
                 });
             } else {
-                console.log(sessions[0].userId);
                 User.findById(sessions[0].userId, (err, user) => {
-                    console.log(user);
-
                     if (err) {
                         console.log(err);
                     } else {

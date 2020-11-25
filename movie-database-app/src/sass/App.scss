@@ -10,6 +10,18 @@ body {
     background-color: black;
 }
 
+.btn,
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.checked-icon {
+    height: 40px;
+    object-fit: contain;
+}
+
 .fade-appear {
     opacity: 0;
     z-index: 1;
@@ -44,37 +56,6 @@ body {
 
 .profile-dropdown {
     width: 200px;
-}
-
-.btn:focus,
-.btn:active {
-    outline: none !important;
-    box-shadow: none;
-}
-
-.navbar {
-    background-color: $nav-color;
-}
-
-.container {
-    background-color: $container-color;
-}
-
-.card {
-    background-color: $card-color;
-}
-
-.btn-dark {
-    background-color: $card-color;
-}
-
-.btn-dark-yellow {
-    background-color: $card-color;
-    color: $warning;
-}
-
-.btn-dark-yellow:hover {
-    background-color: $warning;
 }
 
 .login-background {
@@ -114,12 +95,8 @@ body {
     background-color: black;
 }
 
-.opacity-60 {
-    filter: opacity(60%);
-}
-
-.opacity-80 {
-    filter: opacity(80%);
+.movie-list-container {
+    height: 600px;
 }
 
 .movie-list-section h2 {
@@ -153,13 +130,15 @@ body {
     }
 
     img {
-        min-height: 340px;
+        min-height: 320px;
+        max-height: 320px;;
         object-fit: contain;
     }
 
     .card {
         min-height: 500px;
-        width: 250px;
+        max-height: 550px;
+        width: 270px;
     }
 }
 
@@ -168,8 +147,7 @@ body {
 }
 
 .arrow {
-    margin-top: 200px;
-    margin-bottom: 200px;
+    height: 200px;
 }
 
 .poster {
@@ -192,12 +170,20 @@ body {
     width: 200px;
 }
 
-.pointer {
-    cursor: pointer;
-}
-
 .logout-btn {
     color: red;
+}
+
+.opacity-60 {
+    filter: opacity(60%);
+}
+
+.opacity-80 {
+    filter: opacity(80%);
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .w-30 {
@@ -214,4 +200,29 @@ body {
 
 .w-70 {
     width: 70%;
+}
+
+.navbar {
+    background-color: $nav-color;
+}
+
+.container {
+    background-color: $container-color;
+}
+
+.card {
+    background-color: $card-color;
+}
+
+.btn-dark {
+    background-color: $card-color;
+}
+
+.btn-dark-yellow {
+    background-color: $card-color;
+    color: $warning;
+}
+
+.btn-dark-yellow:hover {
+    background-color: $warning;
 }

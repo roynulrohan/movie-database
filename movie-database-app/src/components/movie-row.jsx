@@ -1,118 +1,116 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 import MovieCard from './movie-card';
+import { useSelector, useDispatch } from 'react-redux';
 
-export default class MovieRow extends Component {
-    constructor(props) {
-        super(props);
-        this.scrollable = React.createRef();
-        this.state = { movies: [], width: 0 };
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-    }
+export default function MovieRow(props) {
+    const user = useSelector((state) => state.userReducer);
+    const scrollable = React.createRef();
+    const [movies, setMovies] = useState([]);
+    const [width, setwidth] = useState(0);
 
-    componentDidMount() {
-        // make movies request with givem params and setstate
-        axios
-            .get('http://localhost:4000/movies', {
-                params: this.props.params,
-            })
-            .then((response) => {
-                this.setState({ movies: response.data });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    useEffect(() => {
+        console.log(props.movies);
+        if (props.movies) {
+            // make movies request with given movie ids and setstate
+            axios
+                .get('http://localhost:4000/movies/' + props.movies)
+                .then((response) => {
+                    setMovies(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        } else {
+            // make movies request with given params and setstate
+            axios
+                .get('http://localhost:4000/movies', {
+                    params: props.params,
+                })
+                .then((response) => {
+                    setMovies(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
-        this.updateWindowDimensions();
-        // scrollable Ref is null on mount so getting current width would be impossible.
-        // that's why I added mousemove listener which for some reason gets Ref
-        window.addEventListener('mousemove', this.updateWindowDimensions);
+        updateWindowDimensions();
+
         // resize event listener to get width of row
-        window.addEventListener('resize', this.updateWindowDimensions);
-    }
+        window.addEventListener('resize', updateWindowDimensions);
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowDimensions);
-        window.removeEventListener('mousemove', this.updateWindowDimensions);
-    }
+        return () => {
+            window.removeEventListener('resize', updateWindowDimensions);
+        };
+    }, []);
 
-    updateWindowDimensions() {
-        if (this.scrollable.current) {
-            // removes mouse event listener if scrollable is not null
-            window.removeEventListener(
-                'mousemove',
-                this.updateWindowDimensions
-            );
+    useEffect(() => {
+        setwidth(scrollable.current.clientWidth);
+    }, [scrollable]);
 
-            this.setState({ width: this.scrollable.current.clientWidth });
+    function updateWindowDimensions() {
+        if (scrollable.current) {
+            setwidth(scrollable.current.clientWidth);
         }
     }
 
     // scroll function for row
-    scroll(offset) {
-        this.updateWindowDimensions();
-        if (this.scrollable.current) {
-            this.scrollable.current.scrollLeft += offset;
+    function scroll(offset) {
+        updateWindowDimensions();
+        if (scrollable.current) {
+            scrollable.current.scrollLeft += offset;
         }
     }
 
-    setScroll(offset) {
-        if (this.scrollable.current) {
-            this.scrollable.current.scrollLeft = offset;
+    function setScroll(offset) {
+        if (scrollable.current) {
+            scrollable.current.scrollLeft = offset;
         }
     }
 
-    render() {
-        if (this.state.movies.length !== 0) {
-            return (
-                <div className="movie-list-section">
-                    <div className="p-3">
-                        <h2
-                            className="w-75 text-warning"
-                            onClick={() => {
-                                this.setScroll(0);
-                            }}
-                        >
-                            {this.props.title}
-                        </h2>
+    return (
+        <div className="movie-list-section">
+            <div className="p-3">
+                <h2
+                    className="w-75 text-warning"
+                    onClick={() => {
+                        setScroll(0);
+                    }}
+                >
+                    {props.title}
+                </h2>
 
-                        <div className="d-flex">
-                            <button
-                                className="btn mr-2 arrow btn-dark-yellow"
-                                onClick={() => {
-                                    this.scroll(-this.state.width);
-                                }}
-                            >
-                                {'<'}
-                            </button>
-                            <div ref={this.scrollable} className="movie-list">
-                                {this.state.movies.map(function (
-                                    currentMovie,
-                                    i
-                                ) {
-                                    return (
-                                        <MovieCard
-                                            movie={currentMovie}
-                                            key={currentMovie._id}
-                                        />
-                                    );
-                                })}
-                            </div>
-                            <button
-                                className="btn ml-2 arrow btn-dark-yellow"
-                                onClick={() => {
-                                    this.scroll(this.state.width);
-                                }}
-                            >
-                                {'>'}
-                            </button>
-                        </div>
+                <div className="d-flex align-items-center justify-content-between movie-list-container">
+                    <button
+                        className="btn mr-2 arrow btn-dark-yellow"
+                        onClick={() => {
+                            scroll(-width);
+                        }}
+                    >
+                        {'<'}
+                    </button>
+                    <div ref={scrollable} className="movie-list">
+                        {movies.map(function (currentMovie, i) {
+                            return (
+                                <MovieCard
+                                    movie={currentMovie}
+                                    key={props.title + currentMovie._id}
+                                />
+                            );
+                        })}
                     </div>
+                    <button
+                        className="btn ml-2 arrow btn-dark-yellow"
+                        onClick={() => {
+                            scroll(width);
+                        }}
+                    >
+                        {'>'}
+                    </button>
                 </div>
-            );
-        } else {
-            return <div></div>;
-        }
-    }
+            </div>
+        </div>
+    );
 }

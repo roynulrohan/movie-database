@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-    useLocation,
-    BrowserRouter as Router,
-    Route,
-} from 'react-router-dom';
+import { useLocation, BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './sass/App.scss';
 
@@ -13,7 +9,7 @@ import Login from './components/login-page';
 import Nav from './components/navbar';
 import UserProfile from './components/user-profile';
 
-class App extends Component {
+export default class App extends Component {
     render() {
         return (
             <Router>
@@ -24,7 +20,7 @@ class App extends Component {
                         path="/movie"
                         component={() => (
                             <MoviePage
-                                // passing id from
+                                // passing id from path
                                 _id={useLocation().pathname.replace(
                                     '/movie/',
                                     ''
@@ -32,12 +28,21 @@ class App extends Component {
                             />
                         )}
                     />
-                    <Route path="/user" component={UserProfile}></Route>
+                    <Route
+                        path="/user"
+                        component={() => (
+                            <UserProfile
+                                // passing id from path
+                                _id={useLocation().pathname.replace(
+                                    '/user/',
+                                    ''
+                                )}
+                            />
+                        )}
+                    ></Route>
                     <Route path="/login" component={Login}></Route>
                 </div>
             </Router>
         );
     }
 }
-
-export default App;

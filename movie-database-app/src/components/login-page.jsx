@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { setInStorage } from '../utils/storage';
 import { useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -31,6 +31,14 @@ export default function Login() {
     const dispatch = useDispatch();
     const redirect = () => history.goBack();
 
+    useEffect(() => {
+        if (register) {
+            document.title = 'Sign Up | Not IMDb';
+        } else {
+            document.title = 'Sign In | Not IMDb';
+        }
+    }, [register]);
+
     function signUpRequest() {
         setLoading(true);
         // Post request to backend
@@ -47,7 +55,7 @@ export default function Login() {
             }),
         }).then((res) => {
             if (res.data.success) {
-                setInStorage('movie_database_roynulrohan', {
+                setInStorage('not_imdb_roynulrohan', {
                     token: res.data.token,
                 });
                 setLoading(false);
@@ -76,7 +84,7 @@ export default function Login() {
         }).then((res) => {
             if (res.data.success) {
                 console.log(res.data);
-                setInStorage('movie_database_roynulrohan', {
+                setInStorage('not_imdb_roynulrohan', {
                     token: res.data.token,
                 });
 

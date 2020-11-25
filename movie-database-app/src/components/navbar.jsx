@@ -17,7 +17,7 @@ export default function Nav() {
     const profileOnClick = () => history.push('/user/' + user.currentUser._id);
 
     useEffect(() => {
-        const obj = getFromStorage('movie_database_roynulrohan');
+        const obj = getFromStorage('not_imdb_roynulrohan');
 
         if (obj && obj.token) {
             const { token } = obj;
@@ -37,7 +37,7 @@ export default function Nav() {
 
     // logout request
     function logout() {
-        const obj = getFromStorage('movie_database_roynulrohan');
+        const obj = getFromStorage('not_imdb_roynulrohan');
 
         if (obj && obj.token) {
             const { token } = obj;
@@ -89,7 +89,10 @@ export default function Nav() {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-darken-4">
             <Link to="/" className="navbar-brand ml-5">
-                Movie Database
+                <h3>
+                    <span className="badge">Not</span>
+                    <span className="badge badge-warning">IMDb</span>
+                </h3>
             </Link>
 
             <div className="navbar-nav ml-auto mr-5 pt-1 pb-1">

@@ -14,6 +14,10 @@ const rows = [
 ];
 
 export default function HomePage() {
+    useEffect(() => {
+        document.title = 'Home | Not IMDb';
+    }, []);
+
     return (
         <CSSTransition
             in={true}

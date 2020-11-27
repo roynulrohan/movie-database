@@ -61,7 +61,7 @@ export default function UserProfile(props) {
                     setWLQuery(query);
                 }
             });
-    }, []);
+    }, [props._id]);
 
     return (
         <CSSTransition

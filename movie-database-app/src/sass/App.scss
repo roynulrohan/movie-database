@@ -116,7 +116,10 @@ body {
 }
 
 .movie-list::-webkit-scrollbar {
-    display: none;
+    background-color: $card-color;
+}
+.movie-list::-webkit-scrollbar-thumb {
+    background-color: $warning;
 }
 
 .movie-card {
@@ -131,11 +134,12 @@ body {
 
     img {
         min-height: 320px;
-        max-height: 320px;;
+        max-height: 320px;
         object-fit: contain;
     }
 
     .card {
+        cursor: pointer;
         min-height: 500px;
         max-height: 550px;
         width: 270px;

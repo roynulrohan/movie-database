@@ -11,7 +11,6 @@ export default function MovieRow(props) {
     const [width, setwidth] = useState(0);
 
     useEffect(() => {
-        console.log(props.movies);
         if (props.movies) {
             // make movies request with given movie ids and setstate
             axios
@@ -44,7 +43,7 @@ export default function MovieRow(props) {
         return () => {
             window.removeEventListener('resize', updateWindowDimensions);
         };
-    }, []);
+    }, [props.movies]);
 
     useEffect(() => {
         setwidth(scrollable.current.clientWidth);
@@ -91,7 +90,7 @@ export default function MovieRow(props) {
                     >
                         {'<'}
                     </button>
-                    <div ref={scrollable} className="movie-list">
+                    <div ref={scrollable} className="movie-list pb-4">
                         {movies.map(function (currentMovie, i) {
                             return (
                                 <MovieCard

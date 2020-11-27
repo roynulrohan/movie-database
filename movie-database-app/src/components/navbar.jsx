@@ -14,7 +14,7 @@ export default function Nav() {
     const user = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
     const history = useHistory();
-    const profileOnClick = () => history.push('/user/' + user.currentUser._id);
+    const profileOnClick = () => {history.push('/user/' + user.currentUser._id)};
 
     useEffect(() => {
         const obj = getFromStorage('not_imdb_roynulrohan');
@@ -45,7 +45,6 @@ export default function Nav() {
             axios
                 .post('http://localhost:4000/api/account/logout?token=' + token)
                 .then((res) => {
-                    console.log(res.data);
                     if (res.data.success) {
                         // remove user from redux store
                         dispatch(setUser());
@@ -88,7 +87,7 @@ export default function Nav() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-darken-4">
-            <Link to="/" className="navbar-brand ml-5">
+            <Link to="/" className="navbar-brand ml-5 pt-1 pb-1">
                 <h3>
                     <span className="badge">Not</span>
                     <span className="badge badge-warning">IMDb</span>

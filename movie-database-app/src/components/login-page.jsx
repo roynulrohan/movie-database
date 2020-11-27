@@ -9,7 +9,7 @@ import { setUser } from '../actions';
 
 import checkedIcon from '../assets/img/checked.png';
 
-export default function Login() {
+export default function Login(props) {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -29,7 +29,6 @@ export default function Login() {
     const history = useHistory();
 
     const dispatch = useDispatch();
-    const redirect = () => history.goBack();
 
     useEffect(() => {
         if (register) {
@@ -38,6 +37,14 @@ export default function Login() {
             document.title = 'Sign In | Not IMDb';
         }
     }, [register]);
+
+    function redirect() {
+        if (props.location.state.redirectID) {
+            history.push('/movie/' + props.location.state.redirectID);
+        } else {
+            history.goBack();
+        }
+    }
 
     function signUpRequest() {
         setLoading(true);
@@ -90,6 +97,7 @@ export default function Login() {
 
                 setLoading(false);
                 dispatch(setUser(res.data.user));
+                console.log(redirect);
                 setTimeout(redirect, 1700);
             } else {
                 setError(res.data.message);

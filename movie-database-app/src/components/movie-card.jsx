@@ -134,7 +134,12 @@ export default function MovieCard(props) {
                                     if (user.currentUser) {
                                         watchListClick();
                                     } else {
-                                        history.push('/login');
+                                        history.push({
+                                            pathname: '/login',
+                                            state: {
+                                                redirectID: props.movie._id,
+                                            },
+                                        });
                                     }
                                 }}
                             >
@@ -150,7 +155,12 @@ export default function MovieCard(props) {
                                     if (user.currentUser) {
                                         likedClick();
                                     } else {
-                                        history.push('/login');
+                                        history.push({
+                                            pathname: '/login',
+                                            state: {
+                                                redirectID: props.movie._id,
+                                            },
+                                        });
                                     }
                                 }}
                             >

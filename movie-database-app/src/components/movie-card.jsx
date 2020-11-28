@@ -127,8 +127,8 @@ export default function MovieCard(props) {
                             <button
                                 className={
                                     isWL == true
-                                        ? 'btn btn-info'
-                                        : 'btn btn-outline-info'
+                                        ? 'btn btn-success'
+                                        : 'btn btn-outline-success'
                                 }
                                 onClick={() => {
                                     if (user.currentUser) {

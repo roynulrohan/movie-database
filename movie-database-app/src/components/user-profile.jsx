@@ -6,7 +6,6 @@ import { setUser } from '../actions';
 
 import axios from 'axios';
 
-import { getFromStorage } from '../utils/storage';
 import MovieRow from './movie-row';
 
 export default function UserProfile(props) {
@@ -17,21 +16,6 @@ export default function UserProfile(props) {
     const [wlQuery, setWLQuery] = useState('');
 
     useEffect(() => {
-        const obj = getFromStorage('not_imdb_roynulrohan');
-
-        if (obj && obj.token) {
-            const { token } = obj;
-            // Verify user on mount
-            axios
-                .get('http://localhost:4000/api/account/verify?token=' + token)
-                .then((res) => {
-                    if (res.data.success) {
-                        // write user to redux store
-                        dispatch(setUser(res.data.user));
-                    }
-                });
-        }
-
         axios
             .get('http://localhost:4000/api/account/user/' + props._id)
             .then((res) => {

@@ -83,12 +83,24 @@ export default function MovieRow(props) {
 
                 <div className="d-flex align-items-center justify-content-between movie-list-container">
                     <button
-                        className="btn mr-2 arrow btn-dark-yellow"
+                        className="btn mr-2 arrow btn-dark-yellow p-1"
                         onClick={() => {
                             scroll(-width);
                         }}
                     >
-                        {'<'}
+                        <svg
+                            width="1.8em"
+                            height="1.5em"
+                            viewBox="0 0 16 16"
+                            class="bi bi-chevron-left"
+                            fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+                            />
+                        </svg>
                     </button>
                     <div ref={scrollable} className="movie-list pb-4">
                         {movies.map(function (currentMovie, i) {
@@ -101,12 +113,24 @@ export default function MovieRow(props) {
                         })}
                     </div>
                     <button
-                        className="btn ml-2 arrow btn-dark-yellow"
+                        className="btn ml-2 arrow btn-dark-yellow p-1"
                         onClick={() => {
                             scroll(width);
                         }}
                     >
-                        {'>'}
+                        <svg
+                            width="1.8em"
+                            height="1.5em"
+                            viewBox="0 0 16 16"
+                            class="bi bi-chevron-right"
+                            fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+                            />
+                        </svg>
                     </button>
                 </div>
             </div>

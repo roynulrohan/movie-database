@@ -13,6 +13,7 @@ router.use(function (req, res, next) {
 
 router.route('/').get(function (req, res) {
     const {
+        search,
         title,
         genre,
         year,
@@ -52,16 +53,42 @@ router.route('/').get(function (req, res) {
     }
 
     console.log(query);
-    Movie.aggregate([{ $match: query }, { $sample: { size: 30 } }], function (
-        err,
-        movies
-    ) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json(movies);
-        }
-    });
+    if (search) {
+        Movie.aggregate(
+            [
+                { $match: query },
+                {
+                    $match: {
+                        $or: [
+                            { Title: { $regex: search, $options: 'i' } },
+                            { Genre: { $regex: search, $options: 'i' } },
+                            { Actors: { $regex: search, $options: 'i' } },
+                            { Year: { $regex: search, $options: 'i' } },
+                        ],
+                    },
+                },
+                { $sample: { size: 40 } },
+            ],
+            function (err, movies) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json(movies);
+                }
+            }
+        );
+    } else {
+        Movie.aggregate(
+            [{ $match: query }, { $sample: { size: 40 } }],
+            function (err, movies) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json(movies);
+                }
+            }
+        );
+    }
 });
 
 router.route('/movie/').get(function (req, res) {

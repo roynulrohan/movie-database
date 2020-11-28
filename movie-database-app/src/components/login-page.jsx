@@ -39,7 +39,6 @@ export default function Login(props) {
     }, [register]);
 
     function redirect() {
-        console.log(props.location)
         if (props.location.state) {
             history.push('/movie/' + props.location.state.redirectID);
         } else {

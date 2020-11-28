@@ -8,6 +8,7 @@ import MoviePage from './components/movie-page';
 import Login from './components/login-page';
 import Nav from './components/navbar';
 import UserProfile from './components/user-profile';
+import BrowsePage from './components/browse-page';
 
 export default class App extends Component {
     render() {
@@ -40,7 +41,8 @@ export default class App extends Component {
                             />
                         )}
                     />
-                    <Route path="/login" component={Login}/>
+                    <Route path="/login" component={Login} />
+                    <Route path="/browse" component={BrowsePage} />
                 </div>
             </Router>
         );

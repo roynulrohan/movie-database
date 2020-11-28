@@ -134,7 +134,7 @@ export default function MoviePage(props) {
 
                 <div className="p-4">
                     <div className="container rounded p-3 text-white">
-                        <div className="d-flex">
+                        <div className="d-flex align-items-start">
                             <img
                                 className="mr-4 poster"
                                 src={movie.Poster}

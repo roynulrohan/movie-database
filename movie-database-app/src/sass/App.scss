@@ -95,6 +95,28 @@ body {
     background-color: black;
 }
 
+.browse-search {
+    font-size: 24px;
+    color: $info;
+    text-align: center;
+    border: none;
+    background-color: $container-color;
+}
+
+.browse-search::-webkit-input-placeholder {
+    text-align: left;
+}
+
+.browse-search::-moz-placeholder {
+    text-align: left;
+}
+
+.browse-search:focus,
+.browse-search:active {
+    outline: none;
+    border: none;
+}
+
 .browse-grid {
     display: flex;
     justify-content: center;

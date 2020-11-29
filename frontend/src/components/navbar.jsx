@@ -59,37 +59,7 @@ export default function Nav() {
                 });
         }
     }
-
     // dropdown menu if users logged in
-    function userDropdown() {
-        return (
-            // used Dropdown from React Bootstrap because for some reason the native one wouldn't work
-            <Dropdown className="w-100" key="dropdown-menu">
-                <Dropdown.Toggle
-                    variant="warning"
-                    id="dropdown"
-                    className="profile-dropdown"
-                >
-                    {user.currentUser.Username}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu className="w-100" align="right">
-                    <Dropdown.Header>{user.currentUser.Name}</Dropdown.Header>
-                    <Dropdown.Item onClick={() => profileOnClick()}>
-                        My Profile
-                    </Dropdown.Item>
-                    <Dropdown.Item>Collection</Dropdown.Item>
-                    <Dropdown.Divider></Dropdown.Divider>
-                    <Dropdown.Item
-                        onClick={() => logout()}
-                        className="logout-btn"
-                    >
-                        Logout
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        );
-    } // dropdown menu if users logged in
     function userDropdown() {
         return (
             // used Dropdown from React Bootstrap because for some reason the native one wouldn't work
@@ -124,7 +94,7 @@ export default function Nav() {
                     <Dropdown.Item onClick={() => profileOnClick()}>
                         My Profile
                     </Dropdown.Item>
-                    <Dropdown.Item>Collection</Dropdown.Item>
+                    <Dropdown.Item>Settings</Dropdown.Item>
                     <Dropdown.Divider></Dropdown.Divider>
                     <Dropdown.Item
                         onClick={() => logout()}
@@ -144,7 +114,7 @@ export default function Nav() {
                 <Dropdown.Toggle
                     variant="dark"
                     id="dropdown"
-                    className="no-caret text-warning"
+                    className="browse-dropdown no-caret text-warning"
                 >
                     <svg
                         width="1.2em"
@@ -167,13 +137,11 @@ export default function Nav() {
                     align="left"
                     variant="dark"
                 >
-                    <Dropdown.Header className="text-info">Explore</Dropdown.Header>
+                    <Dropdown.Header className="text-info">
+                        Explore
+                    </Dropdown.Header>
                     <Dropdown.Item onClick={() => browseClick()}>
                         Movies
-                    </Dropdown.Item>
-                    <Dropdown.Divider></Dropdown.Divider>
-                    <Dropdown.Item onClick={() => browseClick()}>
-                        People
                     </Dropdown.Item>
                     <Dropdown.Divider></Dropdown.Divider>
                     <Dropdown.Item onClick={() => browseClick()}>
@@ -194,22 +162,6 @@ export default function Nav() {
             </Link>
             <div className="navbar-nav mr-5 ml-2 pb-1">{browseDropdown()}</div>
 
-            <div className="search-bar ml-auto mr-5">
-                <form class="form-inline d-flex flex-row justify-content-between w-100">
-                    <input
-                        class="form-control mr-sm-2 w-75"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button
-                        class="btn btn-outline-info my-2 my-sm-0"
-                        type="submit"
-                    >
-                        Search
-                    </button>
-                </form>
-            </div>
 
             <div className="navbar-nav ml-auto mr-5 pt-1 pb-1">
                 {user.currentUser ? (

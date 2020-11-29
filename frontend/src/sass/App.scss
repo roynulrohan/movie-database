@@ -107,6 +107,36 @@ body {
     background-color: $container-color;
 }
 
+.input-group {
+    select {
+        background-color: $container-color;
+        color: $white;
+        border-color: $container-color;
+    }
+
+    select:active,
+    select:focus {
+        outline: none !important;
+        box-shadow: none;
+        border-color: $container-color;
+    }
+
+    input {
+        background-color: $container-color;
+        color: $white;
+        border-color: $container-color;
+    }
+
+    input:active,
+    input:focus {
+        color: $white;
+        background-color: $container-color;
+        outline: none !important;
+        box-shadow: none;
+        border-color: $container-color;
+    }
+}
+
 .browse-search::-webkit-input-placeholder {
     text-align: left;
 }
@@ -274,8 +304,6 @@ body {
     width: 70%;
 }
 
-// CUSTOM COLORS
-
 .navbar {
     background-color: $nav-color;
 }
@@ -289,14 +317,32 @@ body {
 }
 
 .btn-dark {
-    background-color: $card-color;
+    background-color: $nav-color;
 }
 
 .btn-dark-yellow {
-    background-color: $card-color;
+    background-color: $nav-color;
     color: $warning;
 }
 
 .btn-dark-yellow:hover {
     background-color: $warning;
+}
+
+.btn-dark-info {
+    background-color: $nav-color;
+    color: $info;
+}
+
+.btn-dark-info:hover {
+    background-color: $info;
+}
+
+.btn-dark-danger {
+    background-color: $nav-color;
+    color: $danger;
+}
+
+.btn-dark-danger:hover {
+    background-color: $danger;
 }

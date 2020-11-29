@@ -52,31 +52,29 @@ router.route('/').get(function (req, res) {
         query.Type = type;
     }
 
-    console.log(query);
     if (search) {
-        Movie.aggregate(
-            [
-                { $match: query },
+        Movie.find({
+            $and: [
                 {
-                    $match: {
-                        $or: [
-                            { Title: { $regex: search, $options: 'i' } },
-                            { Genre: { $regex: search, $options: 'i' } },
-                            { Actors: { $regex: search, $options: 'i' } },
-                            { Year: { $regex: search, $options: 'i' } },
-                        ],
-                    },
+                    $or: [
+                        { Title: { $regex: search, $options: 'i' } },
+                        { Genre: { $regex: search, $options: 'i' } },
+                        { Actors: { $regex: search, $options: 'i' } },
+                        { Year: { $regex: search, $options: 'i' } },
+                    ],
                 },
-                { $sample: { size: 40 } },
+                query,
             ],
-            function (err, movies) {
+        })
+            .limit(60)
+            .sort('Title')
+            .exec(function (err, movies) {
                 if (err) {
                     console.log(err);
                 } else {
                     res.json(movies);
                 }
-            }
-        );
+            });
     } else {
         Movie.aggregate(
             [{ $match: query }, { $sample: { size: 40 } }],

@@ -101,7 +101,7 @@ body {
 
 .browse-search {
     font-size: 24px;
-    color: $info;
+    color: $warning;
     text-align: center;
     border: none;
     background-color: $container-color;
@@ -137,6 +137,12 @@ body {
     }
 }
 
+.input-group-clear {
+    button {
+        width: 150px;
+    }
+}
+
 .browse-search::-webkit-input-placeholder {
     text-align: left;
 }
@@ -149,6 +155,14 @@ body {
 .browse-search:active {
     outline: none;
     border: none;
+}
+
+.backspace {
+    cursor: pointer;
+    fill: $danger;
+    position: absolute;
+    right: 0;
+    margin-right: 5%;
 }
 
 .browse-grid {
@@ -321,7 +335,7 @@ body {
 }
 
 .btn-dark-yellow {
-    background-color: $nav-color;
+    background-color: $container-color;
     color: $warning;
 }
 

@@ -15,7 +15,7 @@ export default function Nav() {
     const dispatch = useDispatch();
     const history = useHistory();
     const profileOnClick = () => {
-        history.push('/user/' + user.currentUser._id);
+        history.push('/user/' + user.currentUser.Username);
     };
 
     useEffect(() => {
@@ -112,9 +112,9 @@ export default function Nav() {
             // used Dropdown from React Bootstrap because for some reason the native one wouldn't work
             <Dropdown key="browse-dropdown">
                 <Dropdown.Toggle
-                    variant="dark"
                     id="dropdown"
-                    className="browse-dropdown no-caret text-warning"
+                    variant=""
+                    className="btn browse-dropdown no-caret btn-dark-yellow"
                 >
                     <svg
                         width="1.2em"

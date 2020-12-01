@@ -58,16 +58,21 @@ router.route('/').get(function (req, res) {
                 {
                     $or: [
                         { Title: { $regex: search, $options: 'i' } },
+                        { Plot: { $regex: search, $options: 'i' } },
                         { Genre: { $regex: search, $options: 'i' } },
                         { Actors: { $regex: search, $options: 'i' } },
                         { Year: { $regex: search, $options: 'i' } },
+                        { Director: { $regex: search, $options: 'i' } },
+                        { Writer: { $regex: search, $options: 'i' } },
+                        { Production: { $regex: search, $options: 'i' } },
+                        { Language: { $regex: search, $options: 'i' } },
                     ],
                 },
                 query,
             ],
         })
             .limit(60)
-            .sort('Title')
+            .sort({ imdbRating: 'descending' })
             .exec(function (err, movies) {
                 if (err) {
                     console.log(err);

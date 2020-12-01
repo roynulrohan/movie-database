@@ -21,28 +21,28 @@ export default function UserProfile(props) {
             .then((res) => {
                 setUserState(res.data);
 
-                if (res.data.Username) {
+                if (res.data) {
                     document.title = res.data.Username + ' | Not IMDb';
-                }
+                    
+                    if (res.data.Liked) {
+                        let query = '';
 
-                if (res.data.Liked) {
-                    let query = '';
+                        res.data.Liked.forEach((id) => {
+                            query += id + ',';
+                        });
 
-                    res.data.Liked.forEach((id) => {
-                        query += id + ',';
-                    });
+                        setLikedQuery(query);
+                    }
 
-                    setLikedQuery(query);
-                }
+                    if (res.data.WatchList) {
+                        let query = '';
 
-                if (res.data.WatchList) {
-                    let query = '';
+                        res.data.WatchList.forEach((id) => {
+                            query += id + ',';
+                        });
 
-                    res.data.WatchList.forEach((id) => {
-                        query += id + ',';
-                    });
-
-                    setWLQuery(query);
+                        setWLQuery(query);
+                    }
                 }
             });
     }, [props._id]);

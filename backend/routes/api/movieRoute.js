@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const Movie = require('../models/Movie');
+const Movie = require('../../models/Movie');
 
 // middleware to lowercase query params for case insensitive matching
 router.use(function (req, res, next) {
@@ -13,7 +13,10 @@ router.use(function (req, res, next) {
 
 router.route('/').get(function (req, res) {
     const {
+        random,
         search,
+        sort,
+        sortOrder,
         title,
         genre,
         year,
@@ -37,11 +40,11 @@ router.route('/').get(function (req, res) {
     }
 
     if (minImdbRating) {
-        query.imdbRating = { $gt: minImdbRating };
+        query.imdbRating = { $gte: minImdbRating, $ne: 'N/A' };
     }
 
     if (minMetascore) {
-        query.Metascore = { $gt: minMetascore };
+        query.Metascore = { $gte: minMetascore, $ne: 'N/A' };
     }
 
     if (actor) {
@@ -52,7 +55,18 @@ router.route('/').get(function (req, res) {
         query.Type = type;
     }
 
-    if (search) {
+    if (random == 'true') {
+        Movie.aggregate(
+            [{ $match: query }, { $sample: { size: 40 } }],
+            function (err, movies) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json(movies);
+                }
+            }
+        );
+    } else {
         Movie.find({
             $and: [
                 {
@@ -72,7 +86,7 @@ router.route('/').get(function (req, res) {
             ],
         })
             .limit(60)
-            .sort({ imdbRating: 'descending' })
+            .sort(sort && { [sort]: sortOrder })
             .exec(function (err, movies) {
                 if (err) {
                     console.log(err);
@@ -80,17 +94,6 @@ router.route('/').get(function (req, res) {
                     res.json(movies);
                 }
             });
-    } else {
-        Movie.aggregate(
-            [{ $match: query }, { $sample: { size: 40 } }],
-            function (err, movies) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.json(movies);
-                }
-            }
-        );
     }
 });
 

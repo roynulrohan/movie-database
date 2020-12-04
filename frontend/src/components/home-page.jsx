@@ -6,11 +6,11 @@ const { default: MovieRow } = require('./movie-row');
 
 // row parameters as objects
 const rows = [
-    { title: 'For you', params: {} },
-    { title: 'Tom Cruise', params: { actor: 'Tom Cruise' } },
-    { title: 'TV Shows', params: { type: 'series' } },
-    { title: '2015', params: { year: '2015' } },
-    { title: 'Horror', params: { genre: 'Horror' } },
+    { title: 'For you', params: { random: true } },
+    { title: 'Tom Cruise', params: { random: true, actor: 'Tom Cruise' } },
+    { title: 'TV Shows', params: { random: true, type: 'series' } },
+    { title: '2015', params: { random: true, year: '2015' } },
+    { title: 'Horror', params: { random: true, genre: 'Horror' } },
 ];
 
 export default function HomePage() {

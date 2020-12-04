@@ -37,11 +37,15 @@ router.route('/updateLists').put(function (req, res) {
     });
 });
 
-router.route('/user/:id').get(function (req, res) {
-    let id = req.params.id;
+router.route('/user/:username').get(function (req, res) {
+    let username = req.params.username;
 
-    User.findById(id, function (err, user) {
-        res.json(user);
+    User.findOne({ Username: username }, function (err, user) {
+        if (err) {
+            console.log(error);
+        } else {
+            res.json(user);
+        }
     });
 });
 

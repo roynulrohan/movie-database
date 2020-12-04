@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const Movie = require('../models/Movie');
+const Movie = require('../../models/Movie');
 
 // middleware to lowercase query params for case insensitive matching
 router.use(function (req, res, next) {
@@ -13,6 +13,10 @@ router.use(function (req, res, next) {
 
 router.route('/').get(function (req, res) {
     const {
+        random,
+        search,
+        sort,
+        sortOrder,
         title,
         genre,
         year,
@@ -36,11 +40,11 @@ router.route('/').get(function (req, res) {
     }
 
     if (minImdbRating) {
-        query.imdbRating = { $gt: minImdbRating };
+        query.imdbRating = { $gte: minImdbRating, $ne: 'N/A' };
     }
 
     if (minMetascore) {
-        query.Metascore = { $gt: minMetascore };
+        query.Metascore = { $gte: minMetascore, $ne: 'N/A' };
     }
 
     if (actor) {
@@ -51,17 +55,46 @@ router.route('/').get(function (req, res) {
         query.Type = type;
     }
 
-    console.log(query);
-    Movie.aggregate([{ $match: query }, { $sample: { size: 30 } }], function (
-        err,
-        movies
-    ) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json(movies);
-        }
-    });
+    if (random == 'true') {
+        Movie.aggregate(
+            [{ $match: query }, { $sample: { size: 40 } }],
+            function (err, movies) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json(movies);
+                }
+            }
+        );
+    } else {
+        Movie.find({
+            $and: [
+                {
+                    $or: [
+                        { Title: { $regex: search, $options: 'i' } },
+                        { Plot: { $regex: search, $options: 'i' } },
+                        { Genre: { $regex: search, $options: 'i' } },
+                        { Actors: { $regex: search, $options: 'i' } },
+                        { Year: { $regex: search, $options: 'i' } },
+                        { Director: { $regex: search, $options: 'i' } },
+                        { Writer: { $regex: search, $options: 'i' } },
+                        { Production: { $regex: search, $options: 'i' } },
+                        { Language: { $regex: search, $options: 'i' } },
+                    ],
+                },
+                query,
+            ],
+        })
+            .limit(60)
+            .sort(sort && { [sort]: sortOrder })
+            .exec(function (err, movies) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json(movies);
+                }
+            });
+    }
 });
 
 router.route('/movie/').get(function (req, res) {

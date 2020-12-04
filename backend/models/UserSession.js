@@ -14,7 +14,7 @@ const UserSession = new mongoose.Schema({
         default: false,
     },
     // expire so database doesn't get filled with userSessions
-    expire_at: { type: Date, default: Date.now, expires: 14400 },
+    expire_at: { type: Date, default: Date.now, expires: 86400 },
 });
 
 module.exports = mongoose.model('UserSession', UserSession);

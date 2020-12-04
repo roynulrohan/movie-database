@@ -133,8 +133,8 @@ export default function MoviePage(props) {
                 <div className="background-cover opacity-80"></div>
 
                 <div className="p-4">
-                    <div className="container rounded p-3 text-white">
-                        <div className="d-flex">
+                    <div className="container rounded p-3 text-white bg-transparent">
+                        <div className="d-flex align-items-start">
                             <img
                                 className="mr-4 poster"
                                 src={movie.Poster}
@@ -144,7 +144,7 @@ export default function MoviePage(props) {
                                     <div className="d-flex justify-content-between">
                                         <div className="w-70">
                                             <h3 className="m-1">
-                                                {movie.Title} ({movie.Year})
+                                                {movie.Title} - {movie.Year}
                                             </h3>
                                             <h5 className="badge badge-info m-1">
                                                 {movie.Type

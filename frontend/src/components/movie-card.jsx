@@ -116,10 +116,22 @@ export default function MovieCard(props) {
                             <Card.Img variant="top" src={props.movie.Poster} />
                         </Card.Header>
                         <Card.Body>
-                            <Card.Title className="poster-title">
+                            <Card.Title className="poster-title" title={props.movie.Title}>
                                 {props.movie.Title}
                             </Card.Title>
-                            <Card.Text>★ {props.movie.imdbRating}</Card.Text>
+
+                            <h5 className="card-text d-flex justify-content-between">
+                                <span className="badge badge-warning h-100 badge-pill w-25" title="IMDb Rating">
+                                    {props.movie.imdbRating}
+                                </span>{' '}
+                                {props.movie.Metascore != 'N/A' ? (
+                                    <span className="badge badge-success h-100 badge-pill w-25" title="Metascore">
+                                        {props.movie.Metascore}
+                                    </span>
+                                ) : (
+                                    ''
+                                )}
+                            </h5>
                         </Card.Body>
                     </div>
                     <Card.Footer>
@@ -134,7 +146,12 @@ export default function MovieCard(props) {
                                     if (user.currentUser) {
                                         watchListClick();
                                     } else {
-                                        history.push('/login');
+                                        history.push({
+                                            pathname: '/login',
+                                            state: {
+                                                redirectID: props.movie._id,
+                                            },
+                                        });
                                     }
                                 }}
                             >
@@ -150,7 +167,12 @@ export default function MovieCard(props) {
                                     if (user.currentUser) {
                                         likedClick();
                                     } else {
-                                        history.push('/login');
+                                        history.push({
+                                            pathname: '/login',
+                                            state: {
+                                                redirectID: props.movie._id,
+                                            },
+                                        });
                                     }
                                 }}
                             >

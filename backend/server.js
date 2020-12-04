@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const PORT = 4000;
 
-const movieRoute = require('./routes/movieRoute');
+const movieRoute = require('./routes/api/movieRoute');
 const userRoute = require('./routes/api/userRoute');
 
 dotenv.config();

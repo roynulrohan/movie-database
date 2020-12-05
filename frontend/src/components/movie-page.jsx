@@ -9,14 +9,14 @@ export default function MoviePage(props) {
     const user = useSelector((state) => state.userReducer);
     const [isWL, setisWL] = useState(null);
     const [isLiked, setisLiked] = useState(null);
-    const [movie, setmovie] = useState({});
+    const [movie, setMovie] = useState({});
 
     useEffect(() => {
         // get movie request
         axios
             .get('http://localhost:4000/movies/movie/' + props._id)
             .then((response) => {
-                setmovie(response.data);
+                setMovie(response.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -107,7 +107,7 @@ export default function MoviePage(props) {
     function getGenres(string) {
         if (string) {
             return (
-                <p>
+                <h5>
                     {string.split(',').map((genre) => {
                         return (
                             <span className="badge badge-secondary m-1">
@@ -115,7 +115,7 @@ export default function MoviePage(props) {
                             </span>
                         );
                     })}
-                </p>
+                </h5>
             );
         }
     }
@@ -128,149 +128,156 @@ export default function MoviePage(props) {
             classNames="fade"
             unmountOnExit
         >
-            <div className="position-relative">
-                <img className="background-custom" src={movie.Poster}></img>
-                <div className="background-cover opacity-80"></div>
+            <div className="movie-page mt-3">
+                <div className="position-relative">
+                    <img className="background-custom" src={movie.Poster}></img>
+                    <div className="background-cover opacity-80"></div>
 
-                <div className="p-4">
-                    <div className="container rounded p-3 text-white bg-transparent">
-                        <div className="d-flex align-items-start">
-                            <img
-                                className="mr-4 poster"
-                                src={movie.Poster}
-                            ></img>
-                            <div className="d-flex flex-column justify-content-between mr-4">
-                                <div className="p-2">
-                                    <div className="d-flex justify-content-between">
-                                        <div className="w-70">
-                                            <h3 className="m-1">
-                                                {movie.Title} - {movie.Year}
-                                            </h3>
-                                            <h5 className="badge badge-info m-1">
-                                                {movie.Type
-                                                    ? movie.Type.charAt(
-                                                          0
-                                                      ).toUpperCase() +
-                                                      movie.Type.slice(1)
-                                                    : ''}
-                                            </h5>
-                                            <h5 className="badge badge-warning m-1">
-                                                Rated: {movie.Rated}
-                                            </h5>
-                                            <h5 className="badge badge-primary m-1">
-                                                {movie.Runtime}
-                                            </h5>
-                                            <h5 className="badge badge-danger m-1">
-                                                {movie.Released}
-                                            </h5>
-                                            <h5 className="badge badge-success m-1">
-                                                {movie.Language}
-                                            </h5>
+                    <div className="container rounded p-3 text-white bg-transparent movie-page-container">
+                        <img className="mr-4 poster" src={movie.Poster}></img>
+                        <div className="d-flex flex-column align-items-start mr-2">
+                            <div>
+                                <h2 className="m-1">
+                                    {movie.Title} - {movie.Year}
+                                </h2>
+                                <h5>
+                                    <h5 className="badge badge-info m-1">
+                                        {movie.Type
+                                            ? movie.Type.charAt(
+                                                  0
+                                              ).toUpperCase() +
+                                              movie.Type.slice(1)
+                                            : ''}
+                                    </h5>
+                                    <h5 className="badge badge-warning m-1">
+                                        Rated: {movie.Rated}
+                                    </h5>
+                                    <h5 className="badge badge-primary m-1">
+                                        {movie.Runtime}
+                                    </h5>
+                                    <h5 className="badge badge-danger m-1">
+                                        {movie.Released}
+                                    </h5>
+                                    <h5 className="badge badge-success m-1">
+                                        {movie.Language}
+                                    </h5>
+                                </h5>
 
-                                            <div>{getGenres(movie.Genre)}</div>
+                                <div>{getGenres(movie.Genre)}</div>
+                            </div>
+                            <div className="d-flex flex-column justify-content-center w-75 p-1 mt-2">
+                                <p>{movie.Plot}</p>
+                            </div>
+                        </div>
 
-                                            <p className="m-1">{movie.Plot}</p>
-                                        </div>
+                        <div className="d-flex flex-column justify-content-between align-items-end w-25 mb-3">
+                            <h3 className="d-flex justify-content-center">
+                                <span className="badge badge-warning m-1">
+                                    {movie.imdbRating}
+                                    <br />
+                                    <small>IMDb</small>
+                                </span>
+                                <span
+                                    className={'badge m-1'.concat(
+                                        movie.Metascore < 50
+                                            ? ' badge-danger'
+                                            : ' badge-success'
+                                    )}
+                                >
+                                    {movie.Metascore}
+                                    <br />
+                                    <small>Metascore</small>
+                                </span>
+                            </h3>
 
-                                        <div className="w-auto mr-1">
-                                            <h3>
-                                                <span className="badge badge-warning m-1">
-                                                    {movie.imdbRating}
-                                                    <br />
-                                                    <small>IMDb</small>
-                                                </span>
-                                                <span
-                                                    className={'badge m-1'.concat(
-                                                        movie.Metascore < 50
-                                                            ? ' badge-danger'
-                                                            : ' badge-success'
-                                                    )}
-                                                >
-                                                    {movie.Metascore}
-                                                    <br />
-                                                    <small>Metascore</small>
-                                                </span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="d-flex flex-column w-100">
+                                <button
+                                    className={
+                                        isWL == true
+                                            ? 'btn btn-success'
+                                            : 'btn btn-outline-info'
+                                    }
+                                    onClick={() => {
+                                        if (user.currentUser) {
+                                            watchListClick();
+                                        } else {
+                                            history.push('/login');
+                                        }
+                                    }}
+                                >
+                                    {isWL == true ? '✓ Saved' : '+ For Later'}
+                                </button>
 
-                                <div className="d-flex justify-content-between">
-                                    <div className="p-2 m-1 w-75">
-                                        <h5>
-                                            <span className="badge bg-secondary">
-                                                Director
-                                            </span>{' '}
-                                            <small>: {movie.Director}</small>
-                                        </h5>
-                                        <h5>
-                                            <span className="badge badge-secondary">
-                                                Writer
-                                            </span>{' '}
-                                            <small>: {movie.Writer}</small>
-                                        </h5>
-                                        <h5>
-                                            <span className="badge badge-secondary">
-                                                Cast
-                                            </span>{' '}
-                                            <small>: {movie.Actors}</small>
-                                        </h5>
-                                        <h5>
-                                            <span className="badge badge-secondary">
-                                                Production
-                                            </span>{' '}
-                                            <small>: {movie.Production}</small>
-                                        </h5>
-                                        <h5>
-                                            <span className="badge badge-secondary">
-                                                Awards
-                                            </span>{' '}
-                                            <small>: {movie.Awards}</small>
-                                        </h5>
-                                    </div>
-
-                                    <div className="d-flex flex-column justify-content-center w-25 ml-5">
-                                        <button
-                                            className={
-                                                isWL == true
-                                                    ? 'btn btn-success'
-                                                    : 'btn btn-outline-info'
-                                            }
-                                            onClick={() => {
-                                                if (user.currentUser) {
-                                                    watchListClick();
-                                                } else {
-                                                    history.push('/login');
-                                                }
-                                            }}
-                                        >
-                                            {isWL == true
-                                                ? '✓ Saved'
-                                                : '+ For Later'}
-                                        </button>
-
-                                        <br />
-                                        <button
-                                            className={
-                                                isLiked == true
-                                                    ? 'btn btn-danger'
-                                                    : 'btn btn-outline-danger'
-                                            }
-                                            onClick={() => {
-                                                if (user.currentUser) {
-                                                    likedClick();
-                                                } else {
-                                                    history.push('/login');
-                                                }
-                                            }}
-                                        >
-                                            {isLiked == true ? 'Liked' : 'Like'}
-                                        </button>
-                                    </div>
-                                </div>
+                                <br />
+                                <button
+                                    className={
+                                        isLiked == true
+                                            ? 'btn btn-danger'
+                                            : 'btn btn-outline-danger'
+                                    }
+                                    onClick={() => {
+                                        if (user.currentUser) {
+                                            likedClick();
+                                        } else {
+                                            history.push('/login');
+                                        }
+                                    }}
+                                >
+                                    {isLiked == true ? 'Liked' : 'Like'}
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="container rounded p-3 text-white bg-transparent">
+                    <h2>Info</h2>
+                    <hr />
+                    <div>
+                        <h5 className="d-flex">
+                            <b className="text-info w-20">Director</b>
+                            <span className="w-75 ml-2">
+                                {movie.Director}
+                            </span>
+                        </h5>
+                        <br />
+                        <h5 className="d-flex">
+                            <b className="text-info w-20">Writer</b>
+                            <span className="w-75 ml-2"> {movie.Writer}</span>
+                        </h5>
+                        <br />
+                        <h5 className="d-flex">
+                            <b className="text-info w-20">Cast</b>
+                            <span className="w-75 ml-2"> {movie.Actors}</span>
+                        </h5>
+                        <br />
+                        <h5 className="d-flex">
+                            <b className="text-info w-20">Production</b>
+                            <span className="w-75 ml-2">
+                                {movie.Production}
+                            </span>
+                        </h5>
+                        <br />
+                        <h5 className="d-flex">
+                            <b className="text-info w-20">Awards</b>
+                            <span className="w-75 ml-2"> {movie.Awards}</span>
+                        </h5>
+                    </div>
+                </div>
+                <div className="container rounded p-3 text-white bg-transparent">
+                    <h2>Reviews</h2>
+                    <hr />
+                    {movie.Ratings &&
+                        Object.keys(movie.Ratings).map(function (key) {
+                            return (
+                                <h5>
+                                    {key +
+                                        ': ' +
+                                        movie.Ratings[key].Source +
+                                        ' - ' +
+                                        movie.Ratings[key].Value}
+                                </h5>
+                            );
+                        })}
                 </div>
             </div>
         </CSSTransition>

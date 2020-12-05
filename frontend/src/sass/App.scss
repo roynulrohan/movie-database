@@ -267,11 +267,24 @@ body {
     transform: scale(1.04);
 }
 
+.movie-page {
+    hr {
+        background-color: $dark;
+    }
+}
+
+.movie-page-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
 .arrow {
     height: 200px;
 }
 
 .poster {
+    max-height: 400px;
     object-fit: contain;
 }
 
@@ -307,6 +320,10 @@ body {
 
 .pointer {
     cursor: pointer;
+}
+
+.w-20 {
+    width: 20%;
 }
 
 .w-30 {

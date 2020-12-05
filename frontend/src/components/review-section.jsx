@@ -76,8 +76,8 @@ export default function ReviewSection(props) {
             data: JSON.stringify(params),
         }).then((res) => {
             console.log(res);
-            setReviews([]);
             setReviews(res.data.updated.Ratings);
+            window.location.reload(false);
         });
     }
     function getReviewBox() {

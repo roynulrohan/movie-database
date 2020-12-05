@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { Modal, Button } from 'react-bootstrap';
 
 import { useSelector } from 'react-redux';
 
 export default function Review(props) {
     const user = useSelector((state) => state.userReducer);
+    const [show, setShow] = useState(false);
 
     return (
         <CSSTransition
@@ -28,7 +30,7 @@ export default function Review(props) {
                         )}
                     </h5>
                     {props.review.Body && (
-                        <div class="m-1 d-flex justify-content-center w-100">
+                        <div className="m-1 d-flex justify-content-center w-100">
                             <textarea className="w-100" readOnly>
                                 {props.review.Body}
                             </textarea>
@@ -36,14 +38,22 @@ export default function Review(props) {
                     )}
                 </div>
 
-                <div class="m-1 d-flex flex-column justify-content-between align-items-end w-auto">
-                    <h5 class="m-1 text-warning">{props.review.Value}</h5>
+                <div className="m-1 d-flex flex-column justify-content-between align-items-center w-auto ml-3">
+                    <h5
+                        className={
+                            props.review.Value[0] >= 5
+                                ? 'm-1 text-success'
+                                : 'm-1 text-danger'
+                        }
+                    >
+                        {props.review.Value}
+                    </h5>{' '}
                     {user.currentUser &&
                         user.currentUser.Username == props.review.Source && (
                             <button
-                                className="btn btn-secondary-danger p-1 ml-5"
+                                className="btn btn-secondary-danger p-1 m-1"
                                 onClick={() => {
-                                    props.removeCallback(props.review);
+                                    setShow(true);
                                 }}
                             >
                                 <svg
@@ -63,6 +73,33 @@ export default function Review(props) {
                             </button>
                         )}
                 </div>
+                <Modal show={show}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Are you sure?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Deleting this review is permanent, and cannot be undone.
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            variant="secondary"
+                            onClick={() => {
+                                setShow(false);
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="danger"
+                            onClick={() => {
+                                setShow(false);
+                                props.removeCallback(props.review);
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </CSSTransition>
     );

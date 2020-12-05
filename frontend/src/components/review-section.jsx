@@ -28,7 +28,7 @@ export default function ReviewSection(props) {
             id: props.movie._id,
             addReview: {
                 Source: user.currentUser.Username,
-                Value: reviewScore,
+                Value: reviewScore + '/10',
                 Title: reviewTitle,
                 Body: reviewBody,
             },
@@ -153,7 +153,7 @@ export default function ReviewSection(props) {
                 <div class="m-1 mt-3 d-flex justify-content-end">
                     <button
                         class="btn btn-warning"
-                        disabled={!(reviewTitle && reviewBody)}
+                        disabled={!(reviewScore > 0 && reviewScore <= 10)}
                         onClick={() => {
                             submitReview();
                         }}

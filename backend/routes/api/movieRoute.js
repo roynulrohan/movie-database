@@ -97,6 +97,39 @@ router.route('/').get(function (req, res) {
     }
 });
 
+router.route('/update').put(function (req, res) {
+    const { body } = req;
+    const { id, addReview, removeReview } = body;
+
+    let params = {};
+
+    if (addReview) {
+        params = {
+            $addToSet: { Ratings: addReview },
+        };
+    }
+    
+    if (removeReview) {
+        params = {
+            $pull: { Ratings: removeReview },
+        };
+    }
+
+    Movie.findOneAndUpdate(
+        { _id: id },
+        params,
+        { new: true, upsert: true },
+        function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send({ success: false, message: err });
+            } else {
+                res.send({ success: true, updated: result });
+            }
+        }
+    );
+});
+
 router.route('/movie/').get(function (req, res) {
     Movie.count().exec(function (err, count) {
         // Get a random entry

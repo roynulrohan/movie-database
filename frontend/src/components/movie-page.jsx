@@ -3,6 +3,7 @@ import axios from 'axios';
 import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import ReviewSection from './review-section';
 
 export default function MoviePage(props) {
     const history = useHistory();
@@ -141,26 +142,26 @@ export default function MoviePage(props) {
                                     {movie.Title} - {movie.Year}
                                 </h2>
                                 <h5>
-                                    <h5 className="badge badge-info m-1">
+                                    <span className="badge badge-info m-1">
                                         {movie.Type
                                             ? movie.Type.charAt(
                                                   0
                                               ).toUpperCase() +
                                               movie.Type.slice(1)
                                             : ''}
-                                    </h5>
-                                    <h5 className="badge badge-warning m-1">
+                                    </span>
+                                    <span className="badge badge-warning m-1">
                                         Rated: {movie.Rated}
-                                    </h5>
-                                    <h5 className="badge badge-primary m-1">
+                                    </span>
+                                    <span className="badge badge-primary m-1">
                                         {movie.Runtime}
-                                    </h5>
-                                    <h5 className="badge badge-danger m-1">
+                                    </span>
+                                    <span className="badge badge-danger m-1">
                                         {movie.Released}
-                                    </h5>
-                                    <h5 className="badge badge-success m-1">
+                                    </span>
+                                    <span className="badge badge-success m-1">
                                         {movie.Language}
-                                    </h5>
+                                    </span>
                                 </h5>
 
                                 <div>{getGenres(movie.Genre)}</div>
@@ -235,9 +236,7 @@ export default function MoviePage(props) {
                     <div>
                         <h5 className="d-flex">
                             <b className="text-info w-20">Director</b>
-                            <span className="w-75 ml-2">
-                                {movie.Director}
-                            </span>
+                            <span className="w-75 ml-2">{movie.Director}</span>
                         </h5>
                         <br />
                         <h5 className="d-flex">
@@ -263,22 +262,8 @@ export default function MoviePage(props) {
                         </h5>
                     </div>
                 </div>
-                <div className="container rounded p-3 text-white bg-transparent">
-                    <h2>Reviews</h2>
-                    <hr />
-                    {movie.Ratings &&
-                        Object.keys(movie.Ratings).map(function (key) {
-                            return (
-                                <h5>
-                                    {key +
-                                        ': ' +
-                                        movie.Ratings[key].Source +
-                                        ' - ' +
-                                        movie.Ratings[key].Value}
-                                </h5>
-                            );
-                        })}
-                </div>
+
+                <ReviewSection movie={movie} />
             </div>
         </CSSTransition>
     );

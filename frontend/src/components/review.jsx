@@ -8,6 +8,18 @@ export default function Review(props) {
     const user = useSelector((state) => state.userReducer);
     const [show, setShow] = useState(false);
 
+    function getReviewValue() {
+        if (props.review.Value[0] >= 7) {
+            return 'high';
+        } else if (props.review.Value[0] <= 6 && props.review.Value[0] >= 4) {
+            return 'medium';
+        } else if (props.review.Value[0] == 1 && props.review.Value[1] == 0) {
+            return 'high';
+        } else {
+            return 'low';
+        }
+    }
+
     return (
         <CSSTransition
             in={true}
@@ -23,7 +35,15 @@ export default function Review(props) {
                         {props.review.Title && (
                             <span>
                                 {' - '}
-                                <span className="text-warning">
+                                <span
+                                    className={
+                                        getReviewValue() == 'high'
+                                            ? 'text-success'
+                                            : getReviewValue() == 'medium'
+                                            ? 'text-warning'
+                                            : 'text-danger'
+                                    }
+                                >
                                     {props.review.Title}
                                 </span>
                             </span>
@@ -38,27 +58,31 @@ export default function Review(props) {
                     )}
                 </div>
 
-                <div className="m-1 d-flex flex-column justify-content-between align-items-center w-auto ml-3">
-                    <h5
-                        className={
-                            props.review.Value[0] >= 5
-                                ? 'm-1 text-success'
-                                : 'm-1 text-danger'
-                        }
-                    >
-                        {props.review.Value}
-                    </h5>{' '}
+                <div className="m-1 d-flex justify-content-between align-items-center w-auto ml-3">
+                    <h4 className="m-1">
+                        <span
+                            className={
+                                getReviewValue() == 'high'
+                                    ? 'p-2 badge badge-success'
+                                    : getReviewValue() == 'medium'
+                                    ? 'p-2 badge badge-warning'
+                                    : 'p-2 badge badge-danger'
+                            }
+                        >
+                            {props.review.Value}
+                        </span>
+                    </h4>{' '}
                     {user.currentUser &&
                         user.currentUser.Username == props.review.Source && (
                             <button
-                                className="btn btn-secondary-danger p-1 m-1"
+                                className="btn btn-secondary-danger p-2 m-1"
                                 onClick={() => {
                                     setShow(true);
                                 }}
                             >
                                 <svg
-                                    width="1.3em"
-                                    height="1.3em"
+                                    width="1.4em"
+                                    height="1.4em"
                                     viewBox="0 0 16 16"
                                     class="bi bi-trash"
                                     fill="currentColor"

@@ -27,6 +27,7 @@ export default function ReviewSection(props) {
         let params = {
             id: props.movie._id,
             addReview: {
+                Movie: props.movie._id,
                 Source: user.currentUser.Username,
                 Value: reviewScore + '/10',
                 Title: reviewTitle,
@@ -59,6 +60,7 @@ export default function ReviewSection(props) {
         let params = {
             id: props.movie._id,
             removeReview: {
+                Movie: props.movie._id,
                 Source: user.currentUser.Username,
                 Value: review.Value,
                 Title: review.Title,
@@ -76,8 +78,8 @@ export default function ReviewSection(props) {
             data: JSON.stringify(params),
         }).then((res) => {
             console.log(res);
+            setReviews([]);
             setReviews(res.data.updated.Ratings);
-            window.location.reload(false);
         });
     }
     function getReviewBox() {
@@ -150,16 +152,28 @@ export default function ReviewSection(props) {
                         }}
                     />
                 </div>
-                <div class="m-1 mt-3 d-flex justify-content-end">
-                    <button
-                        class="btn btn-warning"
-                        disabled={!(reviewScore > 0 && reviewScore <= 10)}
-                        onClick={() => {
-                            submitReview();
-                        }}
-                    >
-                        Submit
-                    </button>
+                <div className="d-flex justify-content-end">
+                    <div class="m-1 mt-3 d-flex justify-content-end">
+                        <button
+                            class="btn btn-info"
+                            disabled={!(reviewScore > 0 && reviewScore <= 10)}
+                            onClick={() => {
+                                submitReview();
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                    <div class="m-1 mt-3">
+                        <button
+                            class="btn btn-outline-danger"
+                            onClick={() => {
+                                setReviewHidden(true);
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
         );
@@ -172,11 +186,7 @@ export default function ReviewSection(props) {
                     className="btn btn-info"
                     onClick={() => {
                         if (user.currentUser) {
-                            if (reviewHidden) {
-                                setReviewHidden(false);
-                            } else {
-                                setReviewHidden(true);
-                            }
+                            setReviewHidden(false);
                         } else {
                             history.push('/login');
                         }

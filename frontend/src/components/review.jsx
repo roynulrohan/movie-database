@@ -6,7 +6,10 @@ import { useSelector } from 'react-redux';
 
 export default function Review(props) {
     const user = useSelector((state) => state.userReducer);
-    const [show, setShow] = useState(false);
+    const [modalShow, setModal] = useState(false);
+    const toggleModal = () => {
+        setModal(!modalShow);
+    };
 
     function getReviewValue() {
         if (props.review.Value[0] >= 7) {
@@ -77,7 +80,7 @@ export default function Review(props) {
                             <button
                                 className="btn btn-secondary-danger p-2 m-1"
                                 onClick={() => {
-                                    setShow(true);
+                                    toggleModal();
                                 }}
                             >
                                 <svg
@@ -97,7 +100,7 @@ export default function Review(props) {
                             </button>
                         )}
                 </div>
-                <Modal show={show}>
+                <Modal show={modalShow} onClose={toggleModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Are you sure?</Modal.Title>
                     </Modal.Header>
@@ -108,7 +111,7 @@ export default function Review(props) {
                         <Button
                             variant="secondary"
                             onClick={() => {
-                                setShow(false);
+                                toggleModal();
                             }}
                         >
                             Cancel
@@ -116,7 +119,7 @@ export default function Review(props) {
                         <Button
                             variant="danger"
                             onClick={() => {
-                                setShow(false);
+                                toggleModal();
                                 props.removeCallback(props.review);
                             }}
                         >

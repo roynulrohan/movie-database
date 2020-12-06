@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
@@ -17,6 +17,7 @@ export default function Nav() {
     const profileOnClick = () => {
         history.push('/user/' + user.currentUser.Username);
     };
+    const [isClicked, setIsClicked] = useState(false);
 
     useEffect(() => {
         const obj = getFromStorage('not_imdb_roynulrohan');
@@ -67,30 +68,51 @@ export default function Nav() {
                 <Dropdown.Toggle
                     variant="warning"
                     id="dropdown"
-                    className="profile-dropdown no-caret"
+                    className="profile-dropdown no-caret p-0"
                 >
-                    <div className="d-flex justify-content-around pl-3">
+                    <div
+                        className="d-flex justify-content-around pl-3 p-2"
+                        onClick={() => {
+                            setIsClicked(!isClicked);
+                        }}
+                    >
                         {user.currentUser.Username}
                         <div>
-                            <svg
-                                width="1.2em"
-                                height="1.2em"
-                                viewBox="0 0 16 16"
-                                class="bi bi-chevron-down"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                                />
-                            </svg>
+                            {isClicked ? (
+                                <svg
+                                    width="1.2em"
+                                    height="1.2em"
+                                    viewBox="0 0 16 16"
+                                    class="bi bi-chevron-down"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                                    />
+                                </svg>
+                            ) : (
+                                <svg
+                                    width="1.2em"
+                                    height="1.2em"
+                                    viewBox="0 0 16 16"
+                                    class="bi bi-chevron-up"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
+                                    />
+                                </svg>
+                            )}
                         </div>
                     </div>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="w-100" align="right">
-                    <Dropdown.Header>{user.currentUser.Name}</Dropdown.Header>
+                    <Dropdown.Header className="text-info">{user.currentUser.Name}</Dropdown.Header>
                     <Dropdown.Item onClick={() => profileOnClick()}>
                         My Profile
                     </Dropdown.Item>
@@ -161,7 +183,6 @@ export default function Nav() {
                 </h3>
             </Link>
             <div className="navbar-nav mr-5 ml-2 pb-1">{browseDropdown()}</div>
-
 
             <div className="navbar-nav ml-auto mr-5 pt-1 pb-1">
                 {user.currentUser ? (

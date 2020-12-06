@@ -82,6 +82,7 @@ export default function ReviewSection(props) {
             setReviews(res.data.updated.Ratings);
         });
     }
+    
     function getReviewBox() {
         return (
             <div class="container rounded input-group d-flex flex-column w-100 mb-3 review-container p-2">

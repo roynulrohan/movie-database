@@ -7,16 +7,16 @@ const UserSession = require('../../models/UserSession');
 
 router.route('/updateLists').put(function (req, res) {
     const { body } = req;
-    const { id, addWL, removeWL, addLiked, removeLiked } = body;
+    const { id, addSaved, removeSaved, addLiked, removeLiked } = body;
 
     let params = {};
 
-    if (addWL) {
-        params = { $addToSet: { WatchList: addWL } };
+    if (addSaved) {
+        params = { $addToSet: { Saved: addSaved } };
     }
 
-    if (removeWL) {
-        params = { $pull: { WatchList: removeWL } };
+    if (removeSaved) {
+        params = { $pull: { Saved: removeSaved } };
     }
 
     if (addLiked) {

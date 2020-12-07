@@ -27,16 +27,17 @@ const genres = [
 ];
 
 export default function BrowsePage() {
-    const [movies, setMovies] = useState([]);
-    const [search, setSearch] = useState('');
-    const [genre, setGenre] = useState('');
+    const [movies, setMovies] = useState([]); // movie list
+    const [search, setSearch] = useState(''); // search bar
+    const [genre, setGenre] = useState(''); // filters
     const [year, setYear] = useState('');
     const [type, setType] = useState('');
     const [metascore, setMetascore] = useState('');
-    const [sort, setSort] = useState('');
+    const [sort, setSort] = useState(''); // sort options
     const [sortOrder, setSortOrder] = useState('ascending');
 
     useEffect(() => {
+        // make delayed requests everytime search or filter parameters are changed
         const delayDebounceFn = setTimeout(() => {
             axios
                 .get('http://localhost:4000/movies', {

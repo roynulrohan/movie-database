@@ -8,12 +8,12 @@ import ReviewSection from './review-section';
 export default function MoviePage(props) {
     const history = useHistory();
     const user = useSelector((state) => state.userReducer);
-    const [isWL, setisWL] = useState(null);
-    const [isLiked, setisLiked] = useState(null);
-    const [movie, setMovie] = useState({});
+    const [isSaved, setSaved] = useState(null); // saved state
+    const [isLiked, setLiked] = useState(null); // liked state
+    const [movie, setMovie] = useState({}); // movie state
 
     useEffect(() => {
-        // get movie request
+        // get movie request on mount
         axios
             .get('http://localhost:4000/movies/movie/' + props._id)
             .then((response) => {
@@ -25,37 +25,39 @@ export default function MoviePage(props) {
     }, []);
 
     useEffect(() => {
+        // set document title
         if (movie.Title) {
             document.title = movie.Title + ' | Not IMDb';
         }
 
+        // checks if user has liked or saved movie
         if (user.currentUser) {
             if (user.currentUser.Liked.find((item) => item == movie._id)) {
-                setisLiked(true);
+                setLiked(true);
             }
 
-            if (user.currentUser.WatchList.find((item) => item == movie._id)) {
-                setisWL(true);
+            if (user.currentUser.Saved.find((item) => item == movie._id)) {
+                setSaved(true);
             }
         }
     }, [movie, user]);
 
-    function watchListClick() {
+    function saveClick() {
         let params = {};
 
-        if (isWL) {
-            setisWL(false);
+        if (isSaved) {
+            setSaved(false);
 
             params = {
                 id: user.currentUser._id,
-                removeWL: movie._id,
+                removeSaved: movie._id,
             };
         } else {
-            setisWL(true);
+            setSaved(true);
 
             params = {
                 id: user.currentUser._id,
-                addWL: movie._id,
+                addSaved: movie._id,
             };
         }
 
@@ -72,18 +74,18 @@ export default function MoviePage(props) {
         });
     }
 
-    function likedClick() {
+    function likeClick() {
         let params = {};
 
         if (isLiked) {
-            setisLiked(false);
+            setLiked(false);
 
             params = {
                 id: user.currentUser._id,
                 removeLiked: movie._id,
             };
         } else {
-            setisLiked(true);
+            setLiked(true);
 
             params = {
                 id: user.currentUser._id,
@@ -194,19 +196,21 @@ export default function MoviePage(props) {
                             <div className="d-flex flex-column w-100">
                                 <button
                                     className={
-                                        isWL == true
-                                            ? 'btn btn-success'
+                                        isSaved == true
+                                            ? 'btn btn-info'
                                             : 'btn btn-outline-info'
                                     }
                                     onClick={() => {
                                         if (user.currentUser) {
-                                            watchListClick();
+                                            saveClick();
                                         } else {
                                             history.push('/login');
                                         }
                                     }}
                                 >
-                                    {isWL == true ? '✓ Saved' : '+ For Later'}
+                                    {isSaved == true
+                                        ? '✓ Saved'
+                                        : '+ For Later'}
                                 </button>
 
                                 <br />
@@ -218,7 +222,7 @@ export default function MoviePage(props) {
                                     }
                                     onClick={() => {
                                         if (user.currentUser) {
-                                            likedClick();
+                                            likeClick();
                                         } else {
                                             history.push('/login');
                                         }

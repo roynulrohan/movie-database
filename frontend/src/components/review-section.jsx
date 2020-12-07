@@ -11,18 +11,21 @@ import Review from './review';
 export default function ReviewSection(props) {
     const user = useSelector((state) => state.userReducer);
     const history = useHistory();
-    const [reviews, setReviews] = useState([]);
-    const [reviewHidden, setReviewHidden] = useState(true);
+    const [reviews, setReviews] = useState([]); // reviews
+    const [reviewHidden, setReviewHidden] = useState(true); // hidden state of review writing box
+    // review params state
     const [reviewTitle, setReviewTitle] = useState('');
     const [reviewScore, setReviewScore] = useState('0');
     const [reviewBody, setReviewBody] = useState('');
 
     useEffect(() => {
+        // set reviews on props change
         if (props.movie.Ratings) {
             setReviews(props.movie.Ratings);
         }
     }, [props.movie]);
 
+    // submit review request
     function submitReview() {
         let params = {
             id: props.movie._id,
@@ -44,18 +47,20 @@ export default function ReviewSection(props) {
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
             if (res.data.success) {
+                // reset params
                 setReviewTitle('');
                 setReviewBody('');
                 setReviewScore('0');
                 setReviewHidden(true);
+                // set new reviews
                 setReviews([]);
                 setReviews(res.data.updated.Ratings);
             }
         });
     }
 
+    // remove review function to be passed as callback to each review
     function removeReview(review) {
         let params = {
             id: props.movie._id,
@@ -77,12 +82,12 @@ export default function ReviewSection(props) {
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
             setReviews([]);
             setReviews(res.data.updated.Ratings);
         });
     }
     
+    // review writing box
     function getReviewBox() {
         return (
             <div class="container rounded input-group d-flex flex-column w-100 mb-3 review-container p-2">

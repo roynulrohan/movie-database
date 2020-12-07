@@ -23,7 +23,7 @@ const User = new Schema({
         type: String,
         default: '',
     },
-    WatchList: {
+    Saved: {
         type: Array,
         default: [],
     },

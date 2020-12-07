@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
@@ -17,14 +17,16 @@ export default function Nav() {
     const profileOnClick = () => {
         history.push('/user/' + user.currentUser.Username);
     };
-    const [isClicked, setIsClicked] = useState(false);
+    const [isClicked, setIsClicked] = useState(false); // user dropdown clicked state
 
     useEffect(() => {
+        // verifies current user on mount
+        // in nav since nav is in every page
         const obj = getFromStorage('not_imdb_roynulrohan');
 
         if (obj && obj.token) {
             const { token } = obj;
-            // Verify user on mount
+
             axios
                 .get('http://localhost:4000/api/account/verify?token=' + token)
                 .then((res) => {
@@ -38,6 +40,7 @@ export default function Nav() {
         }
     }, []);
 
+    // browse options
     function browseClick() {
         history.push('/browse');
     }
@@ -55,6 +58,7 @@ export default function Nav() {
                     if (res.data.success) {
                         // remove user from redux store
                         dispatch(setUser());
+                        // reload page
                         window.location.reload(false);
                     }
                 });
@@ -78,41 +82,46 @@ export default function Nav() {
                     >
                         {user.currentUser.Username}
                         <div>
-                            {isClicked ? (
-                                <svg
-                                    width="1.2em"
-                                    height="1.2em"
-                                    viewBox="0 0 16 16"
-                                    class="bi bi-chevron-down"
-                                    fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                                    />
-                                </svg>
-                            ) : (
-                                <svg
-                                    width="1.2em"
-                                    height="1.2em"
-                                    viewBox="0 0 16 16"
-                                    class="bi bi-chevron-up"
-                                    fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
-                                    />
-                                </svg>
-                            )}
+                            {
+                                // sets correct arrow based on click state
+                                isClicked ? (
+                                    <svg
+                                        width="1.2em"
+                                        height="1.2em"
+                                        viewBox="0 0 16 16"
+                                        class="bi bi-chevron-down"
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        width="1.2em"
+                                        height="1.2em"
+                                        viewBox="0 0 16 16"
+                                        class="bi bi-chevron-up"
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
+                                        />
+                                    </svg>
+                                )
+                            }
                         </div>
                     </div>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="w-100" align="right">
-                    <Dropdown.Header className="text-info">{user.currentUser.Name}</Dropdown.Header>
+                    <Dropdown.Header className="text-info">
+                        {user.currentUser.Name}
+                    </Dropdown.Header>
                     <Dropdown.Item onClick={() => profileOnClick()}>
                         My Profile
                     </Dropdown.Item>
@@ -131,7 +140,6 @@ export default function Nav() {
 
     function browseDropdown() {
         return (
-            // used Dropdown from React Bootstrap because for some reason the native one wouldn't work
             <Dropdown key="browse-dropdown">
                 <Dropdown.Toggle
                     id="dropdown"

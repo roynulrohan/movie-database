@@ -6,11 +6,14 @@ import { useSelector } from 'react-redux';
 
 export default function Review(props) {
     const user = useSelector((state) => state.userReducer);
-    const [modalShow, setModal] = useState(false);
+    const [modalShow, setModal] = useState(false); // modal state
     const toggleModal = () => {
+        // modal toggle
         setModal(!modalShow);
     };
 
+    // determine review level based off score value
+    // to be used for color coding
     function getReviewValue() {
         if (props.review.Value[0] >= 7) {
             return 'high';

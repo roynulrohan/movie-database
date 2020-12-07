@@ -6,9 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function MovieRow(props) {
     const user = useSelector((state) => state.userReducer);
-    const scrollable = React.createRef();
-    const [movies, setMovies] = useState([]);
-    const [width, setwidth] = useState(0);
+    const scrollable = React.createRef(); // movie row ref
+    const [movies, setMovies] = useState([]); // movies state
+    const [width, setWidth] = useState(0); // screen width state
 
     useEffect(() => {
         if (props.movies) {
@@ -46,12 +46,13 @@ export default function MovieRow(props) {
     }, [props.movies]);
 
     useEffect(() => {
-        setwidth(scrollable.current.clientWidth);
+        setWidth(scrollable.current.clientWidth);
     }, [scrollable]);
 
+    // update width of row
     function updateWindowDimensions() {
         if (scrollable.current) {
-            setwidth(scrollable.current.clientWidth);
+            setWidth(scrollable.current.clientWidth);
         }
     }
 
@@ -63,6 +64,7 @@ export default function MovieRow(props) {
         }
     }
 
+    // set scroll function for row
     function setScroll(offset) {
         if (scrollable.current) {
             scrollable.current.scrollLeft = offset;

@@ -9,46 +9,48 @@ import { setUser } from '../actions';
 export default function MovieCard(props) {
     const history = useHistory();
     const user = useSelector((state) => state.userReducer);
-    const [isWL, setisWL] = useState(null);
-    const [isLiked, setisLiked] = useState(null);
+    const [isSaved, setSaved] = useState(null); // saved state
+    const [isLiked, setLiked] = useState(null); // liked state
     const dispatch = useDispatch();
 
     useEffect(() => {
+        // checks if user has liked or saved movie
         if (user.currentUser) {
             if (
                 user.currentUser.Liked.find((item) => item == props.movie._id)
             ) {
-                setisLiked(true);
+                setLiked(true);
             }
 
             if (
-                user.currentUser.WatchList.find(
+                user.currentUser.Saved.find(
                     (item) => item == props.movie._id
                 )
             ) {
-                setisWL(true);
+                setSaved(true);
             }
         }
     }, [user]);
 
+    // onclick redirect to movie page
     function cardOnClick() {
         history.push('/movie/' + props.movie._id);
     }
 
-    function watchListClick() {
+    function saveClick() {
         let params = {};
 
-        if (isWL) {
-            setisWL(false);
+        if (isSaved) {
+            setSaved(false);
             params = {
                 id: user.currentUser._id,
-                removeWL: props.movie._id,
+                removeSaved: props.movie._id,
             };
         } else {
-            setisWL(true);
+            setSaved(true);
             params = {
                 id: user.currentUser._id,
-                addWL: props.movie._id,
+                addSaved: props.movie._id,
             };
         }
 
@@ -65,18 +67,18 @@ export default function MovieCard(props) {
         });
     }
 
-    function likedClick() {
+    function likeClick() {
         let params = {};
 
         if (isLiked) {
-            setisLiked(false);
+            setLiked(false);
 
             params = {
                 id: user.currentUser._id,
                 removeLiked: props.movie._id,
             };
         } else {
-            setisLiked(true);
+            setLiked(true);
 
             params = {
                 id: user.currentUser._id,
@@ -116,16 +118,25 @@ export default function MovieCard(props) {
                             <Card.Img variant="top" src={props.movie.Poster} />
                         </Card.Header>
                         <Card.Body>
-                            <Card.Title className="poster-title" title={props.movie.Title}>
+                            <Card.Title
+                                className="poster-title"
+                                title={props.movie.Title}
+                            >
                                 {props.movie.Title}
                             </Card.Title>
 
                             <h5 className="card-text d-flex justify-content-between">
-                                <span className="badge badge-warning h-100 badge-pill w-25" title="IMDb Rating">
+                                <span
+                                    className="badge badge-warning h-100 badge-pill w-25"
+                                    title="IMDb Rating"
+                                >
                                     {props.movie.imdbRating}
                                 </span>{' '}
                                 {props.movie.Metascore != 'N/A' ? (
-                                    <span className="badge badge-success h-100 badge-pill w-25" title="Metascore">
+                                    <span
+                                        className="badge badge-success h-100 badge-pill w-25"
+                                        title="Metascore"
+                                    >
                                         {props.movie.Metascore}
                                     </span>
                                 ) : (
@@ -138,13 +149,13 @@ export default function MovieCard(props) {
                         <div className="d-flex justify-content-between">
                             <button
                                 className={
-                                    isWL == true
+                                    isSaved == true
                                         ? 'btn btn-info'
                                         : 'btn btn-outline-info'
                                 }
                                 onClick={() => {
                                     if (user.currentUser) {
-                                        watchListClick();
+                                        saveClick();
                                     } else {
                                         history.push({
                                             pathname: '/login',
@@ -155,7 +166,7 @@ export default function MovieCard(props) {
                                     }
                                 }}
                             >
-                                {isWL == true ? '✓ Saved' : '+ For Later'}
+                                {isSaved == true ? '✓ Saved' : '+ For Later'}
                             </button>
                             <button
                                 className={
@@ -165,7 +176,7 @@ export default function MovieCard(props) {
                                 }
                                 onClick={() => {
                                     if (user.currentUser) {
-                                        likedClick();
+                                        likeClick();
                                     } else {
                                         history.push({
                                             pathname: '/login',

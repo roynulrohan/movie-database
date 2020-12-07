@@ -13,17 +13,18 @@ export default function Login(props) {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [register, setMode] = useState(false);
+    const [error, setError] = useState(''); // error message
+    const [register, setMode] = useState(false); // register or login
     const [loading, setLoading] = useState(false);
 
-    const regex = { length: /.{6,}/, digit: /\d/, capital: /[A-Z]/ };
+    const regex = { length: /.{6,}/, digit: /\d/, capital: /[A-Z]/ }; // regex for password creation
 
+    // password requirements state
     const [passMin, setPassMin] = useState(false);
     const [passNum, setPassNum] = useState(false);
     const [passCapital, setPassCapital] = useState(false);
 
-    const [buttonEnabled, setButtonEnabled] = useState(false);
+    const [buttonEnabled, setButtonEnabled] = useState(false); // submit button state
 
     const user = useSelector((state) => state.userReducer);
     const history = useHistory();
@@ -31,6 +32,7 @@ export default function Login(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        // setting document title
         if (register) {
             document.title = 'Sign Up | Not IMDb';
         } else {
@@ -38,6 +40,7 @@ export default function Login(props) {
         }
     }, [register]);
 
+    // redirect to wherever user came from
     function redirect() {
         if (props.location.state) {
             history.push('/movie/' + props.location.state.redirectID);
@@ -46,6 +49,7 @@ export default function Login(props) {
         }
     }
 
+    // sign up request
     function signUpRequest() {
         setLoading(true);
         // Post request to backend
@@ -62,10 +66,12 @@ export default function Login(props) {
             }),
         }).then((res) => {
             if (res.data.success) {
+                // write token to storage
                 setInStorage('not_imdb_roynulrohan', {
                     token: res.data.token,
                 });
                 setLoading(false);
+                // dispatch user to redux and redirect
                 dispatch(setUser(res.data.user));
                 setTimeout(redirect, 1700);
             } else {
@@ -75,6 +81,7 @@ export default function Login(props) {
         });
     }
 
+    // sign in request
     function signInRequest() {
         setLoading(true);
         // Post request to backend
@@ -90,14 +97,13 @@ export default function Login(props) {
             }),
         }).then((res) => {
             if (res.data.success) {
-                console.log(res.data);
+                // write token to storage
                 setInStorage('not_imdb_roynulrohan', {
                     token: res.data.token,
                 });
-
                 setLoading(false);
+                // dispatch user to redux and redirect
                 dispatch(setUser(res.data.user));
-                console.log(redirect);
                 setTimeout(redirect, 1700);
             } else {
                 setError(res.data.message);
@@ -107,6 +113,57 @@ export default function Login(props) {
         });
     }
 
+    // username requirements
+    function validUsername() {
+        if (username.length >= 6 && username.length <= 14) {
+            return (
+                <div className="d-flex justify-content-between">
+                    <label>Username</label>
+                    <small className="text-success">6-14 characters</small>
+                </div>
+            );
+        } else {
+            return (
+                <div className="d-flex justify-content-between">
+                    <label>Username</label>
+                    <small className="text-danger">6-14 characters</small>
+                </div>
+            );
+        }
+    }
+
+    // function to update password requirements in realtime
+    function validPassword(pass) {
+        if (regex.length.test(pass)) {
+            setPassMin(true);
+        } else {
+            setPassMin(false);
+        }
+
+        if (regex.digit.test(pass)) {
+            setPassNum(true);
+        } else {
+            setPassNum(false);
+        }
+
+        if (regex.capital.test(pass)) {
+            setPassCapital(true);
+        } else {
+            setPassCapital(false);
+        }
+
+        if (
+            regex.length.test(pass) &&
+            regex.digit.test(pass) &&
+            regex.capital.test(pass)
+        ) {
+            setButtonEnabled(true);
+        } else {
+            setButtonEnabled(false);
+        }
+    }
+
+    // sign in container
     function signInContainer() {
         return (
             <div className="container rounded p-4 pt-5 text-white h-100 d-flex flex-column justify-content-between">
@@ -164,56 +221,7 @@ export default function Login(props) {
         );
     }
 
-    // username requirements
-    function validUsername() {
-        if (username.length >= 6 && username.length <= 14) {
-            return (
-                <div className="d-flex justify-content-between">
-                    <label>Username</label>
-                    <small className="text-success">6-14 characters</small>
-                </div>
-            );
-        } else {
-            return (
-                <div className="d-flex justify-content-between">
-                    <label>Username</label>
-                    <small className="text-danger">6-14 characters</small>
-                </div>
-            );
-        }
-    }
-
-    // function to update password requirements in realtime
-    function validPassword(pass) {
-        if (regex.length.test(pass)) {
-            setPassMin(true);
-        } else {
-            setPassMin(false);
-        }
-
-        if (regex.digit.test(pass)) {
-            setPassNum(true);
-        } else {
-            setPassNum(false);
-        }
-
-        if (regex.capital.test(pass)) {
-            setPassCapital(true);
-        } else {
-            setPassCapital(false);
-        }
-
-        if (
-            regex.length.test(pass) &&
-            regex.digit.test(pass) &&
-            regex.capital.test(pass)
-        ) {
-            setButtonEnabled(true);
-        } else {
-            setButtonEnabled(false);
-        }
-    }
-
+    // sign up container
     function signUpContainer() {
         return (
             <div className="container rounded p-4 text-white h-100 d-flex flex-column justify-content-between">

@@ -12,18 +12,22 @@ export default function UserProfile(props) {
     const currentUser = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
     const [user, setUserState] = useState('');
-    const [likedQuery, setLikedQuery] = useState('');
-    const [wlQuery, setWLQuery] = useState('');
+    const [likedQuery, setLikedQuery] = useState(''); // liked list query
+    const [savedQuery, setSavedQuery] = useState(''); // saved list query
 
     useEffect(() => {
+        // get user and update state on props change
         axios
             .get('http://localhost:4000/api/account/user/' + props._id)
             .then((res) => {
-                setUserState(res.data);
-
                 if (res.data) {
+                    // set user state
+                    setUserState(res.data);
+
+                    // set document title
                     document.title = res.data.Username + ' | Not IMDb';
-                    
+
+                    // add movie ids to query
                     if (res.data.Liked) {
                         let query = '';
 
@@ -34,14 +38,14 @@ export default function UserProfile(props) {
                         setLikedQuery(query);
                     }
 
-                    if (res.data.WatchList) {
+                    if (res.data.Saved) {
                         let query = '';
 
-                        res.data.WatchList.forEach((id) => {
+                        res.data.Saved.forEach((id) => {
                             query += id + ',';
                         });
 
-                        setWLQuery(query);
+                        setSavedQuery(query);
                     }
                 }
             });
@@ -72,11 +76,11 @@ export default function UserProfile(props) {
                             movies={likedQuery}
                         ></MovieRow>
                     )}
-                    {wlQuery && (
+                    {savedQuery && (
                         <MovieRow
                             key={'Saved for Later'}
                             title={'Saved for Later'}
-                            movies={wlQuery}
+                            movies={savedQuery}
                         ></MovieRow>
                     )}
                 </div>

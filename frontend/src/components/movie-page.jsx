@@ -4,9 +4,11 @@ import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReviewSection from './review-section';
+import { setUser } from '../actions';
 
 export default function MoviePage(props) {
     const history = useHistory();
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.userReducer);
     const [isSaved, setSaved] = useState(null); // saved state
     const [isLiked, setLiked] = useState(null); // liked state
@@ -70,7 +72,7 @@ export default function MoviePage(props) {
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 
@@ -102,7 +104,7 @@ export default function MoviePage(props) {
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 

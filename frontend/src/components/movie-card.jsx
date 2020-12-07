@@ -23,9 +23,7 @@ export default function MovieCard(props) {
             }
 
             if (
-                user.currentUser.Saved.find(
-                    (item) => item == props.movie._id
-                )
+                user.currentUser.Saved.find((item) => item == props.movie._id)
             ) {
                 setSaved(true);
             }
@@ -63,7 +61,7 @@ export default function MovieCard(props) {
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 
@@ -95,7 +93,7 @@ export default function MovieCard(props) {
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 

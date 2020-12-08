@@ -17,7 +17,7 @@ export default function MoviePage(props) {
     useEffect(() => {
         // get movie request on mount
         axios
-            .get('http://localhost:4000/movies/movie/' + props._id)
+            .get('/movies/movie/' + props._id)
             .then((response) => {
                 setMovie(response.data);
             })
@@ -66,7 +66,7 @@ export default function MoviePage(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/api/account/updateLists',
+            url: '/api/account/updateLists',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -98,7 +98,7 @@ export default function MoviePage(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/api/account/updateLists',
+            url: '/api/account/updateLists',
             headers: {
                 'Content-Type': 'application/json',
             },

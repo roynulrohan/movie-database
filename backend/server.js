@@ -5,7 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const PORT = 4000;
-
+const path = require('path');
 const movieRoute = require('./routes/api/movieRoute');
 const userRoute = require('./routes/api/userRoute');
 
@@ -28,6 +28,11 @@ connection.once('open', function () {
 
 app.use('/movies', movieRoute);
 app.use('/api/account', userRoute);
+
+app.use(express.static(path.join(__dirname, '../build')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build'));
+});
 
 app.listen(PORT, function () {
     console.log('Server is running on Port: ' + PORT);

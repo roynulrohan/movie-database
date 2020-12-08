@@ -41,7 +41,7 @@ export default function ReviewSection(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/movies/update',
+            url: '/movies/update',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -76,7 +76,7 @@ export default function ReviewSection(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/movies/update',
+            url: '/movies/update',
             headers: {
                 'Content-Type': 'application/json',
             },

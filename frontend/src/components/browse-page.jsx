@@ -40,7 +40,7 @@ export default function BrowsePage() {
         // make delayed requests everytime search or filter parameters are changed
         const delayDebounceFn = setTimeout(() => {
             axios
-                .get('http://localhost:4000/movies', {
+                .get('/movies', {
                     params: {
                         random: !(search || genre || year || type || metascore)
                             ? true

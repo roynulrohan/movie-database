@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Modal, Button } from 'react-bootstrap';
-
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Review(props) {
@@ -11,6 +11,7 @@ export default function Review(props) {
         // modal toggle
         setModal(!modalShow);
     };
+    const history = useHistory();
 
     // determine review level based off score value
     // to be used for color coding
@@ -37,7 +38,14 @@ export default function Review(props) {
             <div className="container rounded d-flex justify-content-between p-3 mb-2 review">
                 <div className="d-flex flex-column justify-content-between w-100">
                     <h5 class="m-1 w-100">
-                        <span className="text-info">{props.review.Source}</span>
+                        <span
+                            className="text-info pointer"
+                            onClick={() => {
+                                history.push('/user/' + props.review.Source);
+                            }}
+                        >
+                            {props.review.Source}
+                        </span>
                         {props.review.Title && (
                             <span>
                                 {' - '}

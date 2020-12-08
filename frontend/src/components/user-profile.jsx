@@ -17,38 +17,36 @@ export default function UserProfile(props) {
 
     useEffect(() => {
         // get user and update state on props change
-        axios
-            .get('http://localhost:4000/api/account/user/' + props._id)
-            .then((res) => {
-                if (res.data) {
-                    // set user state
-                    setUserState(res.data);
+        axios.get('/api/account/user/' + props._id).then((res) => {
+            if (res.data) {
+                // set user state
+                setUserState(res.data);
 
-                    // set document title
-                    document.title = res.data.Username + ' | Not IMDb';
+                // set document title
+                document.title = res.data.Username + ' | Not IMDb';
 
-                    // add movie ids to query
-                    if (res.data.Liked) {
-                        let query = '';
+                // add movie ids to query
+                if (res.data.Liked) {
+                    let query = '';
 
-                        res.data.Liked.forEach((id) => {
-                            query += id + ',';
-                        });
+                    res.data.Liked.forEach((id) => {
+                        query += id + ',';
+                    });
 
-                        setLikedQuery(query);
-                    }
-
-                    if (res.data.Saved) {
-                        let query = '';
-
-                        res.data.Saved.forEach((id) => {
-                            query += id + ',';
-                        });
-
-                        setSavedQuery(query);
-                    }
+                    setLikedQuery(query);
                 }
-            });
+
+                if (res.data.Saved) {
+                    let query = '';
+
+                    res.data.Saved.forEach((id) => {
+                        query += id + ',';
+                    });
+
+                    setSavedQuery(query);
+                }
+            }
+        });
     }, [props._id]);
 
     return (

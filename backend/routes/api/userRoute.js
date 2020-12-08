@@ -27,14 +27,19 @@ router.route('/updateLists').put(function (req, res) {
         params = { $pull: { Liked: removeLiked } };
     }
 
-    User.findOneAndUpdate({ _id: id }, params, function (err, result) {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        } else {
-            res.send(result);
+    User.findOneAndUpdate(
+        { _id: id },
+        params,
+        { new: true, upsert: true },
+        function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            } else {
+                res.send(result);
+            }
         }
-    });
+    );
 });
 
 router.route('/user/:username').get(function (req, res) {

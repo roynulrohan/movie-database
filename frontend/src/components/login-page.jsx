@@ -55,7 +55,7 @@ export default function Login(props) {
         // Post request to backend
         axios({
             method: 'post',
-            url: 'http://localhost:4000/api/account/register',
+            url: '/api/account/register',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -87,7 +87,7 @@ export default function Login(props) {
         // Post request to backend
         axios({
             method: 'post',
-            url: 'http://localhost:4000/api/account/login',
+            url: '/api/account/login',
             headers: {
                 'Content-Type': 'application/json',
             },

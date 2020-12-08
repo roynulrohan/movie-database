@@ -28,7 +28,7 @@ export default function Nav() {
             const { token } = obj;
 
             axios
-                .get('http://localhost:4000/api/account/verify?token=' + token)
+                .get('/api/account/verify?token=' + token)
                 .then((res) => {
                     if (res.data.success) {
                         // write user to redux store
@@ -53,7 +53,7 @@ export default function Nav() {
             const { token } = obj;
 
             axios
-                .post('http://localhost:4000/api/account/logout?token=' + token)
+                .post('/api/account/logout?token=' + token)
                 .then((res) => {
                     if (res.data.success) {
                         // remove user from redux store

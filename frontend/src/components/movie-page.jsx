@@ -4,9 +4,11 @@ import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReviewSection from './review-section';
+import { setUser } from '../actions';
 
 export default function MoviePage(props) {
     const history = useHistory();
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.userReducer);
     const [isSaved, setSaved] = useState(null); // saved state
     const [isLiked, setLiked] = useState(null); // liked state
@@ -15,7 +17,7 @@ export default function MoviePage(props) {
     useEffect(() => {
         // get movie request on mount
         axios
-            .get('http://localhost:4000/movies/movie/' + props._id)
+            .get('/movies/movie/' + props._id)
             .then((response) => {
                 setMovie(response.data);
             })
@@ -64,13 +66,13 @@ export default function MoviePage(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/api/account/updateLists',
+            url: '/api/account/updateLists',
             headers: {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 
@@ -96,13 +98,13 @@ export default function MoviePage(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/api/account/updateLists',
+            url: '/api/account/updateLists',
             headers: {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 

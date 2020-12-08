@@ -23,9 +23,7 @@ export default function MovieCard(props) {
             }
 
             if (
-                user.currentUser.Saved.find(
-                    (item) => item == props.movie._id
-                )
+                user.currentUser.Saved.find((item) => item == props.movie._id)
             ) {
                 setSaved(true);
             }
@@ -57,13 +55,13 @@ export default function MovieCard(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/api/account/updateLists',
+            url: '/api/account/updateLists',
             headers: {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 
@@ -89,13 +87,13 @@ export default function MovieCard(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: 'http://localhost:4000/api/account/updateLists',
+            url: '/api/account/updateLists',
             headers: {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify(params),
         }).then((res) => {
-            console.log(res);
+            dispatch(setUser(res.data));
         });
     }
 

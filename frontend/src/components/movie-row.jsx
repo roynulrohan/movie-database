@@ -14,7 +14,7 @@ export default function MovieRow(props) {
         if (props.movies) {
             // make movies request with given movie ids and setstate
             axios
-                .get('http://localhost:4000/movies/' + props.movies)
+                .get('/movies/' + props.movies)
                 .then((response) => {
                     setMovies(response.data);
                 })
@@ -24,7 +24,7 @@ export default function MovieRow(props) {
         } else {
             // make movies request with given params and setstate
             axios
-                .get('http://localhost:4000/movies', {
+                .get('/movies', {
                     params: props.params,
                 })
                 .then((response) => {

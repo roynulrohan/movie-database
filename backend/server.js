@@ -30,7 +30,7 @@ app.use('/movies', movieRoute);
 app.use('/api/account', userRoute);
 
 app.use(express.static(path.join(__dirname, '../frontend/build')));
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
     console.log(__dirname);
     res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });

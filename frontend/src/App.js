@@ -14,7 +14,7 @@ export default class App extends Component {
     render() {
         return (
             <Router>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div></div>}>
                     <div className="App">
                         <Nav />
                         <Route path="/" exact component={HomePage} />

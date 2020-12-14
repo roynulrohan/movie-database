@@ -67,34 +67,26 @@ router.route('/').get(function (req, res) {
             }
         );
     } else {
-        Movie.find(
-            {
-                $and: [
-                    { $text: { $search: search } },
-                    {
-                        $or: [
-                            { Title: { $regex: search, $options: 'i' } },
-                            { Plot: { $regex: search, $options: 'i' } },
-                            { Genre: { $regex: search, $options: 'i' } },
-                            { Actors: { $regex: search, $options: 'i' } },
-                            { Year: { $regex: search, $options: 'i' } },
-                            { Director: { $regex: search, $options: 'i' } },
-                            { Writer: { $regex: search, $options: 'i' } },
-                            { Production: { $regex: search, $options: 'i' } },
-                            { Language: { $regex: search, $options: 'i' } },
-                        ],
-                    },
-                    query,
-                ],
-            },
-
-            { score: { $meta: 'textScore' } }
-        )
-            .select()
-            .sort(
-                sort ? { [sort]: sortOrder } : { score: { $meta: 'textScore' } }
-            )
+        Movie.find({
+            $and: [
+                {
+                    $or: [
+                        { Title: { $regex: search, $options: 'i' } },
+                        { Plot: { $regex: search, $options: 'i' } },
+                        { Genre: { $regex: search, $options: 'i' } },
+                        { Actors: { $regex: search, $options: 'i' } },
+                        { Year: { $regex: search, $options: 'i' } },
+                        { Director: { $regex: search, $options: 'i' } },
+                        { Writer: { $regex: search, $options: 'i' } },
+                        { Production: { $regex: search, $options: 'i' } },
+                        { Language: { $regex: search, $options: 'i' } },
+                    ],
+                },
+                query,
+            ],
+        })
             .limit(60)
+            .sort(sort && { [sort]: sortOrder })
             .exec(function (err, movies) {
                 if (err) {
                     console.log(err);

@@ -69,9 +69,11 @@ export default function Review(props) {
                         </h5>
                         {props.review.Body && (
                             <div className='d-flex justify-content-center w-100'>
-                                <textarea className='w-100' readOnly>
-                                    {props.review.Body}
-                                </textarea>
+                                <textarea
+                                    className='w-100'
+                                    value={props.review.Body}
+                                    readOnly
+                                />
                             </div>
                         )}
                     </div>

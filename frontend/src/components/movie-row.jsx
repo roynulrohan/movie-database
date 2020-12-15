@@ -9,7 +9,8 @@ export default function MovieRow(props) {
     const scrollable = React.createRef(); // movie row ref
     const [movies, setMovies] = useState([]); // movies state
     const [width, setWidth] = useState(0); // screen width state
-    const [buttonsHidden, setButtonsHidden] = useState(false);
+    const [buttonsHidden, setButtonsHidden] = useState(false); // hidden state of scroll buttons
+    const [movieCount, setMovieCount] = useState(0); // movie count
 
     useEffect(() => {
         if (props.movies) {
@@ -48,8 +49,7 @@ export default function MovieRow(props) {
 
     useEffect(() => {
         setWidth(scrollable.current.clientWidth);
-        console.log('Scrollable width: ' + scrollable.current.clientWidth);
-        console.log('Window width: ' + window.innerWidth);
+        setMovieCount(scrollable.current.childElementCount);
         setButtonsHidden(
             scrollable.current.clientWidth < window.innerWidth - 200
         );
@@ -81,11 +81,16 @@ export default function MovieRow(props) {
         <div className='movie-list-section'>
             <div className='p-3'>
                 <h2
-                    className='w-75 text-warning'
+                    className='w-75 text-warning d-flex align-items-start'
                     onClick={() => {
                         setScroll(0);
                     }}>
-                    {props.title}
+                    <span>{props.title}</span>
+                    {props.shouldCount && (
+                        <span className='ml-4 badge badge-pill badge-warning'>
+                            {movieCount}
+                        </span>
+                    )}
                 </h2>
 
                 <div className='d-flex align-items-center justify-content-between movie-list-container'>

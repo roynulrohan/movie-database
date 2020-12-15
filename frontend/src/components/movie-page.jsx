@@ -26,6 +26,17 @@ export default function MoviePage(props) {
                 console.log(error);
             });
         window.scrollTo(0, 0);
+
+        // checks if user has liked or saved movie
+        if (user.currentUser) {
+            if (user.currentUser.Liked.find((item) => item == movie._id)) {
+                setLiked(true);
+            }
+
+            if (user.currentUser.Saved.find((item) => item == movie._id)) {
+                setSaved(true);
+            }
+        }
     }, [props._id]);
 
     useEffect(() => {
@@ -38,13 +49,18 @@ export default function MoviePage(props) {
         if (user.currentUser) {
             if (user.currentUser.Liked.find((item) => item == movie._id)) {
                 setLiked(true);
+            } else {
+                setLiked(false);
             }
 
             if (user.currentUser.Saved.find((item) => item == movie._id)) {
                 setSaved(true);
+            } else {
+                setSaved(false);
             }
         }
-    }, [movie, user]);
+
+    }, [movie, user, props._id]);
 
     function saveClick() {
         let params = {};
@@ -140,8 +156,9 @@ export default function MoviePage(props) {
             appear={true}
             timeout={600}
             classNames='fade'
+            key={movie.Title}
             unmountOnExit>
-            <div className='movie-page mt-3' key={movie.Title}>
+            <div className='movie-page mt-3'>
                 <div className='position-relative'>
                     <img className='background-custom' src={movie.Poster}></img>
                     <div className='background-cover opacity-80'></div>

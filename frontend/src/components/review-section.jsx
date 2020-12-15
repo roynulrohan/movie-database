@@ -177,7 +177,7 @@ export default function ReviewSection(props) {
                     <textarea
                         type='text'
                         class='form-control'
-                        maxLength='300'
+                        maxLength='400'
                         placeholder='Review...'
                         value={reviewBody}
                         onChange={(e) => {

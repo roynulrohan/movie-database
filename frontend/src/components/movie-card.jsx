@@ -55,7 +55,7 @@ export default function MovieCard(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: '/api/account/updateLists',
+            url: '/account/update',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -87,7 +87,7 @@ export default function MovieCard(props) {
         // Post request to backend
         axios({
             method: 'put',
-            url: '/api/account/updateLists',
+            url: '/account/update',
             headers: {
                 'Content-Type': 'application/json',
             },

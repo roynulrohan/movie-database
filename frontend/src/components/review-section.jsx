@@ -19,29 +19,34 @@ export default function ReviewSection(props) {
     const [reviewBody, setReviewBody] = useState('');
 
     useEffect(() => {
-        // set reviews on props change
-        if (props.movie.Ratings) {
-            setReviews(props.movie.Ratings);
-        }
+        axios
+            .get('/reviews', {
+                params: {
+                    movie: props.movie._id,
+                },
+            })
+            .then((response) => {
+                setReviews(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }, [props.movie]);
 
     // submit review request
     function submitReview() {
         let params = {
-            id: props.movie._id,
-            addReview: {
-                Movie: props.movie._id,
-                Source: user.currentUser.Username,
-                Value: reviewScore + '/10',
-                Title: reviewTitle,
-                Body: reviewBody,
-            },
+            movie: props.movie._id,
+            source: user.currentUser.Username,
+            value: reviewScore + '/10',
+            title: reviewTitle,
+            body: reviewBody,
         };
 
         // Post request to backend
         axios({
-            method: 'put',
-            url: '/movies/update',
+            method: 'post',
+            url: '/reviews/new',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -55,128 +60,148 @@ export default function ReviewSection(props) {
                 setReviewHidden(true);
                 // set new reviews
                 setReviews([]);
-                setReviews(res.data.updated.Ratings);
+                setReviews(res.data.updated);
             }
         });
     }
 
     // remove review function to be passed as callback to each review
     function removeReview(review) {
-        let params = {
-            id: props.movie._id,
-            removeReview: {
-                Movie: props.movie._id,
-                Source: user.currentUser.Username,
-                Value: review.Value,
-                Title: review.Title,
-                Body: review.Body,
-            },
-        };
-
         // Post request to backend
         axios({
-            method: 'put',
-            url: '/movies/update',
+            method: 'post',
+            url: '/reviews/delete',
             headers: {
                 'Content-Type': 'application/json',
             },
-            data: JSON.stringify(params),
+            data: JSON.stringify({ id: review._id, movie: review.Movie }),
         }).then((res) => {
             setReviews([]);
-            setReviews(res.data.updated.Ratings);
+            setReviews(res.data.updated);
         });
     }
-    
+
     // review writing box
     function getReviewBox() {
         return (
-            <div class="container rounded input-group d-flex flex-column w-100 mb-3 review-container p-2">
-                <div className="d-flex justify-content-between">
-                    <div class="input-group m-1 w-75">
-                        <div class="input-group-prepend">
+            <div class='container rounded d-flex flex-column w-100 mb-3 review-container p-3'>
+                <div className='d-flex justify-content-between align-items-center m-1'>
+                    <div class='input-group w-75'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setReviewTitle('');
-                                }}
-                            >
+                                }}>
                                 Title
                             </button>
                         </div>
 
                         <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Title..."
+                            type='text'
+                            class='form-control'
+                            placeholder='Title...'
                             value={reviewTitle}
                             onChange={(e) => {
                                 setReviewTitle(e.target.value);
                             }}
                         />
                     </div>
-                    <div class="input-group m-1 w-auto">
-                        <div class="input-group-prepend">
+                    <div class='input-group ml-3 w-25'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setReviewScore('0');
-                                }}
-                            >
+                                }}>
                                 Score
                             </button>
                         </div>
-
-                        <input
-                            type="number"
-                            min="0"
-                            max="10"
-                            dir="rtl"
-                            class="form-control"
-                            placeholder="Score..."
+                        <select
+                            class={
+                                reviewScore == '0'
+                                    ? 'custom-select text-secondary'
+                                    : 'custom-select text-white'
+                            }
+                            id='scoreSelect'
                             value={reviewScore}
                             onChange={(e) => {
                                 setReviewScore(e.target.value);
-                            }}
-                        />
+                            }}>
+                            <option
+                                value='0'
+                                selected
+                                className='text-secondary'>
+                                0
+                            </option>
 
-                        <div class="input-group-append">
-                            <span class="input-group-text text-info">/10</span>
+                            <option value='1' className='text-danger'>
+                                1
+                            </option>
+                            <option value='2' className='text-danger'>
+                                2
+                            </option>
+                            <option value='3' className='text-danger'>
+                                3
+                            </option>
+                            <option value='4' className='text-warning'>
+                                4
+                            </option>
+                            <option value='5' className='text-warning'>
+                                5
+                            </option>
+                            <option value='6' className='text-warning'>
+                                6
+                            </option>
+                            <option value='7' className='text-success'>
+                                7
+                            </option>
+                            <option value='8' className='text-success'>
+                                8
+                            </option>
+                            <option value='9' className='text-success'>
+                                9
+                            </option>
+                            <option value='10' className='text-success'>
+                                10
+                            </option>
+                        </select>
+                        <div class='input-group-append'>
+                            <span class='input-group-text text-info'>/ 10</span>
                         </div>
                     </div>
                 </div>
-                <div class="review-body m-1">
+                <div class='review-body ml-1 mr-1 mt-3 mb-3'>
                     <textarea
-                        type="text"
-                        class="form-control"
-                        maxLength="300"
-                        placeholder="Review..."
+                        type='text'
+                        class='form-control'
+                        maxLength='400'
+                        placeholder='Review...'
                         value={reviewBody}
                         onChange={(e) => {
                             setReviewBody(e.target.value);
                         }}
                     />
                 </div>
-                <div className="d-flex justify-content-end">
-                    <div class="m-1 mt-3 d-flex justify-content-end">
+                <div className='d-flex justify-content-end'>
+                    <div class='m-1 mt-3 d-flex justify-content-end'>
                         <button
-                            class="btn btn-info"
+                            class='btn btn-info'
                             disabled={!(reviewScore > 0 && reviewScore <= 10)}
                             onClick={() => {
                                 submitReview();
-                            }}
-                        >
+                            }}>
                             Submit
                         </button>
                     </div>
-                    <div class="m-1 mt-3">
+                    <div class='m-1 mt-3'>
                         <button
-                            class="btn btn-outline-danger"
+                            class='btn btn-outline-danger'
                             onClick={() => {
                                 setReviewHidden(true);
-                            }}
-                        >
+                            }}>
                             Cancel
                         </button>
                     </div>
@@ -185,19 +210,18 @@ export default function ReviewSection(props) {
         );
     }
     return (
-        <div className="container rounded p-3 text-white bg-transparent">
-            <div className="d-flex justify-content-between">
+        <div className='container rounded p-3 text-white bg-transparent'>
+            <div className='d-flex justify-content-between'>
                 <h2>Reviews</h2>
                 <button
-                    className="btn btn-info"
+                    className='btn btn-info'
                     onClick={() => {
                         if (user.currentUser) {
                             setReviewHidden(false);
                         } else {
                             history.push('/login');
                         }
-                    }}
-                >
+                    }}>
                     Write a Review
                 </button>
             </div>
@@ -207,13 +231,12 @@ export default function ReviewSection(props) {
                     in={true}
                     appear={true}
                     timeout={600}
-                    classNames="fade"
-                    unmountOnExit
-                >
+                    classNames='fade'
+                    unmountOnExit>
                     {getReviewBox()}
                 </CSSTransition>
             )}
-            {reviews &&
+            {reviews.length !== 0 ? (
                 reviews.map(function (rating, i) {
                     return (
                         <Review
@@ -222,7 +245,10 @@ export default function ReviewSection(props) {
                             key={props.movie._id + 'review' + i}
                         />
                     );
-                })}
+                })
+            ) : (
+                <div className='container rounded p-3'>No reviews</div>
+            )}
         </div>
     );
 }

@@ -17,7 +17,7 @@ export default function UserProfile(props) {
 
     useEffect(() => {
         // get user and update state on props change
-        axios.get('/api/account/user/' + props._id).then((res) => {
+        axios.get('/account/user/' + props._id).then((res) => {
             if (res.data) {
                 // set user state
                 setUserState(res.data);
@@ -54,32 +54,31 @@ export default function UserProfile(props) {
             in={true}
             appear={true}
             timeout={600}
-            classNames="fade"
-            unmountOnExit
-        >
+            classNames='fade'
+            unmountOnExit>
             <div>
-                <div className="container rounded p-4 mt-4 text-white">
-                    <div className="d-flex flex-column justify-content-between mr-4 overflow-hidden">
+                <div className='container rounded p-4 mt-4 text-white'>
+                    <div className='d-flex flex-column justify-content-between mr-4 overflow-hidden'>
                         {user &&
                             Object.keys(user).map(function (key) {
                                 return <p>{key + ': ' + user[key]}</p>;
                             })}
                     </div>
                 </div>
-                <div>
+                <div className='mt-5'>
                     {likedQuery && (
                         <MovieRow
                             key={'Liked'}
-                            title={'Liked'}
-                            movies={likedQuery}
-                        ></MovieRow>
+                            title={'Liked List'}
+                            shouldCount='true'
+                            movies={likedQuery}></MovieRow>
                     )}
                     {savedQuery && (
                         <MovieRow
                             key={'Saved for Later'}
                             title={'Saved for Later'}
-                            movies={savedQuery}
-                        ></MovieRow>
+                            shouldCount='true'
+                            movies={savedQuery}></MovieRow>
                     )}
                 </div>
             </div>

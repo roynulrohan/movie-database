@@ -322,6 +322,23 @@ body {
         box-shadow: none;
         border-color: $info;
     }
+
+    select {
+        background-color: $nav-color;
+        color: $white;
+        border-color: $nav-color;
+    }
+
+    select:active,
+    select:focus {
+        outline: none !important;
+        box-shadow: none;
+        border-color: $nav-color;
+    }
+
+    select:disabled {
+        background-color: $nav-color;
+    }
 }
 
 .review {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
 import { Dropdown } from 'react-bootstrap/';
@@ -18,6 +18,7 @@ export default function Nav() {
         history.push('/user/' + user.currentUser.Username);
     };
     const [isClicked, setIsClicked] = useState(false); // user dropdown clicked state
+    const location = useLocation();
 
     useEffect(() => {
         // verifies current user on mount
@@ -27,7 +28,7 @@ export default function Nav() {
         if (obj && obj.token) {
             const { token } = obj;
 
-            axios.get('/api/account/verify?token=' + token).then((res) => {
+            axios.get('/account/verify?token=' + token).then((res) => {
                 if (res.data.success) {
                     // write user to redux store
                     dispatch(setUser(res.data.user));
@@ -50,7 +51,7 @@ export default function Nav() {
         if (obj && obj.token) {
             const { token } = obj;
 
-            axios.post('/api/account/logout?token=' + token).then((res) => {
+            axios.post('/account/logout?token=' + token).then((res) => {
                 if (res.data.success) {
                     // remove user from redux store
                     dispatch(setUser());
@@ -193,7 +194,9 @@ export default function Nav() {
                         userDropdown()
                     ) : (
                         <Link to='/login' key='login-button'>
-                            <button className='btn btn-dark-yellow'>
+                            <button
+                                className='btn btn-dark-yellow'
+                                disabled={location.pathname == '/login'}>
                                 Login
                             </button>
                         </Link>

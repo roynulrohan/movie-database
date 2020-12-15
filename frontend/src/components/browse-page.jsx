@@ -26,10 +26,12 @@ const genres = [
     'Sport',
 ];
 
-export default function BrowsePage() {
+export default function BrowsePage(props) {
     const [movies, setMovies] = useState([]); // movie list
     const [search, setSearch] = useState(''); // search bar
-    const [genre, setGenre] = useState(''); // filters
+    const [genre, setGenre] = useState(
+        props.location.genre ? props.location.genre : ''
+    ); // filters
     const [year, setYear] = useState('');
     const [type, setType] = useState('');
     const [metascore, setMetascore] = useState('');
@@ -37,14 +39,15 @@ export default function BrowsePage() {
     const [sortOrder, setSortOrder] = useState('ascending');
 
     useEffect(() => {
+        document.title = 'Browse | Not IMDb';
+    }, []);
+    useEffect(() => {
         // make delayed requests everytime search or filter parameters are changed
         const delayDebounceFn = setTimeout(() => {
             axios
                 .get('/movies', {
                     params: {
-                        random: !(search || genre || year || type || metascore)
-                            ? true
-                            : false,
+                        random: !search ? true : false,
                         search: search,
                         genre: genre,
                         year: year,
@@ -78,51 +81,47 @@ export default function BrowsePage() {
             in={true}
             appear={true}
             timeout={600}
-            classNames="fade"
-            unmountOnExit
-        >
-            <div className="d-flex flex-column justify-content-center align-items-center pt-4">
-                <div className="mb-3 text-info">
+            classNames='fade'
+            unmountOnExit>
+            <div className='d-flex flex-column justify-content-center align-items-center pt-4'>
+                <div className='mb-3 text-info'>
                     <h1>Movies</h1>
                 </div>
-                <div className="container rounded p-3 mb-4 d-flex align-items-center justify-content-around w-100 position-relative">
+                <div className='container rounded p-3 mb-4 d-flex align-items-center justify-content-around w-100 position-relative'>
                     <input
-                        className="browse-search w-75"
-                        placeholder="Search... "
-                        type="text"
-                        spellcheck="false"
+                        className='browse-search w-75'
+                        placeholder='Search... '
+                        type='text'
+                        spellcheck='false'
                         value={search}
                         onChange={(e) => {
                             setSearch(e.target.value);
-                        }}
-                    ></input>
+                        }}></input>
                     <svg
                         onClick={() => {
                             setSearch('');
                         }}
                         display={search ? '' : 'none'}
-                        width="2em"
-                        height="2em"
-                        viewBox="0 0 16 16"
-                        class="bi bi-backspace-fill backspace"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
+                        width='2em'
+                        height='2em'
+                        viewBox='0 0 16 16'
+                        class='bi bi-backspace-fill backspace'
+                        xmlns='http://www.w3.org/2000/svg'>
                         <path
-                            fill-rule="evenodd"
-                            d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z"
+                            fill-rule='evenodd'
+                            d='M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z'
                         />
                     </svg>
                 </div>
-                <div className="d-flex justify-content-center align-items-center">
-                    <div class="input-group m-1">
-                        <div class="input-group-prepend">
+                <div className='d-flex justify-content-center align-items-center'>
+                    <div class='input-group m-1'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setGenre('');
-                                }}
-                            >
+                                }}>
                                 Genre
                             </button>
                         </div>
@@ -132,64 +131,59 @@ export default function BrowsePage() {
                                     ? 'custom-select text-secondary'
                                     : 'custom-select text-white'
                             }
-                            id="genreSelect"
+                            id='genreSelect'
                             value={genre}
                             onChange={(e) => {
                                 setGenre(e.target.value);
-                            }}
-                        >
+                            }}>
                             <option
-                                value=""
+                                value=''
                                 selected
-                                className="text-secondary"
-                            >
+                                className='text-secondary'>
                                 Genre
                             </option>
                             {genres.map((genre) => {
                                 return (
                                     <option
                                         value={genre}
-                                        className="text-white"
-                                    >
+                                        className='text-white'>
                                         {genre}
                                     </option>
                                 );
                             })}
                         </select>
                     </div>
-                    <div class="input-group m-1">
-                        <div class="input-group-prepend">
+                    <div class='input-group m-1'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setYear('');
-                                }}
-                            >
+                                }}>
                                 Year
                             </button>
                         </div>
 
                         <input
-                            type="text"
-                            class="form-control"
-                            maxLength="4"
-                            placeholder="Year"
+                            type='text'
+                            class='form-control'
+                            maxLength='4'
+                            placeholder='Year'
                             value={year}
                             onChange={(e) => {
                                 setYear(e.target.value);
                             }}
                         />
                     </div>
-                    <div class="input-group m-1">
-                        <div class="input-group-prepend">
+                    <div class='input-group m-1'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setType('');
-                                }}
-                            >
+                                }}>
                                 Type
                             </button>
                         </div>
@@ -199,56 +193,53 @@ export default function BrowsePage() {
                                     ? 'custom-select text-secondary'
                                     : 'custom-select text-white'
                             }
-                            id="typeSelect"
+                            id='typeSelect'
                             value={type}
                             onChange={(e) => {
                                 setType(e.target.value);
-                            }}
-                        >
+                            }}>
                             <option
-                                value=""
+                                value=''
                                 selected
-                                className="text-secondary"
-                            >
+                                className='text-secondary'>
                                 Type
                             </option>
-                            <option value="movie" className="text-white">
+                            <option value='movie' className='text-white'>
                                 Movie
                             </option>
-                            <option value="series" className="text-white">
+                            <option value='series' className='text-white'>
                                 TV Series
                             </option>
                         </select>
                     </div>
-                    <div class="input-group m-1">
-                        <div class="input-group-prepend">
+                    <div class='input-group m-1'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setMetascore('');
-                                }}
-                            >
+                                }}>
                                 Metascore
                             </button>
                         </div>
 
                         <input
-                            type="text"
-                            class="form-control"
-                            maxLength="4"
-                            placeholder="Min. Rating"
+                            type='text'
+                            class='form-control'
+                            maxLength='4'
+                            placeholder='Min. Rating'
                             value={metascore}
                             onChange={(e) => {
                                 setMetascore(e.target.value);
                             }}
                         />
                     </div>
-                    <div class="input-group m-1">
-                        <div class="input-group-prepend">
+                    <div class='input-group m-1'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 disabled={
                                     !(
                                         search ||
@@ -264,42 +255,39 @@ export default function BrowsePage() {
                                     } else {
                                         setSortOrder('ascending');
                                     }
-                                }}
-                            >
+                                }}>
                                 {sortOrder == 'ascending' ? (
                                     <svg
-                                        width="1.3em"
-                                        height="1.3em"
-                                        viewBox="0 0 16 16"
-                                        class="bi bi-sort-down"
-                                        fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
+                                        width='1.3em'
+                                        height='1.3em'
+                                        viewBox='0 0 16 16'
+                                        class='bi bi-sort-down'
+                                        fill='currentColor'
+                                        xmlns='http://www.w3.org/2000/svg'>
                                         <path
-                                            fill-rule="evenodd"
-                                            d="M3 2a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-1 0v-10A.5.5 0 0 1 3 2z"
+                                            fill-rule='evenodd'
+                                            d='M3 2a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-1 0v-10A.5.5 0 0 1 3 2z'
                                         />
                                         <path
-                                            fill-rule="evenodd"
-                                            d="M5.354 10.146a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L3 11.793l1.646-1.647a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 9a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"
+                                            fill-rule='evenodd'
+                                            d='M5.354 10.146a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L3 11.793l1.646-1.647a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 9a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z'
                                         />
                                     </svg>
                                 ) : (
                                     <svg
-                                        width="1.3em"
-                                        height="1.3em"
-                                        viewBox="0 0 16 16"
-                                        class="bi bi-sort-up"
-                                        fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
+                                        width='1.3em'
+                                        height='1.3em'
+                                        viewBox='0 0 16 16'
+                                        class='bi bi-sort-up'
+                                        fill='currentColor'
+                                        xmlns='http://www.w3.org/2000/svg'>
                                         <path
-                                            fill-rule="evenodd"
-                                            d="M3 13a.5.5 0 0 0 .5-.5v-10a.5.5 0 0 0-1 0v10a.5.5 0 0 0 .5.5z"
+                                            fill-rule='evenodd'
+                                            d='M3 13a.5.5 0 0 0 .5-.5v-10a.5.5 0 0 0-1 0v10a.5.5 0 0 0 .5.5z'
                                         />
                                         <path
-                                            fill-rule="evenodd"
-                                            d="M5.354 4.854a.5.5 0 0 0 0-.708l-2-2a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L3 3.207l1.646 1.647a.5.5 0 0 0 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 9a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"
+                                            fill-rule='evenodd'
+                                            d='M5.354 4.854a.5.5 0 0 0 0-.708l-2-2a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L3 3.207l1.646 1.647a.5.5 0 0 0 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 9a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z'
                                         />
                                     </svg>
                                 )}
@@ -311,53 +299,50 @@ export default function BrowsePage() {
                                     ? 'custom-select text-secondary'
                                     : 'custom-select text-warning'
                             }
-                            id="sortSelect"
+                            id='sortSelect'
                             value={sort}
                             disabled={
                                 !(search || genre || year || type || metascore)
                             }
                             onChange={(e) => {
                                 setSort(e.target.value);
-                            }}
-                        >
+                            }}>
                             <option
-                                value=""
+                                value=''
                                 selected
-                                className="text-secondary"
-                            >
+                                className='text-secondary'>
                                 Sort By
                             </option>
-                            <option value="Title" className="text-white">
+                            <option value='Title' className='text-white'>
                                 Title
                             </option>
-                            <option value="Year" className="text-white">
+                            <option value='Year' className='text-white'>
                                 Year
                             </option>
-                            <option value="Runtime" className="text-white">
+                            <option value='Runtime' className='text-white'>
                                 Runtime
                             </option>
-                            <option value="Metascore" className="text-white">
+                            <option value='Metascore' className='text-white'>
                                 Metascore
                             </option>
-                            <option value="imdbRating" className="text-white">
+                            <option value='imdbRating' className='text-white'>
                                 IMDb Rating
                             </option>
                         </select>
                     </div>
-                    <div class="input-group-clear m-1">
+                    <div class='input-group-clear m-1'>
                         <button
-                            class="btn btn-dark-danger"
-                            type="button"
+                            class='btn btn-dark-danger'
+                            type='button'
                             onClick={() => {
                                 resetFilters();
-                            }}
-                        >
+                            }}>
                             Clear Filters
                         </button>
                     </div>
                 </div>
 
-                <div className="browse-grid">
+                <div className='browse-grid'>
                     {movies.map(function (currentMovie, i) {
                         return (
                             <MovieCard

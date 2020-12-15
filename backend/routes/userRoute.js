@@ -1,13 +1,21 @@
 const express = require('express');
-const { remove } = require('../../models/User');
+const { remove } = require('../models/User');
 const router = express.Router();
 
-const User = require('../../models/User');
-const UserSession = require('../../models/UserSession');
+const User = require('../models/User');
+const UserSession = require('../models/UserSession');
 
-router.route('/updateLists').put(function (req, res) {
+router.route('/update').put(function (req, res) {
     const { body } = req;
-    const { id, addSaved, removeSaved, addLiked, removeLiked } = body;
+    const {
+        id,
+        addSaved,
+        removeSaved,
+        addLiked,
+        removeLiked,
+        addReview,
+        removeReview,
+    } = body;
 
     let params = {};
 
@@ -25,6 +33,18 @@ router.route('/updateLists').put(function (req, res) {
 
     if (removeLiked) {
         params = { $pull: { Liked: removeLiked } };
+    }
+
+    if (addReview) {
+        params = {
+            $addToSet: { Reviews: addReview },
+        };
+    }
+
+    if (removeReview) {
+        params = {
+            $pull: { Reviews: removeReview },
+        };
     }
 
     User.findOneAndUpdate(

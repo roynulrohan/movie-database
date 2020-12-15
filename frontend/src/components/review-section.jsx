@@ -19,29 +19,34 @@ export default function ReviewSection(props) {
     const [reviewBody, setReviewBody] = useState('');
 
     useEffect(() => {
-        // set reviews on props change
-        if (props.movie.Ratings) {
-            setReviews(props.movie.Ratings);
-        }
+        axios
+            .get('/reviews', {
+                params: {
+                    movie: props.movie._id,
+                },
+            })
+            .then((response) => {
+                setReviews(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }, [props.movie]);
 
     // submit review request
     function submitReview() {
         let params = {
-            id: props.movie._id,
-            addReview: {
-                Movie: props.movie._id,
-                Source: user.currentUser.Username,
-                Value: reviewScore + '/10',
-                Title: reviewTitle,
-                Body: reviewBody,
-            },
+            movie: props.movie._id,
+            source: user.currentUser.Username,
+            value: reviewScore + '/10',
+            title: reviewTitle,
+            body: reviewBody,
         };
 
         // Post request to backend
         axios({
-            method: 'put',
-            url: '/movies/update',
+            method: 'post',
+            url: '/reviews/new',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -55,35 +60,24 @@ export default function ReviewSection(props) {
                 setReviewHidden(true);
                 // set new reviews
                 setReviews([]);
-                setReviews(res.data.updated.Ratings);
+                setReviews(res.data.updated);
             }
         });
     }
 
     // remove review function to be passed as callback to each review
     function removeReview(review) {
-        let params = {
-            id: props.movie._id,
-            removeReview: {
-                Movie: props.movie._id,
-                Source: user.currentUser.Username,
-                Value: review.Value,
-                Title: review.Title,
-                Body: review.Body,
-            },
-        };
-
         // Post request to backend
         axios({
-            method: 'put',
-            url: '/movies/update',
+            method: 'post',
+            url: '/reviews/delete',
             headers: {
                 'Content-Type': 'application/json',
             },
-            data: JSON.stringify(params),
+            data: JSON.stringify({ id: review._id, movie: review.Movie }),
         }).then((res) => {
             setReviews([]);
-            setReviews(res.data.updated.Ratings);
+            setReviews(res.data.updated);
         });
     }
 

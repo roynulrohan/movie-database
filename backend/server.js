@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 4000;
 const path = require('path');
 const movieRoute = require('./routes/movieRoute');
 const userRoute = require('./routes/userRoute');
+const reviewRoute = require('./routes/reviewRoute');
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ connection.once('open', function () {
 
 app.use('/movies', movieRoute);
 app.use('/account', userRoute);
+app.use('/reviews', reviewRoute);
 
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.get('*', (req, res) => {

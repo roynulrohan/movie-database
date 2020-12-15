@@ -38,6 +38,8 @@ export default function Login(props) {
         } else {
             document.title = 'Sign In | Not IMDb';
         }
+
+        validPassword(password);
     }, [register]);
 
     // redirect to wherever user came from
@@ -171,6 +173,7 @@ export default function Login(props) {
                     <div class='form-group'>
                         <label>Username</label>
                         <input
+                            name='username'
                             type='text'
                             class='form-control'
                             placeholder='Enter username'
@@ -181,6 +184,7 @@ export default function Login(props) {
                     <div class='form-group'>
                         <label>Password</label>
                         <input
+                            name='password'
                             type='password'
                             class='form-control'
                             placeholder='Enter Password'
@@ -227,6 +231,7 @@ export default function Login(props) {
                 <div class='form-group'>
                     <label>Name</label>
                     <input
+                        name='name'
                         type='name'
                         class='form-control'
                         placeholder='Enter name'
@@ -238,6 +243,7 @@ export default function Login(props) {
                 <div class='form-group'>
                     {validUsername()}
                     <input
+                        name='username'
                         type='text'
                         class='form-control'
                         placeholder='Enter username'
@@ -248,6 +254,7 @@ export default function Login(props) {
                 <div class='form-group'>
                     <label>Password</label>
                     <input
+                        name='password'
                         type='password'
                         class='form-control'
                         placeholder='Enter Password'

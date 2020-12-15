@@ -17,7 +17,7 @@ export default function UserProfile(props) {
 
     useEffect(() => {
         // get user and update state on props change
-        axios.get('/api/account/user/' + props._id).then((res) => {
+        axios.get('/account/user/' + props._id).then((res) => {
             if (res.data) {
                 // set user state
                 setUserState(res.data);

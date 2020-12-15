@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const Movie = require('../../models/Movie');
+const Movie = require('../models/Movie');
 
 // middleware to lowercase query params for case insensitive matching
 router.use(function (req, res, next) {

@@ -86,97 +86,93 @@ export default function ReviewSection(props) {
             setReviews(res.data.updated.Ratings);
         });
     }
-    
+
     // review writing box
     function getReviewBox() {
         return (
-            <div class="container rounded input-group d-flex flex-column w-100 mb-3 review-container p-2">
-                <div className="d-flex justify-content-between">
-                    <div class="input-group m-1 w-75">
-                        <div class="input-group-prepend">
+            <div class='container rounded input-group d-flex flex-column w-100 mb-3 review-container p-2'>
+                <div className='d-flex justify-content-between'>
+                    <div class='input-group m-1 w-75'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setReviewTitle('');
-                                }}
-                            >
+                                }}>
                                 Title
                             </button>
                         </div>
 
                         <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Title..."
+                            type='text'
+                            class='form-control'
+                            placeholder='Title...'
                             value={reviewTitle}
                             onChange={(e) => {
                                 setReviewTitle(e.target.value);
                             }}
                         />
                     </div>
-                    <div class="input-group m-1 w-auto">
-                        <div class="input-group-prepend">
+                    <div class='input-group m-1 w-auto'>
+                        <div class='input-group-prepend'>
                             <button
-                                class="btn btn-dark-info"
-                                type="button"
+                                class='btn btn-dark-info'
+                                type='button'
                                 onClick={() => {
                                     setReviewScore('0');
-                                }}
-                            >
+                                }}>
                                 Score
                             </button>
                         </div>
 
                         <input
-                            type="number"
-                            min="0"
-                            max="10"
-                            dir="rtl"
-                            class="form-control"
-                            placeholder="Score..."
+                            type='number'
+                            min='0'
+                            max='10'
+                            dir='rtl'
+                            class='form-control'
+                            placeholder='Score...'
                             value={reviewScore}
                             onChange={(e) => {
                                 setReviewScore(e.target.value);
                             }}
                         />
 
-                        <div class="input-group-append">
-                            <span class="input-group-text text-info">/10</span>
+                        <div class='input-group-append'>
+                            <span class='input-group-text text-info'>/10</span>
                         </div>
                     </div>
                 </div>
-                <div class="review-body m-1">
+                <div class='review-body m-1'>
                     <textarea
-                        type="text"
-                        class="form-control"
-                        maxLength="300"
-                        placeholder="Review..."
+                        type='text'
+                        class='form-control'
+                        maxLength='300'
+                        placeholder='Review...'
                         value={reviewBody}
                         onChange={(e) => {
                             setReviewBody(e.target.value);
                         }}
                     />
                 </div>
-                <div className="d-flex justify-content-end">
-                    <div class="m-1 mt-3 d-flex justify-content-end">
+                <div className='d-flex justify-content-end'>
+                    <div class='m-1 mt-3 d-flex justify-content-end'>
                         <button
-                            class="btn btn-info"
+                            class='btn btn-info'
                             disabled={!(reviewScore > 0 && reviewScore <= 10)}
                             onClick={() => {
                                 submitReview();
-                            }}
-                        >
+                            }}>
                             Submit
                         </button>
                     </div>
-                    <div class="m-1 mt-3">
+                    <div class='m-1 mt-3'>
                         <button
-                            class="btn btn-outline-danger"
+                            class='btn btn-outline-danger'
                             onClick={() => {
                                 setReviewHidden(true);
-                            }}
-                        >
+                            }}>
                             Cancel
                         </button>
                     </div>
@@ -185,19 +181,18 @@ export default function ReviewSection(props) {
         );
     }
     return (
-        <div className="container rounded p-3 text-white bg-transparent">
-            <div className="d-flex justify-content-between">
+        <div className='container rounded p-3 text-white bg-transparent'>
+            <div className='d-flex justify-content-between'>
                 <h2>Reviews</h2>
                 <button
-                    className="btn btn-info"
+                    className='btn btn-info'
                     onClick={() => {
                         if (user.currentUser) {
                             setReviewHidden(false);
                         } else {
                             history.push('/login');
                         }
-                    }}
-                >
+                    }}>
                     Write a Review
                 </button>
             </div>
@@ -207,9 +202,8 @@ export default function ReviewSection(props) {
                     in={true}
                     appear={true}
                     timeout={600}
-                    classNames="fade"
-                    unmountOnExit
-                >
+                    classNames='fade'
+                    unmountOnExit>
                     {getReviewBox()}
                 </CSSTransition>
             )}

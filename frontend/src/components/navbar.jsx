@@ -28,7 +28,7 @@ export default function Nav() {
         if (obj && obj.token) {
             const { token } = obj;
 
-            axios.get('/api/account/verify?token=' + token).then((res) => {
+            axios.get('/account/verify?token=' + token).then((res) => {
                 if (res.data.success) {
                     // write user to redux store
                     dispatch(setUser(res.data.user));
@@ -51,7 +51,7 @@ export default function Nav() {
         if (obj && obj.token) {
             const { token } = obj;
 
-            axios.post('/api/account/logout?token=' + token).then((res) => {
+            axios.post('/account/logout?token=' + token).then((res) => {
                 if (res.data.success) {
                     // remove user from redux store
                     dispatch(setUser());

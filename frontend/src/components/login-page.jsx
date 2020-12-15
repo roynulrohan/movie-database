@@ -117,16 +117,16 @@ export default function Login(props) {
     function validUsername() {
         if (username.length >= 6 && username.length <= 14) {
             return (
-                <div className="d-flex justify-content-between">
+                <div className='d-flex justify-content-between'>
                     <label>Username</label>
-                    <small className="text-success">6-14 characters</small>
+                    <small className='text-success'>6-14 characters</small>
                 </div>
             );
         } else {
             return (
-                <div className="d-flex justify-content-between">
+                <div className='d-flex justify-content-between'>
                     <label>Username</label>
-                    <small className="text-danger">6-14 characters</small>
+                    <small className='text-danger'>6-14 characters</small>
                 </div>
             );
         }
@@ -166,92 +166,91 @@ export default function Login(props) {
     // sign in container
     function signInContainer() {
         return (
-            <div className="container rounded p-4 pt-5 text-white h-100 d-flex flex-column justify-content-between">
+            <form className='container rounded p-4 pt-5 text-white h-100 d-flex flex-column justify-content-between'>
                 <div>
-                    <div class="form-group">
+                    <div class='form-group'>
                         <label>Username</label>
                         <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Enter username"
+                            type='text'
+                            class='form-control'
+                            placeholder='Enter username'
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
-                    <div class="form-group">
+                    <div class='form-group'>
                         <label>Password</label>
                         <input
-                            type="password"
-                            class="form-control"
-                            placeholder="Enter Password"
+                            type='password'
+                            class='form-control'
+                            placeholder='Enter Password'
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
                 </div>
                 {error ? (
-                    <small class="form-text text-danger">{error}</small>
+                    <small class='form-text text-danger'>{error}</small>
                 ) : (
                     ''
                 )}
                 <div>
-                    <div class="form-group">
-                        <small class="form-text text-muted">
+                    <div class='form-group'>
+                        <small class='form-text text-muted'>
                             Don't have an account?
                             <a
-                                class="text-warning text-decoration-none pointer"
+                                class='text-warning text-decoration-none pointer'
                                 onClick={() => {
                                     setMode(true);
                                     setError();
-                                }}
-                            >
+                                }}>
                                 {' '}
                                 Sign up
                             </a>
                         </small>
                     </div>{' '}
                     <button
+                        type='submit'
                         onClick={() => signInRequest()}
-                        class="btn btn-warning w-100"
-                    >
+                        class='btn btn-warning w-100'>
                         Sign In
                     </button>
                 </div>
-            </div>
+            </form>
         );
     }
 
     // sign up container
     function signUpContainer() {
         return (
-            <div className="container rounded p-4 text-white h-100 d-flex flex-column justify-content-between">
-                <div class="form-group">
+            <form className='container rounded p-4 text-white h-100 d-flex flex-column justify-content-between'>
+                <div class='form-group'>
                     <label>Name</label>
                     <input
-                        type="name"
-                        class="form-control"
-                        placeholder="Enter name"
+                        type='name'
+                        class='form-control'
+                        placeholder='Enter name'
                         value={name}
-                        maxLength="35"
+                        maxLength='35'
                         onChange={(e) => setName(e.target.value)}
                     />
                 </div>
-                <div class="form-group">
+                <div class='form-group'>
                     {validUsername()}
                     <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Enter username"
+                        type='text'
+                        class='form-control'
+                        placeholder='Enter username'
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
-                <div class="form-group">
+                <div class='form-group'>
                     <label>Password</label>
                     <input
-                        type="password"
-                        class="form-control"
-                        placeholder="Enter Password"
+                        type='password'
+                        class='form-control'
+                        placeholder='Enter Password'
                         value={password}
                         onChange={(e) => {
                             setPassword(e.target.value);
@@ -259,44 +258,44 @@ export default function Login(props) {
                         }}
                     />
                 </div>
-                <div class="form-group">
-                    <div className="d-flex justify-content-between flex-column h-100">
+                <div class='form-group'>
+                    <div className='d-flex justify-content-between flex-column h-100'>
                         {/* password requirements */}
                         <small
-                            className={passMin ? 'text-success' : 'text-danger'}
-                        >
+                            className={
+                                passMin ? 'text-success' : 'text-danger'
+                            }>
                             - Min. 6 characters
                         </small>
                         <small
-                            className={passNum ? 'text-success' : 'text-danger'}
-                        >
+                            className={
+                                passNum ? 'text-success' : 'text-danger'
+                            }>
                             - Must contain number (0-9)
                         </small>
                         <small
                             className={
                                 passCapital ? 'text-success' : 'text-danger'
-                            }
-                        >
+                            }>
                             - Must contain a capital letter (A-Z)
                         </small>
                     </div>
                 </div>
                 {error ? (
-                    <small class="form-text text-danger">{error}</small>
+                    <small class='form-text text-danger'>{error}</small>
                 ) : (
                     ''
                 )}
 
-                <div class="form-group">
-                    <small class="form-text text-muted">
+                <div class='form-group'>
+                    <small class='form-text text-muted'>
                         Already have an account?
                         <a
-                            class="text-warning text-decoration-none pointer"
+                            class='text-warning text-decoration-none pointer'
                             onClick={() => {
                                 setMode(false);
                                 setError();
-                            }}
-                        >
+                            }}>
                             {' '}
                             Login
                         </a>
@@ -304,13 +303,13 @@ export default function Login(props) {
                 </div>
 
                 <button
+                    type='submit'
                     onClick={() => signUpRequest()}
-                    class="btn btn-warning"
-                    disabled={!buttonEnabled}
-                >
+                    class='btn btn-warning'
+                    disabled={!buttonEnabled}>
                     Sign Up
                 </button>
-            </div>
+            </form>
         );
     }
 
@@ -318,29 +317,27 @@ export default function Login(props) {
     function getContainer() {
         if (loading) {
             return (
-                <div className="container rounded p-4 text-white h-100 d-flex flex-column justify-content-center align-items-center">
+                <div className='container rounded p-4 text-white h-100 d-flex flex-column justify-content-center align-items-center'>
                     <h5>Loading...</h5>
                 </div>
             );
         } else {
             if (user.currentUser) {
                 return (
-                    <div className="container rounded p-4 text-white h-100">
+                    <div className='container rounded p-4 text-white h-100'>
                         <CSSTransition
                             in={true}
                             appear={true}
                             timeout={600}
-                            classNames="fade"
-                            unmountOnExit
-                        >
-                            <div className="d-flex flex-column justify-content-center align-items-center h-100">
+                            classNames='fade'
+                            unmountOnExit>
+                            <div className='d-flex flex-column justify-content-center align-items-center h-100'>
                                 <h5>You're logged in</h5>
                                 <br />
                                 <br />
                                 <img
                                     src={checkedIcon}
-                                    className="checked-icon"
-                                ></img>
+                                    className='checked-icon'></img>
                             </div>
                         </CSSTransition>
                     </div>
@@ -360,17 +357,16 @@ export default function Login(props) {
             in={true}
             appear={true}
             timeout={600}
-            classNames="fade"
-            unmountOnExit
-        >
+            classNames='fade'
+            unmountOnExit>
             <div>
                 {/* background */}
-                <div className="login-background">
-                    <div className="background-default"></div>
-                    <div className="background-cover opacity-60"></div>
+                <div className='login-background'>
+                    <div className='background-default'></div>
+                    <div className='background-cover opacity-60'></div>
                 </div>
                 {/* login container */}
-                <div className="login-container">{getContainer()}</div>
+                <div className='login-container'>{getContainer()}</div>
             </div>
         </CSSTransition>
     );

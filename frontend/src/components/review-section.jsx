@@ -84,9 +84,9 @@ export default function ReviewSection(props) {
     // review writing box
     function getReviewBox() {
         return (
-            <div class='container rounded input-group d-flex flex-column w-100 mb-3 review-container p-2'>
-                <div className='d-flex justify-content-between'>
-                    <div class='input-group m-1 w-75'>
+            <div class='container rounded d-flex flex-column w-100 mb-3 review-container p-3'>
+                <div className='d-flex justify-content-between align-items-center m-1'>
+                    <div class='input-group w-75'>
                         <div class='input-group-prepend'>
                             <button
                                 class='btn btn-dark-info'
@@ -108,7 +108,7 @@ export default function ReviewSection(props) {
                             }}
                         />
                     </div>
-                    <div class='input-group m-1 w-auto'>
+                    <div class='input-group ml-3 w-25'>
                         <div class='input-group-prepend'>
                             <button
                                 class='btn btn-dark-info'
@@ -119,26 +119,61 @@ export default function ReviewSection(props) {
                                 Score
                             </button>
                         </div>
-
-                        <input
-                            type='number'
-                            min='0'
-                            max='10'
-                            dir='rtl'
-                            class='form-control'
-                            placeholder='Score...'
+                        <select
+                            class={
+                                reviewScore == '0'
+                                    ? 'custom-select text-secondary'
+                                    : 'custom-select text-white'
+                            }
+                            id='scoreSelect'
                             value={reviewScore}
                             onChange={(e) => {
                                 setReviewScore(e.target.value);
-                            }}
-                        />
+                            }}>
+                            <option
+                                value='0'
+                                selected
+                                className='text-secondary'>
+                                0
+                            </option>
 
+                            <option value='1' className='text-danger'>
+                                1
+                            </option>
+                            <option value='2' className='text-danger'>
+                                2
+                            </option>
+                            <option value='3' className='text-danger'>
+                                3
+                            </option>
+                            <option value='4' className='text-warning'>
+                                4
+                            </option>
+                            <option value='5' className='text-warning'>
+                                5
+                            </option>
+                            <option value='6' className='text-warning'>
+                                6
+                            </option>
+                            <option value='7' className='text-success'>
+                                7
+                            </option>
+                            <option value='8' className='text-success'>
+                                8
+                            </option>
+                            <option value='9' className='text-success'>
+                                9
+                            </option>
+                            <option value='10' className='text-success'>
+                                10
+                            </option>
+                        </select>
                         <div class='input-group-append'>
-                            <span class='input-group-text text-info'>/10</span>
+                            <span class='input-group-text text-info'>/ 10</span>
                         </div>
                     </div>
                 </div>
-                <div class='review-body m-1'>
+                <div class='review-body ml-1 mr-1 mt-3 mb-3'>
                     <textarea
                         type='text'
                         class='form-control'

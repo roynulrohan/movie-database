@@ -201,7 +201,7 @@ export default function ReviewSection(props) {
                     {getReviewBox()}
                 </CSSTransition>
             )}
-            {reviews &&
+            {reviews.length !== 0 ? (
                 reviews.map(function (rating, i) {
                     return (
                         <Review
@@ -210,7 +210,10 @@ export default function ReviewSection(props) {
                             key={props.movie._id + 'review' + i}
                         />
                     );
-                })}
+                })
+            ) : (
+                <div className='container rounded p-3'>No reviews</div>
+            )}
         </div>
     );
 }

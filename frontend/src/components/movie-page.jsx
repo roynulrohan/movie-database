@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReviewSection from './review-section';
+import MovieRow from './movie-row';
 import { setUser } from '../actions';
 
 export default function MoviePage(props) {
@@ -24,7 +25,8 @@ export default function MoviePage(props) {
             .catch(function (error) {
                 console.log(error);
             });
-    }, []);
+        window.scrollTo(0, 0);
+    }, [props._id]);
 
     useEffect(() => {
         // set document title
@@ -139,7 +141,7 @@ export default function MoviePage(props) {
             timeout={600}
             classNames='fade'
             unmountOnExit>
-            <div className='movie-page mt-3'>
+            <div className='movie-page mt-3' key={movie.Title}>
                 <div className='position-relative'>
                     <img className='background-custom' src={movie.Poster}></img>
                     <div className='background-cover opacity-80'></div>
@@ -273,6 +275,21 @@ export default function MoviePage(props) {
                 </div>
 
                 <ReviewSection movie={movie} />
+                {movie.Genre && (
+                    <div className='mt-5'>
+                        <MovieRow
+                            title={'More like this'}
+                            params={{
+                                random: true,
+                                genre: movie.Genre.split(',')[
+                                    Math.floor(
+                                        Math.random() *
+                                            movie.Genre.split(',').length
+                                    )
+                                ].trim(),
+                            }}></MovieRow>
+                    </div>
+                )}
             </div>
         </CSSTransition>
     );

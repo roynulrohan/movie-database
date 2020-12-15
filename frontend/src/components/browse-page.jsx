@@ -39,14 +39,15 @@ export default function BrowsePage(props) {
     const [sortOrder, setSortOrder] = useState('ascending');
 
     useEffect(() => {
+        document.title = 'Browse | Not IMDb';
+    }, []);
+    useEffect(() => {
         // make delayed requests everytime search or filter parameters are changed
         const delayDebounceFn = setTimeout(() => {
             axios
                 .get('/movies', {
                     params: {
-                        random: !(search || genre || year || type || metascore)
-                            ? true
-                            : false,
+                        random: !search ? true : false,
                         search: search,
                         genre: genre,
                         year: year,

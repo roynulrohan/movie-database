@@ -37,7 +37,7 @@ export default function Review(props) {
             unmountOnExit>
             <div className='container rounded'>
                 <small className='mt-2 ml-3 text-secondary position-absolute'>
-                    {date.toUTCString()}
+                    {date.toLocaleString()}
                 </small>
                 <div className='d-flex justify-content-between align-items-start p-3 mb-2 review'>
                     <div className='d-flex flex-column justify-content-between w-100 mt-4'>

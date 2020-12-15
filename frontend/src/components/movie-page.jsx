@@ -115,7 +115,14 @@ export default function MoviePage(props) {
                 <h5>
                     {string.split(',').map((genre) => {
                         return (
-                            <span className="badge badge-secondary m-1">
+                            <span
+                                className='badge badge-secondary m-1 pointer'
+                                onClick={() => {
+                                    history.push({
+                                        pathname: '/browse',
+                                        genre: genre.trim(),
+                                    });
+                                }}>
                                 {genre}
                             </span>
                         );
@@ -130,23 +137,22 @@ export default function MoviePage(props) {
             in={true}
             appear={true}
             timeout={600}
-            classNames="fade"
-            unmountOnExit
-        >
-            <div className="movie-page mt-3">
-                <div className="position-relative">
-                    <img className="background-custom" src={movie.Poster}></img>
-                    <div className="background-cover opacity-80"></div>
+            classNames='fade'
+            unmountOnExit>
+            <div className='movie-page mt-3'>
+                <div className='position-relative'>
+                    <img className='background-custom' src={movie.Poster}></img>
+                    <div className='background-cover opacity-80'></div>
 
-                    <div className="container rounded p-3 text-white bg-transparent movie-page-container">
-                        <img className="mr-4 poster" src={movie.Poster}></img>
-                        <div className="d-flex flex-column align-items-start mr-2">
+                    <div className='container rounded p-3 text-white bg-transparent movie-page-container'>
+                        <img className='mr-4 poster' src={movie.Poster}></img>
+                        <div className='d-flex flex-column align-items-start mr-2'>
                             <div>
-                                <h2 className="m-1">
+                                <h2 className='m-1'>
                                     {movie.Title} - {movie.Year}
                                 </h2>
                                 <h5>
-                                    <span className="badge badge-info m-1">
+                                    <span className='badge badge-info m-1'>
                                         {movie.Type
                                             ? movie.Type.charAt(
                                                   0
@@ -154,30 +160,30 @@ export default function MoviePage(props) {
                                               movie.Type.slice(1)
                                             : ''}
                                     </span>
-                                    <span className="badge badge-warning m-1">
+                                    <span className='badge badge-warning m-1'>
                                         Rated: {movie.Rated}
                                     </span>
-                                    <span className="badge badge-primary m-1">
+                                    <span className='badge badge-primary m-1'>
                                         {movie.Runtime}
                                     </span>
-                                    <span className="badge badge-danger m-1">
+                                    <span className='badge badge-danger m-1'>
                                         {movie.Released}
                                     </span>
-                                    <span className="badge badge-success m-1">
+                                    <span className='badge badge-success m-1'>
                                         {movie.Language}
                                     </span>
                                 </h5>
 
                                 <div>{getGenres(movie.Genre)}</div>
                             </div>
-                            <div className="d-flex flex-column justify-content-center w-75 p-1 mt-2">
+                            <div className='d-flex flex-column justify-content-center w-75 p-1 mt-2'>
                                 <p>{movie.Plot}</p>
                             </div>
                         </div>
 
-                        <div className="d-flex flex-column justify-content-between align-items-end w-25 mb-3">
-                            <h3 className="d-flex justify-content-center">
-                                <span className="badge badge-warning m-1">
+                        <div className='d-flex flex-column justify-content-between align-items-end w-25 mb-3'>
+                            <h3 className='d-flex justify-content-center'>
+                                <span className='badge badge-warning m-1'>
                                     {movie.imdbRating}
                                     <br />
                                     <small>IMDb</small>
@@ -187,15 +193,14 @@ export default function MoviePage(props) {
                                         movie.Metascore < 50
                                             ? ' badge-danger'
                                             : ' badge-success'
-                                    )}
-                                >
+                                    )}>
                                     {movie.Metascore}
                                     <br />
                                     <small>Metascore</small>
                                 </span>
                             </h3>
 
-                            <div className="d-flex flex-column w-100">
+                            <div className='d-flex flex-column w-100'>
                                 <button
                                     className={
                                         isSaved == true
@@ -208,8 +213,7 @@ export default function MoviePage(props) {
                                         } else {
                                             history.push('/login');
                                         }
-                                    }}
-                                >
+                                    }}>
                                     {isSaved == true
                                         ? '✓ Saved'
                                         : '+ For Later'}
@@ -228,43 +232,42 @@ export default function MoviePage(props) {
                                         } else {
                                             history.push('/login');
                                         }
-                                    }}
-                                >
+                                    }}>
                                     {isLiked == true ? 'Liked' : 'Like'}
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="container rounded p-3 text-white bg-transparent">
+                <div className='container rounded p-3 text-white bg-transparent'>
                     <h2>Info</h2>
                     <hr />
                     <div>
-                        <h5 className="d-flex">
-                            <b className="text-info w-20">Director</b>
-                            <span className="w-75 ml-2">{movie.Director}</span>
+                        <h5 className='d-flex'>
+                            <b className='text-info w-20'>Director</b>
+                            <span className='w-75 ml-2'>{movie.Director}</span>
                         </h5>
                         <br />
-                        <h5 className="d-flex">
-                            <b className="text-info w-20">Writer</b>
-                            <span className="w-75 ml-2"> {movie.Writer}</span>
+                        <h5 className='d-flex'>
+                            <b className='text-info w-20'>Writer</b>
+                            <span className='w-75 ml-2'> {movie.Writer}</span>
                         </h5>
                         <br />
-                        <h5 className="d-flex">
-                            <b className="text-info w-20">Cast</b>
-                            <span className="w-75 ml-2"> {movie.Actors}</span>
+                        <h5 className='d-flex'>
+                            <b className='text-info w-20'>Cast</b>
+                            <span className='w-75 ml-2'> {movie.Actors}</span>
                         </h5>
                         <br />
-                        <h5 className="d-flex">
-                            <b className="text-info w-20">Production</b>
-                            <span className="w-75 ml-2">
+                        <h5 className='d-flex'>
+                            <b className='text-info w-20'>Production</b>
+                            <span className='w-75 ml-2'>
                                 {movie.Production}
                             </span>
                         </h5>
                         <br />
-                        <h5 className="d-flex">
-                            <b className="text-info w-20">Awards</b>
-                            <span className="w-75 ml-2"> {movie.Awards}</span>
+                        <h5 className='d-flex'>
+                            <b className='text-info w-20'>Awards</b>
+                            <span className='w-75 ml-2'> {movie.Awards}</span>
                         </h5>
                     </div>
                 </div>

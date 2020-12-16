@@ -105,6 +105,20 @@ export default function UserProfile(props) {
                                 </span>
                             </h5>
                         </div>
+                        <div className='d-flex m-1'>
+                            <h5 className='w-20 m-0'>
+                                <span className='badge badge-warning p-2 mr-3'>
+                                    Joined
+                                </span>
+                            </h5>
+                            <h5>
+                                <span className='badge badge-secondary p-2 mr-3'>
+                                    {new Date(
+                                        user.DateCreated
+                                    ).toLocaleString()}
+                                </span>
+                            </h5>
+                        </div>
                     </div>
                 </div>
                 <div className='container bg-transparent d-flex flex-column align-items-center mt-4 p-0'>

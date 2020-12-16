@@ -7,6 +7,7 @@ import { setUser } from '../actions';
 import axios from 'axios';
 
 import MovieRow from './movie-row';
+import Review from './review';
 
 export default function UserProfile(props) {
     const currentUser = useSelector((state) => state.userReducer);
@@ -14,6 +15,7 @@ export default function UserProfile(props) {
     const [user, setUserState] = useState('');
     const [likedQuery, setLikedQuery] = useState(''); // liked list query
     const [savedQuery, setSavedQuery] = useState(''); // saved list query
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         // get user and update state on props change
@@ -47,6 +49,20 @@ export default function UserProfile(props) {
                 }
             }
         });
+
+        // get reviews related to user
+        axios
+            .get('/reviews', {
+                params: {
+                    source: props._id,
+                },
+            })
+            .then((response) => {
+                setReviews(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }, [props._id]);
 
     return (
@@ -58,10 +74,54 @@ export default function UserProfile(props) {
             unmountOnExit>
             <div>
                 <div className='container rounded p-4 mt-4 text-white'>
-                    <div className='d-flex flex-column justify-content-between mr-4 overflow-hidden'>
-                        {user &&
-                            Object.keys(user).map(function (key) {
-                                return <p>{key + ': ' + user[key]}</p>;
+                    <div className='d-flex flex-column w-50 justify-content-between mr-4'>
+                        <div className='d-flex m-1'>
+                            <h4 className='w-20 m-0'>
+                                <span className='badge badge-primary mr-3'>
+                                    Name
+                                </span>
+                            </h4>
+                            <h3 className='m-0'>{user.Name}</h3>
+                        </div>
+                        <div className='d-flex m-1'>
+                            <h4 className='w-20 m-0'>
+                                <span className='badge badge-primary mr-3'>
+                                    @
+                                </span>
+                            </h4>
+                            <h3 className='m-0'>{user.Username}</h3>
+                        </div>
+
+                        <br />
+                        <div className='d-flex m-1'>
+                            <h5 className='w-20 m-0'>
+                                <span className='badge badge-success p-2 mr-3'>
+                                    Type
+                                </span>
+                            </h5>
+                            <h5>
+                                <span className='badge badge-info p-2 mr-3'>
+                                    {user.Type}
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div className='container bg-transparent d-flex flex-column align-items-center mt-4 p-0'>
+                    {reviews && reviews.length > 0 && (
+                        <h2 className='text-warning d-flex align-content-center'>
+                            <span>Reviews Given</span>
+
+                            <span className='badge badge-pill badge-warning ml-3'>
+                                {reviews.length}
+                            </span>
+                        </h2>
+                    )}
+                    <br />
+                    <div className='w-100'>
+                        {reviews &&
+                            reviews.map(function (rating, i) {
+                                return <Review review={rating} />;
                             })}
                     </div>
                 </div>

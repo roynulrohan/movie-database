@@ -27,9 +27,10 @@ router.route('/').get(function (req, res) {
 });
 
 router.route('/new').post(function (req, res) {
-    const { movie, source, value, title, body } = req.body;
+    const { movieName, movie, source, value, title, body } = req.body;
 
     const newReview = new Review({
+        MovieName: movieName,
         Movie: movie,
         Source: source,
         Value: value,

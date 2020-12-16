@@ -232,10 +232,10 @@ body {
     padding-bottom: 20px;
 }
 
-.movie-list::-webkit-scrollbar {
+::-webkit-scrollbar {
     background-color: $card-color;
 }
-.movie-list::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: $warning;
 }
 
@@ -307,8 +307,10 @@ body {
     }
 
     textarea {
-        font-size: 1.3em;
-        height: 150px;
+        font-size: 1.2em;
+        min-height: 150px;
+        height: 200px;
+        max-height: 250px;
         background-color: $nav-color;
         border-color: $nav-color;
         color: $white;
@@ -344,9 +346,9 @@ body {
 .review {
     textarea {
         font-size: 1em;
-        min-height: 50px;
-        height: 100px;
-        max-height: 150px;
+        min-height: 100px;
+        height: 150px;
+        max-height: 200px;
         background-color: $container-color;
         border-color: $container-color;
         color: $white;
@@ -405,24 +407,28 @@ body {
     cursor: pointer;
 }
 
+.w-15 {
+    width: 15% !important;
+}
+
 .w-20 {
-    width: 20%;
+    width: 20% !important;
 }
 
 .w-30 {
-    width: 30%;
+    width: 30% !important;
 }
 
 .w-40 {
-    width: 40%;
+    width: 40% !important;
 }
 
 .w-60 {
-    width: 60%;
+    width: 60% !important;
 }
 
 .w-70 {
-    width: 70%;
+    width: 70% !important;
 }
 
 .navbar {

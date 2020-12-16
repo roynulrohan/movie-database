@@ -35,22 +35,40 @@ export default function Review(props) {
             timeout={600}
             classNames='fade'
             unmountOnExit>
-            <div className='container rounded'>
+            <div
+                className={
+                    props.removeCallback
+                        ? 'container rounded'
+                        : 'container rounded pointer'
+                }
+                onClick={
+                    props.removeCallback
+                        ? () => {}
+                        : () => {
+                              history.push('/movie/' + props.review.Movie);
+                          }
+                }>
                 <small className='mt-2 ml-3 text-secondary position-absolute'>
                     {date.toLocaleString()}
                 </small>
                 <div className='d-flex justify-content-between align-items-start p-3 mb-2 review'>
-                    <div className='d-flex flex-column justify-content-between w-100 mt-4'>
+                    <div className='d-flex flex-column justify-content-between w-100 mt-4 text-white'>
                         <h5 class='w-100'>
-                            <span
-                                className='text-info pointer'
-                                onClick={() => {
-                                    history.push(
-                                        '/user/' + props.review.Source
-                                    );
-                                }}>
-                                {props.review.Source}
-                            </span>
+                            {props.removeCallback ? (
+                                <span
+                                    className='text-info pointer'
+                                    onClick={() => {
+                                        history.push(
+                                            '/user/' + props.review.Source
+                                        );
+                                    }}>
+                                    {props.review.Source}
+                                </span>
+                            ) : (
+                                <span className='text-info'>
+                                    {props.review.MovieName}
+                                </span>
+                            )}
                             {props.review.Title && (
                                 <span>
                                     {' - '}
@@ -91,7 +109,8 @@ export default function Review(props) {
                                 {props.review.Value}
                             </span>
                         </h4>{' '}
-                        {user.currentUser &&
+                        {props.removeCallback &&
+                            user.currentUser &&
                             user.currentUser.Username ==
                                 props.review.Source && (
                                 <button

@@ -6,6 +6,10 @@ const Review = new Schema({
         type: String,
         required: true,
     },
+    MovieName: {
+        type: String,
+        required: true,
+    },
     Source: {
         type: String,
         required: true,

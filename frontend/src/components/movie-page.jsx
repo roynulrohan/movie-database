@@ -13,7 +13,7 @@ export default function MoviePage(props) {
     const user = useSelector((state) => state.userReducer);
     const [isSaved, setSaved] = useState(null); // saved state
     const [isLiked, setLiked] = useState(null); // liked state
-    const [movie, setMovie] = useState({}); // movie state
+    const [movie, setMovie] = useState(undefined); // movie state
 
     useEffect(() => {
         // get movie request on mount
@@ -27,39 +27,40 @@ export default function MoviePage(props) {
             });
         window.scrollTo(0, 0);
 
-        // checks if user has liked or saved movie
-        if (user.currentUser) {
-            if (user.currentUser.Liked.find((item) => item == movie._id)) {
-                setLiked(true);
-            }
+        if (movie) {
+            // checks if user has liked or saved movie
+            if (user.currentUser) {
+                if (user.currentUser.Liked.find((item) => item == movie._id)) {
+                    setLiked(true);
+                }
 
-            if (user.currentUser.Saved.find((item) => item == movie._id)) {
-                setSaved(true);
+                if (user.currentUser.Saved.find((item) => item == movie._id)) {
+                    setSaved(true);
+                }
             }
         }
     }, [props._id]);
 
     useEffect(() => {
         // set document title
-        if (movie.Title) {
+        if (movie) {
             document.title = movie.Title + ' | Not IMDb';
-        }
 
-        // checks if user has liked or saved movie
-        if (user.currentUser) {
-            if (user.currentUser.Liked.find((item) => item == movie._id)) {
-                setLiked(true);
-            } else {
-                setLiked(false);
+            // checks if user has liked or saved movie
+            if (user.currentUser) {
+                if (user.currentUser.Liked.find((item) => item == movie._id)) {
+                    setLiked(true);
+                } else {
+                    setLiked(false);
+                }
+
+                if (user.currentUser.Saved.find((item) => item == movie._id)) {
+                    setSaved(true);
+                } else {
+                    setSaved(false);
+                }
             }
-
-            if (user.currentUser.Saved.find((item) => item == movie._id)) {
-                setSaved(true);
-            } else {
-                setSaved(false);
-            }
         }
-
     }, [movie, user, props._id]);
 
     function saveClick() {
@@ -156,155 +157,175 @@ export default function MoviePage(props) {
             appear={true}
             timeout={600}
             classNames='fade'
-            key={movie.Title}
+            key={props._id}
             unmountOnExit>
-            <div className='movie-page mt-3'>
-                <div className='position-relative'>
-                    <img className='background-custom' src={movie.Poster}></img>
-                    <div className='background-cover opacity-80'></div>
+            <div>
+                {movie && user  && (
+                    <div className='movie-page mt-3'>
+                        <div className='position-relative'>
+                            <img
+                                className='background-custom'
+                                src={movie.Poster}></img>
+                            <div className='background-cover opacity-80'></div>
 
-                    <div className='container rounded p-3 text-white bg-transparent movie-page-container'>
-                        <img className='mr-4 poster' src={movie.Poster}></img>
-                        <div className='d-flex flex-column align-items-start mr-2'>
+                            <div className='container rounded p-3 text-white bg-transparent movie-page-container'>
+                                <img
+                                    className='mr-4 poster'
+                                    src={movie.Poster}></img>
+                                <div className='d-flex flex-column align-items-start mr-2'>
+                                    <div>
+                                        <h2 className='m-1'>
+                                            {movie.Title} - {movie.Year}
+                                        </h2>
+                                        <h5>
+                                            <span className='badge badge-info m-1'>
+                                                {movie.Type
+                                                    ? movie.Type.charAt(
+                                                          0
+                                                      ).toUpperCase() +
+                                                      movie.Type.slice(1)
+                                                    : ''}
+                                            </span>
+                                            <span className='badge badge-warning m-1'>
+                                                Rated: {movie.Rated}
+                                            </span>
+                                            <span className='badge badge-primary m-1'>
+                                                {movie.Runtime}
+                                            </span>
+                                            <span className='badge badge-danger m-1'>
+                                                {movie.Released}
+                                            </span>
+                                            <span className='badge badge-success m-1'>
+                                                {movie.Language}
+                                            </span>
+                                        </h5>
+
+                                        <div>{getGenres(movie.Genre)}</div>
+                                    </div>
+                                    <div className='d-flex flex-column justify-content-center w-75 p-1 mt-2'>
+                                        <p>{movie.Plot}</p>
+                                    </div>
+                                </div>
+
+                                <div className='d-flex flex-column justify-content-between align-items-end w-25 mb-3'>
+                                    <h3 className='d-flex justify-content-center'>
+                                        <span className='badge badge-warning m-1'>
+                                            {movie.imdbRating}
+                                            <br />
+                                            <small>IMDb</small>
+                                        </span>
+                                        <span
+                                            className={'badge m-1'.concat(
+                                                movie.Metascore < 50
+                                                    ? ' badge-danger'
+                                                    : ' badge-success'
+                                            )}>
+                                            {movie.Metascore}
+                                            <br />
+                                            <small>Metascore</small>
+                                        </span>
+                                    </h3>
+
+                                    <div className='d-flex flex-column w-100'>
+                                        <button
+                                            className={
+                                                isSaved == true
+                                                    ? 'btn btn-info'
+                                                    : 'btn btn-outline-info'
+                                            }
+                                            onClick={() => {
+                                                if (user.currentUser) {
+                                                    saveClick();
+                                                } else {
+                                                    history.push('/login');
+                                                }
+                                            }}>
+                                            {isSaved == true
+                                                ? '✓ Saved'
+                                                : '+ For Later'}
+                                        </button>
+
+                                        <br />
+                                        <button
+                                            className={
+                                                isLiked == true
+                                                    ? 'btn btn-danger'
+                                                    : 'btn btn-outline-danger'
+                                            }
+                                            onClick={() => {
+                                                if (user.currentUser) {
+                                                    likeClick();
+                                                } else {
+                                                    history.push('/login');
+                                                }
+                                            }}>
+                                            {isLiked == true ? 'Liked' : 'Like'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='container rounded p-3 text-white bg-transparent'>
+                            <h2>Info</h2>
+                            <hr />
                             <div>
-                                <h2 className='m-1'>
-                                    {movie.Title} - {movie.Year}
-                                </h2>
-                                <h5>
-                                    <span className='badge badge-info m-1'>
-                                        {movie.Type
-                                            ? movie.Type.charAt(
-                                                  0
-                                              ).toUpperCase() +
-                                              movie.Type.slice(1)
-                                            : ''}
-                                    </span>
-                                    <span className='badge badge-warning m-1'>
-                                        Rated: {movie.Rated}
-                                    </span>
-                                    <span className='badge badge-primary m-1'>
-                                        {movie.Runtime}
-                                    </span>
-                                    <span className='badge badge-danger m-1'>
-                                        {movie.Released}
-                                    </span>
-                                    <span className='badge badge-success m-1'>
-                                        {movie.Language}
+                                <h5 className='d-flex'>
+                                    <b className='text-info w-20'>Director</b>
+                                    <span className='w-75 ml-2'>
+                                        {movie.Director}
                                     </span>
                                 </h5>
-
-                                <div>{getGenres(movie.Genre)}</div>
-                            </div>
-                            <div className='d-flex flex-column justify-content-center w-75 p-1 mt-2'>
-                                <p>{movie.Plot}</p>
-                            </div>
-                        </div>
-
-                        <div className='d-flex flex-column justify-content-between align-items-end w-25 mb-3'>
-                            <h3 className='d-flex justify-content-center'>
-                                <span className='badge badge-warning m-1'>
-                                    {movie.imdbRating}
-                                    <br />
-                                    <small>IMDb</small>
-                                </span>
-                                <span
-                                    className={'badge m-1'.concat(
-                                        movie.Metascore < 50
-                                            ? ' badge-danger'
-                                            : ' badge-success'
-                                    )}>
-                                    {movie.Metascore}
-                                    <br />
-                                    <small>Metascore</small>
-                                </span>
-                            </h3>
-
-                            <div className='d-flex flex-column w-100'>
-                                <button
-                                    className={
-                                        isSaved == true
-                                            ? 'btn btn-info'
-                                            : 'btn btn-outline-info'
-                                    }
-                                    onClick={() => {
-                                        if (user.currentUser) {
-                                            saveClick();
-                                        } else {
-                                            history.push('/login');
-                                        }
-                                    }}>
-                                    {isSaved == true
-                                        ? '✓ Saved'
-                                        : '+ For Later'}
-                                </button>
-
                                 <br />
-                                <button
-                                    className={
-                                        isLiked == true
-                                            ? 'btn btn-danger'
-                                            : 'btn btn-outline-danger'
-                                    }
-                                    onClick={() => {
-                                        if (user.currentUser) {
-                                            likeClick();
-                                        } else {
-                                            history.push('/login');
-                                        }
-                                    }}>
-                                    {isLiked == true ? 'Liked' : 'Like'}
-                                </button>
+                                <h5 className='d-flex'>
+                                    <b className='text-info w-20'>Writer</b>
+                                    <span className='w-75 ml-2'>
+                                        {' '}
+                                        {movie.Writer}
+                                    </span>
+                                </h5>
+                                <br />
+                                <h5 className='d-flex'>
+                                    <b className='text-info w-20'>Cast</b>
+                                    <span className='w-75 ml-2'>
+                                        {' '}
+                                        {movie.Actors}
+                                    </span>
+                                </h5>
+                                <br />
+                                <h5 className='d-flex'>
+                                    <b className='text-info w-20'>Production</b>
+                                    <span className='w-75 ml-2'>
+                                        {movie.Production}
+                                    </span>
+                                </h5>
+                                <br />
+                                <h5 className='d-flex'>
+                                    <b className='text-info w-20'>Awards</b>
+                                    <span className='w-75 ml-2'>
+                                        {' '}
+                                        {movie.Awards}
+                                    </span>
+                                </h5>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className='container rounded p-3 text-white bg-transparent'>
-                    <h2>Info</h2>
-                    <hr />
-                    <div>
-                        <h5 className='d-flex'>
-                            <b className='text-info w-20'>Director</b>
-                            <span className='w-75 ml-2'>{movie.Director}</span>
-                        </h5>
-                        <br />
-                        <h5 className='d-flex'>
-                            <b className='text-info w-20'>Writer</b>
-                            <span className='w-75 ml-2'> {movie.Writer}</span>
-                        </h5>
-                        <br />
-                        <h5 className='d-flex'>
-                            <b className='text-info w-20'>Cast</b>
-                            <span className='w-75 ml-2'> {movie.Actors}</span>
-                        </h5>
-                        <br />
-                        <h5 className='d-flex'>
-                            <b className='text-info w-20'>Production</b>
-                            <span className='w-75 ml-2'>
-                                {movie.Production}
-                            </span>
-                        </h5>
-                        <br />
-                        <h5 className='d-flex'>
-                            <b className='text-info w-20'>Awards</b>
-                            <span className='w-75 ml-2'> {movie.Awards}</span>
-                        </h5>
-                    </div>
-                </div>
 
-                <ReviewSection movie={movie} />
-                {movie.Genre && (
-                    <div className='mt-5'>
-                        <MovieRow
-                            title={'More like this'}
-                            params={{
-                                random: true,
-                                genre: movie.Genre.split(',')[
-                                    Math.floor(
-                                        Math.random() *
-                                            movie.Genre.split(',').length
-                                    )
-                                ].trim(),
-                            }}></MovieRow>
+                        <ReviewSection movie={movie} />
+
+                        <div className='mt-5'>
+                            <MovieRow
+                                title={'More like this'}
+                                params={{
+                                    random: true,
+                                    genre: movie.Genre.split(',')[
+                                        Math.floor(
+                                            Math.random() *
+                                                movie.Genre.split(',').length
+                                        )
+                                    ].trim(),
+                                }}
+                            />
+                        </div>
                     </div>
                 )}
             </div>

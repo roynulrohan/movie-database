@@ -36,6 +36,7 @@ export default function ReviewSection(props) {
     // submit review request
     function submitReview() {
         let params = {
+            movieName: props.movie.Title,
             movie: props.movie._id,
             source: user.currentUser.Username,
             value: reviewScore + '/10',
@@ -177,7 +178,7 @@ export default function ReviewSection(props) {
                     <textarea
                         type='text'
                         class='form-control'
-                        maxLength='400'
+                        maxLength='600'
                         placeholder='Review...'
                         value={reviewBody}
                         onChange={(e) => {

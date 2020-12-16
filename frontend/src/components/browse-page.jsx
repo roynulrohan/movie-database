@@ -92,7 +92,7 @@ export default function BrowsePage(props) {
                         className='browse-search w-75'
                         placeholder='Search... '
                         type='text'
-                        spellcheck='false'
+                        spellCheck='false'
                         value={search}
                         onChange={(e) => {
                             setSearch(e.target.value);

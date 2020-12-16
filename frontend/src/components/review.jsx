@@ -35,19 +35,7 @@ export default function Review(props) {
             timeout={600}
             classNames='fade'
             unmountOnExit>
-            <div
-                className={
-                    props.removeCallback
-                        ? 'container rounded'
-                        : 'container rounded pointer'
-                }
-                onClick={
-                    props.removeCallback
-                        ? () => {}
-                        : () => {
-                              history.push('/movie/' + props.review.Movie);
-                          }
-                }>
+            <div className='container rounded'>
                 <small className='mt-2 ml-3 text-secondary position-absolute'>
                     {date.toLocaleString()}
                 </small>
@@ -65,7 +53,13 @@ export default function Review(props) {
                                     {props.review.Source}
                                 </span>
                             ) : (
-                                <span className='text-info'>
+                                <span
+                                    className='text-info pointer'
+                                    onClick={() => {
+                                        history.push(
+                                            '/movie/' + props.review.Movie
+                                        );
+                                    }}>
                                     {props.review.MovieName}
                                 </span>
                             )}

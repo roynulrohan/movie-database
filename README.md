@@ -27,7 +27,6 @@ Developed REST API using Node and Express. Used MongoDB Atlas for database.
 ## Screenshots
 ![](misc/screenshots/search-min.png)
 ![](misc/screenshots/movie-min.png)
-![](misc/screenshots/reviews-min.png)
 
 
 ### Asset Credits

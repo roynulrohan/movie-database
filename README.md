@@ -25,9 +25,12 @@ I developed the client using React. Used React Router and functional components.
 Developed REST API using Node and Express. Used MongoDB Atlas for database.
 
 ## Screenshots
+##### Search Page
 ![](misc/screenshots/search-min.png)
+##### Movie Page
 ![](misc/screenshots/movie-min.png)
-
+##### User Profile
+![](misc/screenshots/profile-min.png)
 
 ### Asset Credits
 

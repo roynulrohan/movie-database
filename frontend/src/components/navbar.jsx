@@ -118,53 +118,11 @@ export default function Nav() {
                     <Dropdown.Item onClick={() => profileOnClick()}>
                         My Profile
                     </Dropdown.Item>
-                    <Dropdown.Item>Settings</Dropdown.Item>
                     <Dropdown.Divider></Dropdown.Divider>
                     <Dropdown.Item
                         onClick={() => logout()}
                         className='text-danger'>
                         Logout
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        );
-    }
-
-    function browseDropdown() {
-        return (
-            <Dropdown key='browse-dropdown'>
-                <Dropdown.Toggle
-                    id='dropdown'
-                    variant=''
-                    className='btn browse-dropdown no-caret btn-dark-yellow'>
-                    <svg
-                        width='1.2em'
-                        height='1.2em'
-                        viewBox='0 0 16 16'
-                        class='bi bi-list'
-                        fill='currentColor'
-                        xmlns='http://www.w3.org/2000/svg'>
-                        <path
-                            fill-rule='evenodd'
-                            d='M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z'
-                        />
-                    </svg>{' '}
-                    Browse
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu
-                    className='w-100 text-center'
-                    align='left'
-                    variant='dark'>
-                    <Dropdown.Header className='text-info'>
-                        Explore
-                    </Dropdown.Header>
-                    <Dropdown.Item onClick={() => browseClick()}>
-                        Movies
-                    </Dropdown.Item>
-                    <Dropdown.Divider></Dropdown.Divider>
-                    <Dropdown.Item onClick={() => browseClick()}>
-                        Users
                     </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
@@ -186,7 +144,20 @@ export default function Nav() {
                     </h3>
                 </Link>
                 <div className='navbar-nav mr-5 ml-2 pb-1'>
-                    {browseDropdown()}
+                <button className='btn browse-dropdown no-caret btn-dark-yellow' onClick={() => browseClick()}>
+                    <svg
+                        width='1.2em'
+                        height='1.2em'
+                        viewBox='0 0 16 16'
+                        class='bi bi-list'
+                        fill='currentColor'
+                        xmlns='http://www.w3.org/2000/svg'>
+                        <path
+                            fill-rule='evenodd'
+                            d='M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z'
+                        />
+                    </svg>{' '}
+                    Browse</button>
                 </div>
 
                 <div className='navbar-nav ml-auto mr-5 pt-1 pb-1'>

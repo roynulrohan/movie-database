@@ -233,9 +233,11 @@ body {
 }
 
 ::-webkit-scrollbar {
+    height:10px;
     background-color: $card-color;
 }
 ::-webkit-scrollbar-thumb {
+    border-radius: 50rem;
     background-color: $warning;
 }
 
